@@ -1,0 +1,560 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ===========================
+// CORE ENTITIES
+// ===========================
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  password      String?   // Hashed password (nullable for OAuth users)
+  role          UserRole  @default(PUBLIC)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Relations
+  auditLogs          AuditLog[]
+  moderationReviews  ModerationQueue[] @relation("ReviewedBy")
+  correctionRequests CorrectionRequest[]
+  
+  @@index([email])
+  @@index([role])
+}
+
+enum UserRole {
+  PUBLIC          // Can view only
+  REGISTERED      // Can submit corrections
+  MODERATOR       // Can approve/reject submissions
+  ADMIN           // Full access
+  SUPER_ADMIN     // System administration
+}
+
+model Province {
+  id              Int      @id @default(autoincrement())
+  name            String   @unique
+  nameNepali      String?
+  code            String   @unique // e.g., "P1", "P2"
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  districts       District[]
+  constituencies  Constituency[]
+  
+  @@index([code])
+}
+
+model District {
+  id              Int      @id @default(autoincrement())
+  name            String
+  nameNepali      String?
+  provinceId      Int
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  province        Province       @relation(fields: [provinceId], references: [id])
+  constituencies  Constituency[]
+  
+  @@unique([provinceId, name])
+  @@index([provinceId])
+}
+
+model Constituency {
+  id              Int              @id @default(autoincrement())
+  name            String
+  nameNepali      String?
+  constituencyNumber Int?          // For federal constituencies
+  level           GovernmentLevel
+  provinceId      Int
+  districtId      Int?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  
+  province        Province     @relation(fields: [provinceId], references: [id])
+  district        District?    @relation(fields: [districtId], references: [id])
+  candidates      Candidate[]
+  
+  @@unique([provinceId, districtId, constituencyNumber, level])
+  @@index([provinceId])
+  @@index([districtId])
+  @@index([level])
+}
+
+enum GovernmentLevel {
+  FEDERAL
+  PROVINCIAL
+  LOCAL
+}
+
+model Party {
+  id              Int      @id @default(autoincrement())
+  name            String   @unique
+  nameNepali      String?
+  symbolUrl       String?
+  foundedYear     Int?
+  website         String?
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  candidates      Candidate[]
+  
+  @@index([name])
+  @@index([isActive])
+}
+
+model Candidate {
+  id                  String           @id @default(cuid())
+  name                String
+  nameNepali          String?
+  age                 Int?
+  gender              Gender?
+  photoUrl            String?
+  partyId             Int
+  constituencyId      Int
+  bio                 String?          @db.Text
+  yearsInPolitics     Int?
+  
+  // Computed scores (updated by cron jobs or triggers)
+  impactScore         Float?           @default(0)
+  scandalScore        Float?           @default(0)
+  fulfillmentRate     Float?           @default(0)
+  popularityScore     Int?             @default(0) // Page views
+  
+  // Status indicators
+  status              CandidateStatus  @default(DRAFT)
+  isVerified          Boolean          @default(false)
+  hasAllegations      Boolean          @default(false)
+  hasCriminalCases    Boolean          @default(false)
+  
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+  publishedAt         DateTime?
+  
+  // Relations
+  party               Party            @relation(fields: [partyId], references: [id])
+  constituency        Constituency     @relation(fields: [constituencyId], references: [id])
+  
+  posts               CandidatePost[]
+  promises            Promise[]
+  works               Work[]
+  cases               Case[]
+  rumors              Rumor[]
+  comparisons         Comparison[]     @relation("ComparedCandidates")
+  auditLogs           AuditLog[]
+  
+  @@index([partyId])
+  @@index([constituencyId])
+  @@index([status])
+  @@index([name])
+  @@index([impactScore])
+  @@index([scandalScore])
+  @@index([fulfillmentRate])
+  @@fulltext([name, bio])
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum CandidateStatus {
+  DRAFT
+  PENDING_REVIEW
+  PUBLISHED
+  ARCHIVED
+}
+
+model CandidatePost {
+  id              Int      @id @default(autoincrement())
+  candidateId     String
+  position        String   // e.g., "Minister of Finance", "Mayor of Kathmandu"
+  positionNepali  String?
+  level           GovernmentLevel
+  startDate       DateTime
+  endDate         DateTime?
+  isCurrent       Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  candidate       Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  
+  @@index([candidateId])
+  @@index([isCurrent])
+  @@index([level])
+}
+
+// ===========================
+// CONTENT ENTITIES
+// ===========================
+
+model Promise {
+  id              String          @id @default(cuid())
+  candidateId     String
+  text            String          @db.Text
+  category        PromiseCategory
+  type            PromiseType
+  status          PromiseStatus   @default(NO_EVIDENCE)
+  electionCycle   String?         // e.g., "2022", "2017"
+  progressPercent Int?            @default(0) // 0-100
+  announcedDate   DateTime?
+  
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  
+  candidate       Candidate       @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  sources         PromiseSource[]
+  
+  @@index([candidateId])
+  @@index([category])
+  @@index([status])
+  @@fulltext([text])
+}
+
+enum PromiseCategory {
+  ECONOMY
+  INFRASTRUCTURE
+  HEALTH
+  EDUCATION
+  SOCIAL_WELFARE
+  ENVIRONMENT
+  GOVERNANCE
+  SECURITY
+  AGRICULTURE
+  OTHER
+}
+
+enum PromiseType {
+  MANIFESTO
+  SPEECH
+  PUBLIC_COMMITMENT
+  INTERVIEW
+  OTHER
+}
+
+enum PromiseStatus {
+  KEPT
+  IN_PROGRESS
+  BROKEN
+  NO_EVIDENCE
+  PARTIALLY_FULFILLED
+}
+
+model Work {
+  id              String       @id @default(cuid())
+  candidateId     String
+  title           String
+  titleNepali     String?
+  description     String       @db.Text
+  category        WorkCategory
+  impactLevel     ImpactLevel  @default(MEDIUM)
+  startDate       DateTime
+  endDate         DateTime?
+  completionPercent Int?       @default(0) // 0-100
+  budget          Decimal?     @db.Decimal(15, 2)
+  beneficiaries   Int?
+  location        String?
+  
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  
+  candidate       Candidate    @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  sources         WorkSource[]
+  
+  @@index([candidateId])
+  @@index([category])
+  @@index([impactLevel])
+  @@fulltext([title, description])
+}
+
+enum WorkCategory {
+  INFRASTRUCTURE
+  HEALTH
+  EDUCATION
+  SOCIAL_PROGRAMS
+  POLICY_WORK
+  LEGISLATION
+  COMMUNITY_DEVELOPMENT
+  ENVIRONMENT
+  OTHER
+}
+
+enum ImpactLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+model Case {
+  id              String       @id @default(cuid())
+  candidateId     String
+  allegation      String       @db.Text
+  caseNumber      String?
+  courtName       String?
+  severity        Int          @default(3) // 1-5 scale
+  status          CaseStatus   @default(FILED)
+  filedDate       DateTime?
+  closedDate      DateTime?
+  verdict         String?      @db.Text
+  
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  
+  candidate       Candidate    @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  sources         CaseSource[]
+  
+  @@index([candidateId])
+  @@index([status])
+  @@index([severity])
+  @@fulltext([allegation])
+}
+
+enum CaseStatus {
+  FILED
+  UNDER_INVESTIGATION
+  TRIAL
+  HEARING
+  ACQUITTED
+  CONVICTED
+  WITHDRAWN
+  CLOSED
+  INACTIVE
+}
+
+model Rumor {
+  id              String       @id @default(cuid())
+  candidateId     String
+  text            String       @db.Text
+  sourceType      RumorSource
+  originDate      DateTime
+  expiryDate      DateTime     // Auto-calculated (originDate + 60 days)
+  popularityCount Int          @default(0) // # of mentions tracked
+  isExpired       Boolean      @default(false)
+  
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  
+  candidate       Candidate    @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  
+  @@index([candidateId])
+  @@index([isExpired])
+  @@index([expiryDate])
+  @@fulltext([text])
+}
+
+enum RumorSource {
+  SOCIAL_MEDIA
+  SPEECH
+  HEARSAY
+  UNVERIFIED_MEDIA
+  OTHER
+}
+
+// ===========================
+// SOURCES & VERIFICATION
+// ===========================
+
+model Source {
+  id              String           @id @default(cuid())
+  title           String
+  publisher       String
+  url             String           @db.Text
+  archivedUrl     String?          @db.Text
+  publishedDate   DateTime?
+  reliabilityTier SourceTier
+  
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  
+  promiseSources  PromiseSource[]
+  workSources     WorkSource[]
+  caseSources     CaseSource[]
+  
+  @@index([reliabilityTier])
+}
+
+enum SourceTier {
+  TIER_1_OFFICIAL       // Election Commission, Courts, Govt docs
+  TIER_2_REPUTABLE      // National media (Kantipur, BBC Nepali, etc.)
+  TIER_3_LOCAL          // Local/regional outlets
+  TIER_4_SOCIAL         // Social media, public statements
+}
+
+// Junction tables for many-to-many relationships
+model PromiseSource {
+  promiseId   String
+  sourceId    String
+  createdAt   DateTime @default(now())
+  
+  promise     Promise  @relation(fields: [promiseId], references: [id], onDelete: Cascade)
+  source      Source   @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+  
+  @@id([promiseId, sourceId])
+  @@index([promiseId])
+  @@index([sourceId])
+}
+
+model WorkSource {
+  workId      String
+  sourceId    String
+  createdAt   DateTime @default(now())
+  
+  work        Work     @relation(fields: [workId], references: [id], onDelete: Cascade)
+  source      Source   @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+  
+  @@id([workId, sourceId])
+  @@index([workId])
+  @@index([sourceId])
+}
+
+model CaseSource {
+  caseId      String
+  sourceId    String
+  createdAt   DateTime @default(now())
+  
+  case        Case     @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  source      Source   @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+  
+  @@id([caseId, sourceId])
+  @@index([caseId])
+  @@index([sourceId])
+}
+
+// ===========================
+// FEATURES: COMPARE, RANKINGS
+// ===========================
+
+model Comparison {
+  id              String     @id @default(cuid())
+  userId          String?    // Optional: track comparisons by user
+  candidateIds    String[]   // Array of candidate IDs (max 3)
+  createdAt       DateTime   @default(now())
+  
+  candidates      Candidate[] @relation("ComparedCandidates")
+  
+  @@index([userId])
+}
+
+model Ranking {
+  id              String         @id @default(cuid())
+  category        RankingCategory
+  candidateId     String
+  rank            Int
+  score           Float
+  calculatedAt    DateTime       @default(now())
+  
+  @@unique([category, calculatedAt, candidateId])
+  @@index([category])
+  @@index([calculatedAt])
+}
+
+enum RankingCategory {
+  TOP_IMPACT
+  CLEANEST_RECORDS
+  HIGHEST_FULFILLMENT
+  MOST_EXPERIENCED
+  MOST_POPULAR
+  MOST_IMPROVED
+}
+
+// ===========================
+// MODERATION & GOVERNANCE
+// ===========================
+
+model ModerationQueue {
+  id              String            @id @default(cuid())
+  entityType      ModerationEntity
+  entityId        String
+  submittedBy     String?           // User ID
+  status          ModerationStatus  @default(PENDING)
+  reviewedBy      String?           // User ID
+  reviewNotes     String?           @db.Text
+  changesDiff     Json?             // Store original vs new as JSON
+  
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  reviewedAt      DateTime?
+  
+  reviewer        User?             @relation("ReviewedBy", fields: [reviewedBy], references: [id])
+  
+  @@index([status])
+  @@index([entityType])
+  @@index([submittedBy])
+  @@index([reviewedBy])
+}
+
+enum ModerationEntity {
+  CANDIDATE
+  PROMISE
+  WORK
+  CASE
+  RUMOR
+  SOURCE
+}
+
+enum ModerationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  REQUIRES_CHANGES
+}
+
+model CorrectionRequest {
+  id              String    @id @default(cuid())
+  candidateId     String?
+  entityType      String?   // "promise", "work", "case", etc.
+  entityId        String?
+  submitterName   String?
+  submitterEmail  String?
+  submitterId     String?   // If logged in
+  description     String    @db.Text
+  suggestedSource String?   @db.Text
+  status          CorrectionStatus @default(SUBMITTED)
+  adminNotes      String?   @db.Text
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  resolvedAt      DateTime?
+  
+  submitter       User?     @relation(fields: [submitterId], references: [id])
+  
+  @@index([status])
+  @@index([candidateId])
+}
+
+enum CorrectionStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  ACCEPTED
+  REJECTED
+  REQUIRES_INFO
+}
+
+model AuditLog {
+  id              String    @id @default(cuid())
+  userId          String
+  action          String    // "CREATE", "UPDATE", "DELETE", "APPROVE", "REJECT"
+  entityType      String    // "Candidate", "Promise", "Work", etc.
+  entityId        String
+  changes         Json?     // Store before/after as JSON
+  reason          String?   @db.Text
+  ipAddress       String?
+  
+  createdAt       DateTime  @default(now())
+  
+  user            User      @relation(fields: [userId], references: [id])
+  candidate       Candidate? @relation(fields: [entityId], references: [id])
+  
+  @@index([userId])
+  @@index([entityType])
+  @@index([entityId])
+  @@index([createdAt])
+}

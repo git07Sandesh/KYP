@@ -1,0 +1,17 @@
+{
+  "name": "@repo/shared-logic",
+  "version": "1.0.0",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "zustand": "^5.0.2",
+    "@tanstack/react-query": "^5.62.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "typescript": "^5.7.2"
+  }
+}
