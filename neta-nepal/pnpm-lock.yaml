@@ -152,6 +152,9 @@ importers:
 
   packages/shared-logic:
     dependencies:
+      '@repo/database':
+        specifier: workspace:*
+        version: link:../database
       '@tanstack/react-query':
         specifier: ^5.62.8
         version: 5.90.7(react@19.2.0)
@@ -162,6 +165,19 @@ importers:
       '@types/node':
         specifier: ^22.10.1
         version: 22.19.0
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+  packages/ui-components:
+    dependencies:
+      react:
+        specifier: ^18.0.0 || ^19.0.0
+        version: 19.2.0
+    devDependencies:
+      '@types/react':
+        specifier: ^19.0.0
+        version: 19.1.17
       typescript:
         specifier: ^5.7.2
         version: 5.9.3

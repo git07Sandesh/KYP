@@ -1,6 +1,6 @@
 // Scoring utility functions (placeholder implementations)
 
-import type { Work, Case, Promise } from '@repo/database'
+import type { Work, Case, Promise, ImpactLevel } from '@repo/database'
 
 /**
  * Calculate impact score based on works completed
@@ -13,12 +13,12 @@ export function calculateImpactScore(works: Work[], yearsInPolitics: number): nu
   }
 
   const totalPoints = works.reduce((sum, work) => {
-    const points = {
+    const points: Record<ImpactLevel, number> = {
       HIGH: 10,
       MEDIUM: 5,
       LOW: 2,
-    }[work.impactLevel]
-    return sum + points
+    }
+    return sum + (points[work.impactLevel] || 0)
   }, 0)
 
   // Normalize by years in politics (cap at 10)
