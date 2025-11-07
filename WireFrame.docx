@@ -1,0 +1,433 @@
+FULL WIREFRAME LAYOUT (Blueprint v1.0)
+
+For Nepal Candidate Information Platform
+
+✅ 0. Wireframe Key
+
+To avoid ambiguity:
+
+[Top Bar] = header in web / optional on mobile
+
+(Section) = logical grouping
+
+→ Action = button or CTA
+
+[Card] = boxed layout component
+
+{Field} = data placeholder
+
+✅ 1. HOME SCREEN
+
+(Mobile: scroll-first. Web: grid layout.)
+
+1.1 Header
+
+Mobile:
+
+App Logo
+
+Right side: “More” (hamburger menu)
+
+Web:
+
+Left: Logo
+
+Center: Navigation (Home | Candidates | Compare | Rankings | About)
+
+Right: Search bar
+
+1.2 Top Search Bar (Hero Search)
+📌  Search candidates, parties, constituencies…
+[Search Input ____________________________]
+
+
+Auto-suggest preview:
+
+Candidate names
+
+Parties
+
+Constituencies
+
+1.3 Quick Filters
+
+Horizontal scroll on mobile / grid on web:
+
+[Federal]  [Provincial]  [Local]  
+[Parties ▼]  [Constituencies ▼]  
+[High Impact] [Most Honest]  
+[Most Searched]
+
+1.4 Featured Sections
+
+Each section uses horizontally scrollable cards.
+
+Example:
+
+(Section Title) Top Performing Candidates
+-----------------------------------------
+[Candidate Card] [Candidate Card] [Candidate Card]
+
+✅ 2. CANDIDATES DIRECTORY (LIST PAGE)
+2.1 Header
+Candidates
+{N total results shown}
+
+2.2 Filters Drawer / Sidebar
+Filters
+-------
+Government Level: □ Federal □ Provincial □ Local
+Party: [Dropdown]
+Constituency: [Dropdown]
+Age Range: [Slider]
+Status: □ Incumbent  □ Challenger
+Scores:
+   Impact Score: [Slider]
+   Scandal Score: [Slider]
+   Fulfillment Rate: [Slider]
+Reset Filters | Apply
+
+2.3 Sorting Bar
+Sort By: [Name A-Z ▼]
+
+2.4 Candidate List Items (Repeating Row Card)
+[Photo]   {Name}
+          {Party} | {Constituency}
+          Badges: [Verified] [Allegation] [Rumor]
+          Scores: Impact ★{x} | Scandal ⚠️{x} | Fulfillment {x}%
+----------------------------------------------
+→ View Profile
+
+✅ 3. CANDIDATE PROFILE
+
+Tabs: Overview | Report Card | Works | Promises | Cases | Rumors | Sources
+
+✅ 3.1 Top Section (Sticky Header)
+[Back]          {Candidate Name}          [Share]
+
+✅ 3.2 Overview Tab
+3.2.1 Identity Card
+[Photo]
+{Name}
+{Age}, {Gender (optional)}
+{Party}  {Symbol}
+{Constituency}
+{Years in politics}
+Major Posts:
+  - {Post 1}
+  - {Post 2}
+
+3.2.2 Key Scores (Metrics Row)
+Impact Score:    ★★★★☆
+Scandal Score:   ⚠️ 2/5
+Fulfillment:     68%
+→ Why this score? (expands modal)
+
+3.2.3 Quick Facts Section
+Career Timeline →
+Achievements →
+Cases Overview →
+
+
+Each opens respective tab.
+
+✅ 3.3 Report Card Tab
+3.3.1 Summary Card
+Performance Summary
+--------------------
+Promises Kept: {x}
+Promises Broken: {x}
+Major Works Completed: {x}
+Active Cases: {x}
+
+3.3.2 Trend Graphs
+
+Mobile: vertical stack
+Web: two-column
+
+Graphs:
+
+Fulfillment Timeline
+
+Impact Timeline
+
+Case Timeline
+
+✅ 3.4 Works Tab
+Works List Card (Repeating Card)
+[Category: Infrastructure | Health | Education]
+Title: {Work Title}
+Date: {Year - Year}
+Impact: High / Medium / Low
+Key Outcomes:
+ - {Metric 1}
+ - {Metric 2}
+Sources: [1] [2]
+→ Expand Details
+
+✅ 3.5 Promises Tab
+Promises Filters
+Election Cycle: [Dropdown]
+Category: [Dropdown]
+Status: [Kept/Broken/Progress]
+
+Promise Card
+Promise: "{Promise text}"
+Status: ✅ Kept / ❌ Broken / ⏳ In-progress
+Category: {Sector}
+Evidence: [Link 1] [Link 2]
+
+✅ 3.6 Cases Tab
+Case Card
+Case Title
+Severity: ●●●○○ (3/5)
+Status: Under Investigation
+Court: High Court, {District}
+Summary: {Short description…}
+Sources: [1] [2]
+→ View Timeline
+
+✅ 3.7 Rumors Tab
+🚨 Rumor / Unverified Claims
+These entries are unproven and shown for transparency.
+-------------------------------------------------------
+
+Rumor #1
+"{description}"
+Origin: Social Media
+First Seen: {Date}
+Auto-expiry: {Date}
+Popularity: ↑ Trend
+
+✅ 3.8 Sources Tab
+Sources List
+-------------
+[Publisher] - {Title}
+Published: {Date}
+Reliability: Tier 2
+→ Open Source
+→ Open Archive
+
+✅ 4. COMPARE SCREEN
+4.1 Candidate Selector
+Select up to 3 candidates:
+[Search Input]
+[Candidate Chips added here]
+
+4.2 Comparison Table
+
+Columns → Candidate A | Candidate B | Candidate C
+
+Rows:
+
+Identity
+
+Party
+
+Constituency
+
+Age
+
+Posts
+
+Impact Score
+
+Fulfillment %
+
+Scandal Score
+
+Works Count
+
+Cases Count
+
+4.3 Visual Comparison
+
+Radar chart (scores)
+
+Bar chart (achievements)
+
+Timeline comparison
+
+✅ 5. RANKINGS SCREEN
+5.1 Ranking Type Selector
+[Impact] [Fulfillment] [Cleanliness] [Experience] [Most Searched]
+
+5.2 Ranking List
+#1 {Photo}{Name}
+Score: {X}
+Change: +2 ↑
+Party | Constituency
+
+✅ 6. SEARCH SCREEN
+
+(Search-first UI)
+
+6.1 Search Bar
+[🔍 Search candidates, parties…]
+
+6.2 Categories
+Candidates | Parties | Constituencies | Issues
+
+6.3 Search Results List
+
+Same layout as directory.
+
+✅ 7. MORE MENU
+
+Items:
+
+About
+
+Editorial Policy
+
+App Constitution
+
+FAQ
+
+Feedback/Corrections Form
+
+Terms & Privacy
+
+✅ 8. FEEDBACK & CORRECTION REQUEST
+
+Form fields:
+
+Who is this about? [Search candidate]
+Category: [Fact / Allegation / Rumor / Source Error]
+Description: [Text field]
+Upload Evidence (optional)
+Submit
+
+✅ 9. ADMIN PANEL (WEB)
+✅ 9.1 Admin Dashboard
+
+Widgets:
+
+Candidates count
+
+Pending moderation
+
+Last 10 edits
+
+Data quality alerts
+
+Action shortcuts
+
+Add Candidate
+
+Add Case
+
+Add Promise
+
+Add Work
+
+✅ 9.2 Candidate Management
+Candidate Table View
+
+Columns:
+
+Name
+
+Party
+
+Level
+
+Status (Draft / Pending / Published)
+
+Last Updated
+
+Actions → Edit / View / Archive
+
+Candidate Editor
+
+Tabs inside editor:
+
+Identity
+
+Party History
+
+Posts
+
+Works
+
+Promises
+
+Cases
+
+Rumors
+
+Sources
+
+Preview (public view simulation)
+
+✅ 9.3 Works Editor
+Candidate: [Dropdown Search]
+Title: {Field}
+Category: [Dropdown]
+Impact Level: [Dropdown]
+Description: [Text]
+Start/End Date
+Add Metrics [+]
+Add Sources [+]
+→ Submit for Review
+
+✅ 9.4 Moderation Queue
+
+List view:
+
+Item Type (Case, Promise, Work…)
+
+Candidate Name
+
+Submitted by
+
+Timestamp
+
+Status
+
+Actions → View Diff / Approve / Reject
+
+✅ 9.5 Audit Log
+
+Table:
+
+Action
+
+Editor Name
+
+Candidate
+
+Changed Fields
+
+Date
+
+Revert (if allowed)
+
+✅ 10. Responsive Behaviour Summary
+Mobile (Primary)
+
+Vertical stacking
+
+Tabs become scrollable
+
+Charts simplified
+
+Filters → slide-in drawer
+
+Tablet
+
+Two-column layout where possible
+
+Larger map interaction
+
+More visible filters
+
+Web
+
+Sidebar navigation
+
+Three-column layouts
+
+Full comparison tables
+
+Admin-only features
