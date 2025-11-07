@@ -157,7 +157,6 @@ model Candidate {
   @@index([impactScore])
   @@index([scandalScore])
   @@index([fulfillmentRate])
-  @@fulltext([name, bio])
 }
 
 enum Gender {
@@ -216,7 +215,6 @@ model Promise {
   @@index([candidateId])
   @@index([category])
   @@index([status])
-  @@fulltext([text])
 }
 
 enum PromiseCategory {
@@ -272,7 +270,6 @@ model Work {
   @@index([candidateId])
   @@index([category])
   @@index([impactLevel])
-  @@fulltext([title, description])
 }
 
 enum WorkCategory {
@@ -314,7 +311,6 @@ model Case {
   @@index([candidateId])
   @@index([status])
   @@index([severity])
-  @@fulltext([allegation])
 }
 
 enum CaseStatus {
@@ -347,7 +343,6 @@ model Rumor {
   @@index([candidateId])
   @@index([isExpired])
   @@index([expiryDate])
-  @@fulltext([text])
 }
 
 enum RumorSource {
