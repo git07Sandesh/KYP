@@ -126,6 +126,9 @@ importers:
       '@repo/database':
         specifier: workspace:^
         version: link:../../packages/database
+      '@repo/shared-logic':
+        specifier: workspace:^
+        version: link:../../packages/shared-logic
       '@tanstack/react-query':
         specifier: ^5.62.8
         version: 5.90.7(react@19.2.0)
@@ -224,6 +227,9 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.62.8
         version: 5.90.7(react@19.2.0)
+      react:
+        specifier: ^19.2.0
+        version: 19.2.0
       zustand:
         specifier: ^5.0.2
         version: 5.0.8(@types/react@19.1.17)(react@19.2.0)
