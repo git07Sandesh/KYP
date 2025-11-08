@@ -49,13 +49,13 @@ export default function CandidatesPage() {
   const totalPages = data?.totalPages || 1
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--color-background)' }}>
       {/* Header */}
-      <header className="bg-white border-b">
-        <div className="container mx-auto px-4 py-6">
-          <h1 className="text-3xl font-bold">Political Candidates</h1>
-          <p className="text-gray-600 mt-2">
-            Browse verified information about {total} candidates
+      <header style={{ backgroundColor: 'var(--color-white)', borderBottom: '1px solid var(--color-background-dark)', boxShadow: 'var(--shadow-sm)' }}>
+        <div className="container mx-auto px-4 py-8">
+          <h1 className="font-bold" style={{ fontSize: '2rem', color: 'var(--color-text-dark)', marginBottom: '0.5rem' }}>Political Candidates</h1>
+          <p style={{ color: 'var(--color-text-light)', fontSize: '1.125rem' }}>
+            Browse verified information about <span style={{ fontWeight: '600', color: 'var(--color-primary)' }}>{total}</span> candidates
           </p>
         </div>
       </header>
@@ -64,15 +64,24 @@ export default function CandidatesPage() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Filters Sidebar */}
           <aside className="lg:col-span-1">
-            <Card>
+            <Card style={{ backgroundColor: 'var(--color-white)', borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow-md)', border: '1px solid var(--color-background-dark)' }}>
               <CardHeader>
-                <CardTitle>Filters</CardTitle>
+                <CardTitle style={{ color: 'var(--color-text-dark)', fontSize: '1.25rem', fontWeight: '600' }}>Filters</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-5">
                 <div>
-                  <label className="text-sm font-medium">Sort By</label>
+                  <label className="font-medium" style={{ fontSize: '0.875rem', color: 'var(--color-text-dark)', display: 'block', marginBottom: '0.5rem' }}>Sort By</label>
                   <select
-                    className="w-full mt-1 p-2 border rounded"
+                    className="w-full transition-all duration-200"
+                    style={{
+                      padding: '0.75rem',
+                      border: '2px solid var(--color-background-dark)',
+                      borderRadius: 'var(--radius-md)',
+                      backgroundColor: 'var(--color-white)',
+                      fontSize: '0.875rem',
+                      color: 'var(--color-text-dark)',
+                      cursor: 'pointer',
+                    }}
                     value={filters.sortBy}
                     onChange={(e) =>
                       setFilters({
@@ -90,9 +99,18 @@ export default function CandidatesPage() {
                 </div>
 
                 <div>
-                  <label className="text-sm font-medium">Order</label>
+                  <label className="font-medium" style={{ fontSize: '0.875rem', color: 'var(--color-text-dark)', display: 'block', marginBottom: '0.5rem' }}>Order</label>
                   <select
-                    className="w-full mt-1 p-2 border rounded"
+                    className="w-full transition-all duration-200"
+                    style={{
+                      padding: '0.75rem',
+                      border: '2px solid var(--color-background-dark)',
+                      borderRadius: 'var(--radius-md)',
+                      backgroundColor: 'var(--color-white)',
+                      fontSize: '0.875rem',
+                      color: 'var(--color-text-dark)',
+                      cursor: 'pointer',
+                    }}
                     value={filters.order}
                     onChange={(e) =>
                       setFilters({
@@ -109,9 +127,18 @@ export default function CandidatesPage() {
 
                 {partiesData && (partiesData as any).parties && (
                   <div>
-                    <label className="text-sm font-medium">Party</label>
+                    <label className="font-medium" style={{ fontSize: '0.875rem', color: 'var(--color-text-dark)', display: 'block', marginBottom: '0.5rem' }}>Party</label>
                     <select
-                      className="w-full mt-1 p-2 border rounded"
+                      className="w-full transition-all duration-200"
+                      style={{
+                        padding: '0.75rem',
+                        border: '2px solid var(--color-background-dark)',
+                        borderRadius: 'var(--radius-md)',
+                        backgroundColor: 'var(--color-white)',
+                        fontSize: '0.875rem',
+                        color: 'var(--color-text-dark)',
+                        cursor: 'pointer',
+                      }}
                       onChange={(e) =>
                         setFilters({
                           ...filters,
@@ -134,7 +161,14 @@ export default function CandidatesPage() {
 
                 <Button
                   variant="outline"
-                  className="w-full"
+                  className="w-full font-semibold transition-all duration-200 hover:scale-105"
+                  style={{
+                    borderWidth: '2px',
+                    borderColor: 'var(--color-accent)',
+                    color: 'var(--color-accent)',
+                    borderRadius: 'var(--radius-md)',
+                    padding: '0.75rem',
+                  }}
                   onClick={() =>
                     setFilters({
                       page: 1,
@@ -164,72 +198,140 @@ export default function CandidatesPage() {
               {candidates.map((candidate: any) => (
                 <Card
                   key={candidate.id}
-                  className="hover:shadow-lg transition-shadow"
+                  className="transition-all duration-300 hover:shadow-2xl hover:-translate-y-1"
+                  style={{
+                    backgroundColor: 'var(--color-white)',
+                    borderRadius: 'var(--radius-lg)',
+                    boxShadow: 'var(--shadow-md)',
+                    border: '1px solid var(--color-background-dark)',
+                  }}
                 >
-                  <CardContent className="p-6">
+                  <CardContent style={{ padding: '1.5rem' }}>
                     <div className="flex gap-4">
-                      <Avatar className="h-16 w-16">
+                      <Avatar className="h-20 w-20" style={{ border: '3px solid var(--color-background-dark)' }}>
                         <AvatarImage
                           src={candidate.photoUrl || undefined}
                           alt={candidate.name}
                         />
-                        <AvatarFallback>
+                        <AvatarFallback style={{ backgroundColor: 'var(--color-primary)', color: 'var(--color-white)', fontSize: '1.5rem', fontWeight: '600' }}>
                           {candidate.name.charAt(0)}
                         </AvatarFallback>
                       </Avatar>
 
                       <div className="flex-1">
                         <Link href={`/candidates/${candidate.id}`}>
-                          <h3 className="font-semibold text-lg hover:text-blue-600">
+                          <h3 
+                            className="font-semibold transition-colors duration-200"
+                            style={{ 
+                              fontSize: '1.125rem',
+                              color: 'var(--color-text-dark)',
+                              lineHeight: '1.4',
+                            }}
+                            onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-primary)'}
+                            onMouseLeave={(e) => e.currentTarget.style.color = 'var(--color-text-dark)'}
+                          >
                             {candidate.name}
                           </h3>
                         </Link>
 
-                        <p className="text-sm text-gray-600 mt-1">
+                        <p style={{ fontSize: '0.875rem', color: 'var(--color-text-light)', marginTop: '0.25rem', fontWeight: '500' }}>
                           {candidate.party?.name}
                         </p>
 
-                        <p className="text-sm text-gray-500 mt-1">
+                        <p style={{ fontSize: '0.813rem', color: 'var(--color-text-muted)', marginTop: '0.25rem' }}>
                           {candidate.constituency?.name},{' '}
                           {candidate.constituency?.province?.name}
                         </p>
 
-                        <div className="flex gap-2 mt-3">
+                        <div className="flex gap-2 mt-3 flex-wrap">
                           {candidate.isVerified && (
-                            <Badge variant="default">Verified</Badge>
+                            <Badge 
+                              variant="default" 
+                              style={{ 
+                                backgroundColor: 'var(--color-success)', 
+                                color: 'var(--color-white)',
+                                padding: '0.25rem 0.75rem',
+                                borderRadius: 'var(--radius-sm)',
+                                fontSize: '0.75rem',
+                                fontWeight: '600',
+                              }}
+                            >
+                              ✓ Verified
+                            </Badge>
                           )}
                           {candidate.hasAllegations && (
-                            <Badge variant="secondary">Allegations</Badge>
+                            <Badge 
+                              variant="secondary"
+                              style={{ 
+                                backgroundColor: 'var(--color-warning-light)', 
+                                color: 'var(--color-warning)',
+                                padding: '0.25rem 0.75rem',
+                                borderRadius: 'var(--radius-sm)',
+                                fontSize: '0.75rem',
+                                fontWeight: '600',
+                              }}
+                            >
+                              ⚠ Allegations
+                            </Badge>
                           )}
                           {candidate.hasCriminalCases && (
-                            <Badge variant="destructive">Criminal Cases</Badge>
+                            <Badge 
+                              variant="destructive"
+                              style={{ 
+                                backgroundColor: 'var(--color-error-light)', 
+                                color: 'var(--color-error)',
+                                padding: '0.25rem 0.75rem',
+                                borderRadius: 'var(--radius-sm)',
+                                fontSize: '0.75rem',
+                                fontWeight: '600',
+                              }}
+                            >
+                              ⚖ Criminal Cases
+                            </Badge>
                           )}
                         </div>
 
-                        <div className="grid grid-cols-3 gap-2 mt-4 text-center">
+                        <div 
+                          className="grid grid-cols-3 gap-3 mt-4 text-center"
+                          style={{
+                            backgroundColor: 'var(--color-background)',
+                            padding: '0.75rem',
+                            borderRadius: 'var(--radius-md)',
+                          }}
+                        >
                           <div>
-                            <p className="text-xs text-gray-500">Impact</p>
-                            <p className="text-sm font-semibold">
+                            <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem' }}>Impact</p>
+                            <p style={{ fontSize: '1rem', fontWeight: '700', color: 'var(--color-success)' }}>
                               {candidate.impactScore?.toFixed(1) || 'N/A'}
                             </p>
                           </div>
                           <div>
-                            <p className="text-xs text-gray-500">Fulfillment</p>
-                            <p className="text-sm font-semibold">
+                            <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem' }}>Fulfillment</p>
+                            <p style={{ fontSize: '1rem', fontWeight: '700', color: 'var(--color-accent)' }}>
                               {candidate.fulfillmentRate?.toFixed(0) || 'N/A'}%
                             </p>
                           </div>
                           <div>
-                            <p className="text-xs text-gray-500">Scandal</p>
-                            <p className="text-sm font-semibold">
+                            <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem' }}>Scandal</p>
+                            <p style={{ fontSize: '1rem', fontWeight: '700', color: 'var(--color-error)' }}>
                               {candidate.scandalScore?.toFixed(1) || 'N/A'}
                             </p>
                           </div>
                         </div>
 
                         <Link href={`/candidates/${candidate.id}`}>
-                          <Button className="w-full mt-4" size="sm">
-                            View Profile
+                          <Button 
+                            className="w-full mt-4 font-semibold transition-all duration-200 hover:scale-105" 
+                            size="sm"
+                            style={{
+                              backgroundColor: 'var(--color-primary)',
+                              color: 'var(--color-white)',
+                              borderRadius: 'var(--radius-md)',
+                              padding: '0.625rem',
+                              fontSize: '0.875rem',
+                            }}
+                          >
+                            View Full Profile →
                           </Button>
                         </Link>
                       </div>

@@ -45,15 +45,32 @@ export default function RootLayout() {
   return <RootLayoutNav />;
 }
 
+import { QueryProvider } from '@/components/providers/QueryProvider';
+
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-      </Stack>
-    </ThemeProvider>
+    <QueryProvider>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen 
+            name="candidates/index" 
+            options={{ 
+              headerShown: true,
+              title: 'All Candidates'
+            }} 
+          />
+          <Stack.Screen 
+            name="candidates/[id]" 
+            options={{ 
+              headerShown: true
+            }} 
+          />
+          <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+        </Stack>
+      </ThemeProvider>
+    </QueryProvider>
   );
 }
