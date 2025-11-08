@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { X, Plus } from "lucide-react"
+import { X, Plus, Users, TrendingUp, Target, AlertTriangle, Briefcase, Scale, FileText } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -67,176 +67,291 @@ export default function ComparePage() {
     setSelectedCandidates(selectedCandidates.filter(c => c.id !== id))
   }
 
+  const getComparisonColor = (value: number, type: 'high' | 'low') => {
+    if (type === 'high') {
+      if (value >= 75) return 'bg-[#D1FAE5] text-[#059669]'
+      if (value >= 50) return 'bg-[#FEF3C7] text-[#F59E0B]'
+      return 'bg-[#FEE2E2] text-[#DC2626]'
+    } else {
+      if (value <= 25) return 'bg-[#D1FAE5] text-[#059669]'
+      if (value <= 50) return 'bg-[#FEF3C7] text-[#F59E0B]'
+      return 'bg-[#FEE2E2] text-[#DC2626]'
+    }
+  }
+
   return (
-    <div className="container py-8 pb-20 md:pb-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Compare Candidates</h1>
-        <p className="text-muted-foreground">
-          Select up to 3 candidates to compare side-by-side
-        </p>
-      </div>
+    <div className="min-h-screen bg-[#FDF0D5]">
+      <div className="container py-8 pb-20 md:pb-12 px-4">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-4xl md:text-5xl font-display font-bold text-[#2C2C2C] mb-3">
+            Compare Candidates
+          </h1>
+          <p className="text-lg text-[#6B6B6B] font-sans">
+            Select up to 3 candidates to compare side-by-side and make informed decisions
+          </p>
+        </div>
 
-      {/* Candidate Selection */}
-      <Card className="p-6 mb-8">
-        <div className="flex flex-wrap gap-4 mb-4">
-          {selectedCandidates.map((candidate) => (
-            <div key={candidate.id} className="flex items-center gap-2 bg-secondary rounded-lg p-2 pr-3">
-              <Avatar className="h-8 w-8">
-                <AvatarImage src={candidate.photoUrl} alt={candidate.name} />
-                <AvatarFallback>{candidate.name.charAt(0)}</AvatarFallback>
-              </Avatar>
-              <span className="text-sm font-medium">{candidate.name}</span>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-6 w-6 ml-2"
-                onClick={() => removeCandidate(candidate.id)}
+        {/* Candidate Selection Card */}
+        <Card className="p-6 md:p-8 mb-8 shadow-lg border-2 border-gray-200">
+          <div className="flex items-center gap-3 mb-4">
+            <Users className="h-6 w-6 text-[#C1121F]" />
+            <h2 className="text-xl font-display font-bold text-[#2C2C2C]">
+              Selected Candidates ({selectedCandidates.length}/3)
+            </h2>
+          </div>
+
+          <div className="flex flex-wrap gap-4 mb-4">
+            {selectedCandidates.map((candidate) => (
+              <div 
+                key={candidate.id} 
+                className="flex items-center gap-3 bg-gradient-to-r from-[#FDF0D5] to-white rounded-xl p-3 pr-4 shadow-md border border-gray-200 hover:shadow-lg transition-all duration-200"
               >
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
-          ))}
-
-          {selectedCandidates.length < 3 && (
-            <div className="relative flex-1 min-w-[200px]">
-              <Input
-                type="search"
-                placeholder="Search to add candidate..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              {searchResults.length > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-background border rounded-lg shadow-lg z-10 max-h-60 overflow-auto">
-                  {searchResults.map((candidate) => (
-                    <button
-                      key={candidate.id}
-                      className="w-full flex items-center gap-3 p-3 hover:bg-secondary text-left"
-                      onClick={() => addCandidate(candidate)}
-                      disabled={selectedCandidates.some(c => c.id === candidate.id)}
-                    >
-                      <Avatar className="h-10 w-10">
-                        <AvatarImage src={candidate.photoUrl} alt={candidate.name} />
-                        <AvatarFallback>{candidate.name.charAt(0)}</AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1">
-                        <div className="font-medium">{candidate.name}</div>
-                        <div className="text-sm text-muted-foreground">
-                          {candidate.party.name} • {candidate.constituency.name}
-                        </div>
-                      </div>
-                    </button>
-                  ))}
+                <Avatar className="h-10 w-10 ring-2 ring-[#C1121F]">
+                  <AvatarImage src={candidate.photoUrl} alt={candidate.name} />
+                  <AvatarFallback className="bg-[#C1121F] text-white font-bold">
+                    {candidate.name.charAt(0)}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex-1">
+                  <span className="font-semibold text-[#2C2C2C] block">{candidate.name}</span>
+                  <span className="text-xs text-[#6B6B6B]">{candidate.party.name}</span>
                 </div>
-              )}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8 hover:bg-[#FEE2E2] hover:text-[#DC2626] transition-colors duration-200"
+                  onClick={() => removeCandidate(candidate.id)}
+                >
+                  <X className="h-5 w-5" />
+                </Button>
+              </div>
+            ))}
+
+            {selectedCandidates.length < 3 && (
+              <div className="relative flex-1 min-w-[250px]">
+                <Input
+                  type="search"
+                  placeholder="Search to add candidate..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-[#C1121F] focus:ring-2 focus:ring-[#FEE2E2] transition-all duration-200 font-sans"
+                />
+                {searchResults.length > 0 && (
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-white border-2 border-gray-200 rounded-xl shadow-xl z-10 max-h-80 overflow-auto">
+                    {searchResults.map((candidate) => (
+                      <button
+                        key={candidate.id}
+                        className="w-full flex items-center gap-4 p-4 hover:bg-[#FDF0D5] text-left transition-colors duration-150 border-b border-gray-100 last:border-b-0"
+                        onClick={() => addCandidate(candidate)}
+                        disabled={selectedCandidates.some(c => c.id === candidate.id)}
+                      >
+                        <Avatar className="h-12 w-12">
+                          <AvatarImage src={candidate.photoUrl} alt={candidate.name} />
+                          <AvatarFallback className="bg-[#003049] text-white font-bold">
+                            {candidate.name.charAt(0)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1">
+                          <div className="font-bold text-[#2C2C2C]">{candidate.name}</div>
+                          <div className="text-sm text-[#6B6B6B]">
+                            {candidate.party.name} • {candidate.constituency.name}
+                          </div>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          {selectedCandidates.length === 0 && (
+            <div className="text-center py-12">
+              <Plus className="mx-auto h-20 w-20 mb-4 text-[#9CA3AF]" />
+              <p className="text-lg text-[#6B6B6B] font-sans font-medium">
+                Search and select candidates to compare
+              </p>
+              <p className="text-sm text-[#9CA3AF] mt-2">
+                Use the search box above to find candidates
+              </p>
             </div>
           )}
-        </div>
+        </Card>
 
-        {selectedCandidates.length === 0 && (
-          <div className="text-center py-8 text-muted-foreground">
-            <Plus className="mx-auto h-12 w-12 mb-2" />
-            <p>Search and select candidates to compare</p>
+        {/* Comparison Table */}
+        {selectedCandidates.length > 0 && (
+          <div className="bg-white rounded-xl shadow-lg border-2 border-gray-200 overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-gradient-to-r from-[#C1121F] to-[#A00F1A]">
+                  <tr>
+                    <th className="text-left py-6 px-6 font-display font-bold text-white text-lg">
+                      Attribute
+                    </th>
+                    {selectedCandidates.map((candidate) => (
+                      <th key={candidate.id} className="text-center py-6 px-6 min-w-[220px]">
+                        <div className="space-y-3">
+                          <Avatar className="h-20 w-20 mx-auto ring-4 ring-white shadow-xl">
+                            <AvatarImage src={candidate.photoUrl} alt={candidate.name} />
+                            <AvatarFallback className="text-2xl font-bold bg-white text-[#C1121F]">
+                              {candidate.name.charAt(0)}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="font-display font-bold text-white text-lg">
+                            {candidate.name}
+                          </div>
+                        </div>
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  <ComparisonRow
+                    label="Party"
+                    icon={<Users className="h-5 w-5 text-[#003049]" />}
+                    values={selectedCandidates.map(c => c.party.name)}
+                  />
+                  <ComparisonRow
+                    label="Constituency"
+                    icon={<FileText className="h-5 w-5 text-[#003049]" />}
+                    values={selectedCandidates.map(c => c.constituency.name)}
+                  />
+                  <ComparisonRow
+                    label="Age"
+                    icon={<Users className="h-5 w-5 text-[#003049]" />}
+                    values={selectedCandidates.map(c => c.age ? `${c.age} years` : "N/A")}
+                  />
+                  <ComparisonRow
+                    label="Years in Politics"
+                    icon={<TrendingUp className="h-5 w-5 text-[#003049]" />}
+                    values={selectedCandidates.map(c => c.yearsInPolitics ? `${c.yearsInPolitics} years` : "N/A")}
+                  />
+                  
+                  {/* Impact Score Row */}
+                  <tr className="border-b border-gray-200 hover:bg-[#FFFBF0] transition-colors duration-150">
+                    <td className="py-5 px-6 font-semibold text-[#2C2C2C] bg-[#DBEAFE]/30">
+                      <div className="flex items-center gap-2">
+                        <TrendingUp className="h-5 w-5 text-[#3B82F6]" />
+                        Impact Score
+                      </div>
+                    </td>
+                    {selectedCandidates.map((candidate) => (
+                      <td key={candidate.id} className="py-5 px-6 text-center">
+                        <div className={`inline-flex items-center justify-center px-4 py-2 rounded-lg font-bold text-lg ${getComparisonColor(candidate.impactScore || 0, 'high')}`}>
+                          {candidate.impactScore || 0}
+                        </div>
+                      </td>
+                    ))}
+                  </tr>
+
+                  {/* Scandal Score Row */}
+                  <tr className="border-b border-gray-200 hover:bg-[#FFFBF0] transition-colors duration-150">
+                    <td className="py-5 px-6 font-semibold text-[#2C2C2C] bg-[#FEE2E2]/30">
+                      <div className="flex items-center gap-2">
+                        <AlertTriangle className="h-5 w-5 text-[#DC2626]" />
+                        Scandal Score
+                      </div>
+                    </td>
+                    {selectedCandidates.map((candidate) => (
+                      <td key={candidate.id} className="py-5 px-6 text-center">
+                        <div className={`inline-flex items-center justify-center px-4 py-2 rounded-lg font-bold text-lg ${getComparisonColor(candidate.scandalScore || 0, 'low')}`}>
+                          {candidate.scandalScore || 0}
+                        </div>
+                      </td>
+                    ))}
+                  </tr>
+
+                  {/* Fulfillment Rate Row */}
+                  <tr className="border-b border-gray-200 hover:bg-[#FFFBF0] transition-colors duration-150">
+                    <td className="py-5 px-6 font-semibold text-[#2C2C2C] bg-[#D1FAE5]/30">
+                      <div className="flex items-center gap-2">
+                        <Target className="h-5 w-5 text-[#059669]" />
+                        Fulfillment Rate
+                      </div>
+                    </td>
+                    {selectedCandidates.map((candidate) => (
+                      <td key={candidate.id} className="py-5 px-6 text-center">
+                        <div className={`inline-flex items-center justify-center px-4 py-2 rounded-lg font-bold text-lg ${getComparisonColor(candidate.fulfillmentRate || 0, 'high')}`}>
+                          {candidate.fulfillmentRate || 0}%
+                        </div>
+                      </td>
+                    ))}
+                  </tr>
+
+                  <ComparisonRow
+                    label="Promises Made"
+                    icon={<Target className="h-5 w-5 text-[#003049]" />}
+                    values={selectedCandidates.map(c => String(c._count?.promises || 0))}
+                  />
+                  <ComparisonRow
+                    label="Works Completed"
+                    icon={<Briefcase className="h-5 w-5 text-[#003049]" />}
+                    values={selectedCandidates.map(c => String(c._count?.works || 0))}
+                  />
+                  <ComparisonRow
+                    label="Legal Cases"
+                    icon={<Scale className="h-5 w-5 text-[#003049]" />}
+                    values={selectedCandidates.map(c => String(c._count?.cases || 0))}
+                  />
+                  
+                  {/* Actions Row */}
+                  <tr className="bg-[#FDF0D5]">
+                    <td className="py-6 px-6 font-semibold text-[#2C2C2C] font-display text-lg">
+                      Actions
+                    </td>
+                    {selectedCandidates.map((candidate) => (
+                      <td key={candidate.id} className="py-6 px-6 text-center">
+                        <Button 
+                          className="bg-[#C1121F] hover:bg-[#A00F1A] text-white px-6 py-2 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105" 
+                          asChild
+                        >
+                          <a href={`/candidates/${candidate.id}`}>View Full Profile</a>
+                        </Button>
+                      </td>
+                    ))}
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
-      </Card>
 
-      {/* Comparison Table */}
-      {selectedCandidates.length > 0 && (
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b">
-                <th className="text-left py-4 px-4 font-semibold">Attribute</th>
-                {selectedCandidates.map((candidate) => (
-                  <th key={candidate.id} className="text-center py-4 px-4 min-w-[200px]">
-                    <div className="space-y-2">
-                      <Avatar className="h-16 w-16 mx-auto">
-                        <AvatarImage src={candidate.photoUrl} alt={candidate.name} />
-                        <AvatarFallback className="text-lg">{candidate.name.charAt(0)}</AvatarFallback>
-                      </Avatar>
-                      <div className="font-semibold">{candidate.name}</div>
-                    </div>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              <ComparisonRow
-                label="Party"
-                values={selectedCandidates.map(c => c.party.name)}
-              />
-              <ComparisonRow
-                label="Constituency"
-                values={selectedCandidates.map(c => c.constituency.name)}
-              />
-              <ComparisonRow
-                label="Age"
-                values={selectedCandidates.map(c => c.age ? `${c.age} years` : "N/A")}
-              />
-              <ComparisonRow
-                label="Years in Politics"
-                values={selectedCandidates.map(c => c.yearsInPolitics ? `${c.yearsInPolitics} years` : "N/A")}
-              />
-              <tr className="border-b">
-                <td className="py-4 px-4 font-medium">Impact Score</td>
-                {selectedCandidates.map((candidate) => (
-                  <td key={candidate.id} className="py-4 px-4 text-center">
-                    <ScoreBadge type="impact" value={candidate.impactScore || 0} />
-                  </td>
-                ))}
-              </tr>
-              <tr className="border-b">
-                <td className="py-4 px-4 font-medium">Scandal Score</td>
-                {selectedCandidates.map((candidate) => (
-                  <td key={candidate.id} className="py-4 px-4 text-center">
-                    <ScoreBadge type="scandal" value={candidate.scandalScore || 0} />
-                  </td>
-                ))}
-              </tr>
-              <tr className="border-b">
-                <td className="py-4 px-4 font-medium">Fulfillment Rate</td>
-                {selectedCandidates.map((candidate) => (
-                  <td key={candidate.id} className="py-4 px-4 text-center">
-                    <ScoreBadge type="fulfillment" value={candidate.fulfillmentRate || 0} />
-                  </td>
-                ))}
-              </tr>
-              <ComparisonRow
-                label="Promises Made"
-                values={selectedCandidates.map(c => String(c._count?.promises || 0))}
-              />
-              <ComparisonRow
-                label="Works Completed"
-                values={selectedCandidates.map(c => String(c._count?.works || 0))}
-              />
-              <ComparisonRow
-                label="Legal Cases"
-                values={selectedCandidates.map(c => String(c._count?.cases || 0))}
-              />
-              <tr className="border-b">
-                <td className="py-4 px-4 font-medium">Actions</td>
-                {selectedCandidates.map((candidate) => (
-                  <td key={candidate.id} className="py-4 px-4 text-center">
-                    <Button variant="outline" size="sm" asChild>
-                      <a href={`/candidates/${candidate.id}`}>View Profile</a>
-                    </Button>
-                  </td>
-                ))}
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      )}
+        {selectedCandidates.length === 0 && (
+          <Card className="p-12 text-center shadow-lg border-2 border-dashed border-gray-300">
+            <Users className="h-24 w-24 mx-auto mb-6 text-[#9CA3AF]" />
+            <h3 className="text-2xl font-display font-bold text-[#2C2C2C] mb-2">
+              No Candidates Selected
+            </h3>
+            <p className="text-[#6B6B6B] font-sans text-lg">
+              Start comparing by searching and selecting candidates above
+            </p>
+          </Card>
+        )}
+      </div>
     </div>
   )
 }
 
-function ComparisonRow({ label, values }: { label: string; values: string[] }) {
+function ComparisonRow({ 
+  label, 
+  icon, 
+  values 
+}: { 
+  label: string
+  icon?: React.ReactNode
+  values: string[] 
+}) {
   return (
-    <tr className="border-b">
-      <td className="py-4 px-4 font-medium">{label}</td>
+    <tr className="border-b border-gray-200 hover:bg-[#FFFBF0] transition-colors duration-150">
+      <td className="py-5 px-6 font-semibold text-[#2C2C2C]">
+        <div className="flex items-center gap-2">
+          {icon}
+          {label}
+        </div>
+      </td>
       {values.map((value, index) => (
-        <td key={index} className="py-4 px-4 text-center">
+        <td key={index} className="py-5 px-6 text-center text-[#4A4A4A] font-sans">
           {value}
         </td>
       ))}
