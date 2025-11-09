@@ -43,25 +43,28 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="container flex items-center justify-center min-h-screen py-8">
-      <Card className="w-full max-w-md p-8">
-        <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold mb-2">Admin Login</h1>
-          <p className="text-muted-foreground">
+    <div className="min-h-screen bg-background flex items-center justify-center px-base py-3xl">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-3xl border border-background-dark">
+        <div className="mb-2xl text-center">
+          <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-lg">
+            <span className="text-3xl text-white font-display font-bold">नेता</span>
+          </div>
+          <h1 className="text-4xl font-display font-bold text-dark mb-md">Admin Login</h1>
+          <p className="text-base font-sans text-medium">
             Sign in to access the admin dashboard
           </p>
         </div>
 
         {error && (
-          <Alert className="mb-4 border-destructive text-destructive">
-            {error}
-          </Alert>
+          <div className="mb-lg p-base bg-error-light border-2 border-error rounded-lg">
+            <p className="text-sm font-sans font-semibold text-error">{error}</p>
+          </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-lg">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium mb-2">
-              Email
+            <label htmlFor="email" className="block text-sm font-sans font-semibold text-dark mb-sm">
+              Email Address
             </label>
             <Input
               id="email"
@@ -71,11 +74,12 @@ export default function LoginPage() {
               onChange={(e) => setEmail(e.target.value)}
               required
               disabled={loading}
+              className="h-12 px-base text-base font-sans border-2 border-default rounded-lg transition-fast focus:border-accent focus:ring-2 focus:ring-accent-light focus:ring-opacity-20 bg-white disabled:bg-background disabled:text-muted"
             />
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium mb-2">
+            <label htmlFor="password" className="block text-sm font-sans font-semibold text-dark mb-sm">
               Password
             </label>
             <Input
@@ -86,31 +90,37 @@ export default function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               required
               disabled={loading}
+              className="h-12 px-base text-base font-sans border-2 border-default rounded-lg transition-fast focus:border-accent focus:ring-2 focus:ring-accent-light focus:ring-opacity-20 bg-white disabled:bg-background disabled:text-muted"
             />
           </div>
 
-          <Button
+          <button
             type="submit"
-            className="w-full"
             disabled={loading}
+            className="w-full h-12 bg-accent text-white font-sans font-semibold text-base rounded-lg hover:bg-accent-light transition-fast disabled:bg-background-dark disabled:text-muted disabled:cursor-not-allowed shadow-md hover:shadow-lg"
           >
             {loading ? "Signing in..." : "Sign In"}
-          </Button>
+          </button>
         </form>
 
-        <div className="mt-6 text-center text-sm text-muted-foreground">
-          <p>Demo credentials:</p>
-          <p className="mt-1">
-            Admin: <code className="bg-secondary px-1 rounded">admin@netanepal.org</code> / <code className="bg-secondary px-1 rounded">admin123</code>
-          </p>
+        <div className="mt-xl pt-lg border-t border-background-dark">
+          <p className="text-center text-xs font-sans font-semibold text-muted mb-sm">Demo Credentials:</p>
+          <div className="bg-background rounded-lg p-md">
+            <p className="text-sm font-sans text-medium text-center">
+              <span className="font-semibold text-dark">Email:</span> <code className="bg-white px-sm py-xs rounded text-accent font-mono">admin@netanepal.org</code>
+            </p>
+            <p className="text-sm font-sans text-medium text-center mt-xs">
+              <span className="font-semibold text-dark">Password:</span> <code className="bg-white px-sm py-xs rounded text-accent font-mono">admin123</code>
+            </p>
+          </div>
         </div>
 
-        <div className="mt-6 text-center">
-          <Link href="/" className="text-sm text-primary hover:underline">
+        <div className="mt-lg text-center">
+          <Link href="/" className="text-sm font-sans font-semibold text-accent hover:text-accent-light transition-fast inline-flex items-center gap-xs">
             ← Back to Home
           </Link>
         </div>
-      </Card>
+      </div>
     </div>
   )
 }

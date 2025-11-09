@@ -28,114 +28,120 @@ export default async function AdminAuditLogPage() {
   })
 
   const getActionColor = (action: string) => {
-    if (action.includes('CREATE')) return "bg-green-100 text-green-800"
-    if (action.includes('UPDATE')) return "bg-blue-100 text-blue-800"
-    if (action.includes('DELETE')) return "bg-red-100 text-red-800"
-    if (action.includes('APPROVE') || action.includes('PUBLISH')) return "bg-purple-100 text-purple-800"
-    return "bg-gray-100 text-gray-800"
+    if (action.includes('CREATE')) return "bg-success-light text-success"
+    if (action.includes('UPDATE')) return "bg-info-light text-info"
+    if (action.includes('DELETE')) return "bg-error-light text-error"
+    if (action.includes('APPROVE') || action.includes('PUBLISH')) return "bg-primary-light text-primary"
+    return "bg-background-dark text-medium"
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-2xl">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Audit Log</h1>
-          <p className="text-muted-foreground mt-2">
+          <h1 className="text-4xl font-display font-bold text-dark">Audit Log</h1>
+          <p className="text-base font-sans text-medium mt-sm">
             View all system activities and changes
           </p>
         </div>
-        <Badge variant="outline" className="px-4 py-2">
+        <span className="px-lg py-md bg-background border-2 border-background-dark text-dark font-sans font-semibold rounded-lg">
           {logs.length} recent entries
-        </Badge>
+        </span>
       </div>
 
       {/* Activity Stats */}
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card className="p-4">
-          <div className="flex items-center gap-3">
-            <Activity className="h-8 w-8 text-blue-600" />
+      <div className="grid gap-base md:grid-cols-3">
+        <div className="bg-white rounded-xl shadow-md border border-background-dark p-lg">
+          <div className="flex items-center gap-md">
+            <div className="w-12 h-12 bg-info-light rounded-lg flex items-center justify-center shrink-0">
+              <Activity className="h-6 w-6 text-info" />
+            </div>
             <div>
-              <p className="text-sm text-muted-foreground">Total Actions</p>
-              <p className="text-2xl font-bold">{logs.length}</p>
+              <p className="text-xs font-sans font-semibold text-muted uppercase tracking-wide">Total Actions</p>
+              <p className="text-3xl font-display font-bold text-dark mt-xs">{logs.length}</p>
             </div>
           </div>
-        </Card>
-        <Card className="p-4">
-          <div className="flex items-center gap-3">
-            <User className="h-8 w-8 text-green-600" />
+        </div>
+        <div className="bg-white rounded-xl shadow-md border border-background-dark p-lg">
+          <div className="flex items-center gap-md">
+            <div className="w-12 h-12 bg-success-light rounded-lg flex items-center justify-center shrink-0">
+              <User className="h-6 w-6 text-success" />
+            </div>
             <div>
-              <p className="text-sm text-muted-foreground">Active Users</p>
-              <p className="text-2xl font-bold">
+              <p className="text-xs font-sans font-semibold text-muted uppercase tracking-wide">Active Users</p>
+              <p className="text-3xl font-display font-bold text-dark mt-xs">
                 {new Set(logs.map(l => l.userId)).size}
               </p>
             </div>
           </div>
-        </Card>
-        <Card className="p-4">
-          <div className="flex items-center gap-3">
-            <FileText className="h-8 w-8 text-orange-600" />
+        </div>
+        <div className="bg-white rounded-xl shadow-md border border-background-dark p-lg">
+          <div className="flex items-center gap-md">
+            <div className="w-12 h-12 bg-warning-light rounded-lg flex items-center justify-center shrink-0">
+              <FileText className="h-6 w-6 text-warning" />
+            </div>
             <div>
-              <p className="text-sm text-muted-foreground">Entity Types</p>
-              <p className="text-2xl font-bold">
+              <p className="text-xs font-sans font-semibold text-muted uppercase tracking-wide">Entity Types</p>
+              <p className="text-3xl font-display font-bold text-dark mt-xs">
                 {new Set(logs.map(l => l.entityType)).size}
               </p>
             </div>
           </div>
-        </Card>
+        </div>
       </div>
 
       {/* Audit Log Table */}
-      <Card>
+      <div className="bg-white rounded-xl shadow-md border border-background-dark overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="border-b">
+            <thead className="bg-background border-b-2 border-background-dark">
               <tr className="text-left">
-                <th className="p-4 font-semibold">Timestamp</th>
-                <th className="p-4 font-semibold">User</th>
-                <th className="p-4 font-semibold">Action</th>
-                <th className="p-4 font-semibold">Entity</th>
-                <th className="p-4 font-semibold">Details</th>
+                <th className="p-base font-sans font-semibold text-sm text-dark uppercase tracking-wide">Timestamp</th>
+                <th className="p-base font-sans font-semibold text-sm text-dark uppercase tracking-wide">User</th>
+                <th className="p-base font-sans font-semibold text-sm text-dark uppercase tracking-wide">Action</th>
+                <th className="p-base font-sans font-semibold text-sm text-dark uppercase tracking-wide">Entity</th>
+                <th className="p-base font-sans font-semibold text-sm text-dark uppercase tracking-wide">Details</th>
               </tr>
             </thead>
             <tbody>
               {logs.map((log) => (
-                <tr key={log.id} className="border-b last:border-0 hover:bg-secondary/50">
-                  <td className="p-4 text-sm text-muted-foreground">
+                <tr key={log.id} className="border-b border-background-dark last:border-0 hover:bg-background transition-fast">
+                  <td className="p-base text-sm font-sans text-medium">
                     {new Date(log.createdAt).toLocaleString()}
                   </td>
-                  <td className="p-4">
-                    <div className="text-sm">
+                  <td className="p-base">
+                    <div className="text-sm font-sans text-dark">
                       {log.user.name || log.user.email}
-                      <div className="text-xs text-muted-foreground">
+                      <div className="text-xs font-sans text-muted">
                         {log.user.role}
                       </div>
                     </div>
                   </td>
-                  <td className="p-4">
-                    <Badge className={getActionColor(log.action)}>
+                  <td className="p-base">
+                    <span className={`px-md py-xs rounded text-xs font-sans font-semibold ${getActionColor(log.action)}`}>
                       {log.action}
-                    </Badge>
+                    </span>
                   </td>
-                  <td className="p-4">
-                    <div className="text-sm">
-                      <div className="font-medium">{log.entityType}</div>
+                  <td className="p-base">
+                    <div className="text-sm font-sans">
+                      <div className="font-semibold text-dark">{log.entityType}</div>
                       {log.entityId && (
-                        <div className="text-xs text-muted-foreground font-mono">
+                        <div className="text-xs font-mono text-muted">
                           {log.entityId.substring(0, 8)}...
                         </div>
                       )}
                     </div>
                   </td>
-                  <td className="p-4">
+                  <td className="p-base">
                     {log.candidate && (
-                      <div className="text-sm">
-                        Related to: <span className="font-medium">{log.candidate.name}</span>
+                      <div className="text-sm font-sans text-dark">
+                        Related to: <span className="font-semibold">{log.candidate.name}</span>
                       </div>
                     )}
                     {log.changes && (
-                      <details className="text-xs text-muted-foreground cursor-pointer">
-                        <summary>View changes</summary>
-                        <pre className="mt-2 p-2 bg-secondary rounded text-xs overflow-auto max-w-md">
+                      <details className="text-xs font-sans text-medium cursor-pointer">
+                        <summary className="hover:text-accent transition-fast">View changes</summary>
+                        <pre className="mt-sm p-sm bg-background rounded text-xs overflow-auto max-w-md font-mono">
                           {JSON.stringify(log.changes, null, 2)}
                         </pre>
                       </details>
@@ -148,12 +154,14 @@ export default async function AdminAuditLogPage() {
         </div>
 
         {logs.length === 0 && (
-          <div className="p-12 text-center text-muted-foreground">
-            <Activity className="h-12 w-12 mx-auto mb-4 opacity-50" />
-            <p>No audit log entries found</p>
+          <div className="p-3xl text-center">
+            <div className="w-16 h-16 bg-background rounded-full flex items-center justify-center mx-auto mb-lg">
+              <Activity className="h-8 w-8 text-muted" />
+            </div>
+            <p className="text-base font-sans text-medium">No audit log entries found</p>
           </div>
         )}
-      </Card>
+      </div>
     </div>
   )
 }

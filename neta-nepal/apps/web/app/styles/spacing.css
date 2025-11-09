@@ -1,0 +1,185 @@
+/**
+ * spacing.css - Spacing Scale & Layout
+ * 
+ * Base: 4px (0.25rem)
+ * Scale: xs to 3xl
+ * Includes: padding, margin, gap utilities
+ */
+
+:root {
+  /* Spacing Scale - 4px base */
+  --space-0: 0;
+  --space-px: 1px;
+  --space-xs: 0.25rem;     /* 4px */
+  --space-sm: 0.5rem;      /* 8px */
+  --space-md: 0.75rem;     /* 12px */
+  --space-base: 1rem;      /* 16px */
+  --space-lg: 1.5rem;      /* 24px */
+  --space-xl: 2rem;        /* 32px */
+  --space-2xl: 3rem;       /* 48px */
+  --space-3xl: 4rem;       /* 64px */
+  --space-4xl: 6rem;       /* 96px */
+  --space-5xl: 8rem;       /* 128px */
+  
+  /* Container Widths */
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1280px;
+  --container-2xl: 1536px;
+  
+  /* Section Spacing */
+  --section-padding-mobile: var(--space-2xl);
+  --section-padding-tablet: var(--space-3xl);
+  --section-padding-desktop: var(--space-4xl);
+  
+  /* Card Padding */
+  --card-padding-sm: var(--space-base);
+  --card-padding-md: var(--space-lg);
+  --card-padding-lg: var(--space-xl);
+}
+
+/* Padding Utilities */
+.p-0 { padding: var(--space-0); }
+.p-xs { padding: var(--space-xs); }
+.p-sm { padding: var(--space-sm); }
+.p-md { padding: var(--space-md); }
+.p-base { padding: var(--space-base); }
+.p-lg { padding: var(--space-lg); }
+.p-xl { padding: var(--space-xl); }
+.p-2xl { padding: var(--space-2xl); }
+.p-3xl { padding: var(--space-3xl); }
+
+/* Padding X (horizontal) */
+.px-0 { padding-left: var(--space-0); padding-right: var(--space-0); }
+.px-xs { padding-left: var(--space-xs); padding-right: var(--space-xs); }
+.px-sm { padding-left: var(--space-sm); padding-right: var(--space-sm); }
+.px-md { padding-left: var(--space-md); padding-right: var(--space-md); }
+.px-base { padding-left: var(--space-base); padding-right: var(--space-base); }
+.px-lg { padding-left: var(--space-lg); padding-right: var(--space-lg); }
+.px-xl { padding-left: var(--space-xl); padding-right: var(--space-xl); }
+.px-2xl { padding-left: var(--space-2xl); padding-right: var(--space-2xl); }
+
+/* Padding Y (vertical) */
+.py-0 { padding-top: var(--space-0); padding-bottom: var(--space-0); }
+.py-xs { padding-top: var(--space-xs); padding-bottom: var(--space-xs); }
+.py-sm { padding-top: var(--space-sm); padding-bottom: var(--space-sm); }
+.py-md { padding-top: var(--space-md); padding-bottom: var(--space-md); }
+.py-base { padding-top: var(--space-base); padding-bottom: var(--space-base); }
+.py-lg { padding-top: var(--space-lg); padding-bottom: var(--space-lg); }
+.py-xl { padding-top: var(--space-xl); padding-bottom: var(--space-xl); }
+.py-2xl { padding-top: var(--space-2xl); padding-bottom: var(--space-2xl); }
+
+/* Margin Utilities */
+.m-0 { margin: var(--space-0); }
+.m-auto { margin: auto; }
+.m-xs { margin: var(--space-xs); }
+.m-sm { margin: var(--space-sm); }
+.m-md { margin: var(--space-md); }
+.m-base { margin: var(--space-base); }
+.m-lg { margin: var(--space-lg); }
+.m-xl { margin: var(--space-xl); }
+.m-2xl { margin: var(--space-2xl); }
+.m-3xl { margin: var(--space-3xl); }
+
+/* Margin X (horizontal) */
+.mx-auto { margin-left: auto; margin-right: auto; }
+.mx-xs { margin-left: var(--space-xs); margin-right: var(--space-xs); }
+.mx-sm { margin-left: var(--space-sm); margin-right: var(--space-sm); }
+.mx-base { margin-left: var(--space-base); margin-right: var(--space-base); }
+.mx-lg { margin-left: var(--space-lg); margin-right: var(--space-lg); }
+
+/* Margin Y (vertical) */
+.my-xs { margin-top: var(--space-xs); margin-bottom: var(--space-xs); }
+.my-sm { margin-top: var(--space-sm); margin-bottom: var(--space-sm); }
+.my-base { margin-top: var(--space-base); margin-bottom: var(--space-base); }
+.my-lg { margin-top: var(--space-lg); margin-bottom: var(--space-lg); }
+.my-xl { margin-top: var(--space-xl); margin-bottom: var(--space-xl); }
+.my-2xl { margin-top: var(--space-2xl); margin-bottom: var(--space-2xl); }
+
+/* Gap Utilities (for flex/grid) */
+.gap-0 { gap: var(--space-0); }
+.gap-xs { gap: var(--space-xs); }
+.gap-sm { gap: var(--space-sm); }
+.gap-md { gap: var(--space-md); }
+.gap-base { gap: var(--space-base); }
+.gap-lg { gap: var(--space-lg); }
+.gap-xl { gap: var(--space-xl); }
+.gap-2xl { gap: var(--space-2xl); }
+
+/* Container Classes */
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-base);
+  padding-right: var(--space-base);
+}
+
+@media (min-width: 640px) {
+  .container {
+    max-width: var(--container-sm);
+    padding-left: var(--space-lg);
+    padding-right: var(--space-lg);
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: var(--container-md);
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: var(--container-lg);
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: var(--container-xl);
+    padding-left: var(--space-xl);
+    padding-right: var(--space-xl);
+  }
+}
+
+@media (min-width: 1536px) {
+  .container {
+    max-width: var(--container-2xl);
+  }
+}
+
+/* Section Padding */
+.section-padding {
+  padding-top: var(--section-padding-mobile);
+  padding-bottom: var(--section-padding-mobile);
+}
+
+@media (min-width: 768px) {
+  .section-padding {
+    padding-top: var(--section-padding-tablet);
+    padding-bottom: var(--section-padding-tablet);
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-padding {
+    padding-top: var(--section-padding-desktop);
+    padding-bottom: var(--section-padding-desktop);
+  }
+}
+
+/* Card Padding Presets */
+.card-padding-sm { padding: var(--card-padding-sm); }
+.card-padding-md { padding: var(--card-padding-md); }
+.card-padding-lg { padding: var(--card-padding-lg); }
+
+/* Stack Layouts */
+.stack-xs > * + * { margin-top: var(--space-xs); }
+.stack-sm > * + * { margin-top: var(--space-sm); }
+.stack-md > * + * { margin-top: var(--space-md); }
+.stack-base > * + * { margin-top: var(--space-base); }
+.stack-lg > * + * { margin-top: var(--space-lg); }
+.stack-xl > * + * { margin-top: var(--space-xl); }
+.stack-2xl > * + * { margin-top: var(--space-2xl); }

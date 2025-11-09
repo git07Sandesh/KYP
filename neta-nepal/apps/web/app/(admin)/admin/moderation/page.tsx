@@ -28,106 +28,104 @@ export default async function AdminModerationPage() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "PENDING":
-        return "bg-yellow-100 text-yellow-800"
+        return "bg-warning-light text-warning"
       case "APPROVED":
-        return "bg-green-100 text-green-800"
+        return "bg-success-light text-success"
       case "REJECTED":
-        return "bg-red-100 text-red-800"
+        return "bg-error-light text-error"
       case "REQUIRES_CHANGES":
-        return "bg-orange-100 text-orange-800"
+        return "bg-warning-light text-warning"
       default:
-        return "bg-gray-100 text-gray-800"
+        return "bg-background-dark text-medium"
     }
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-2xl">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Moderation Queue</h1>
-          <p className="text-muted-foreground mt-2">
+          <h1 className="text-4xl font-display font-bold text-dark">Moderation Queue</h1>
+          <p className="text-base font-sans text-medium mt-sm">
             Review and moderate user submissions
           </p>
         </div>
-        <div className="flex gap-4">
-          <Badge variant="outline" className="px-4 py-2">
+        <div className="flex gap-base">
+          <span className="px-lg py-md bg-warning-light text-warning font-sans font-semibold rounded-lg border-2 border-warning">
             {queueItems.length} Pending Review
-          </Badge>
+          </span>
         </div>
       </div>
 
       {/* Queue List */}
-      <Card>
+      <div className="bg-white rounded-xl shadow-md border border-background-dark overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="border-b">
+            <thead className="bg-background border-b-2 border-background-dark">
               <tr className="text-left">
-                <th className="p-4 font-semibold">Type</th>
-                <th className="p-4 font-semibold">Submitted By</th>
-                <th className="p-4 font-semibold">Submitted</th>
-                <th className="p-4 font-semibold">Status</th>
-                <th className="p-4 font-semibold">Reviewed By</th>
-                <th className="p-4 font-semibold text-right">Actions</th>
+                <th className="p-base font-sans font-semibold text-sm text-dark uppercase tracking-wide">Type</th>
+                <th className="p-base font-sans font-semibold text-sm text-dark uppercase tracking-wide">Submitted By</th>
+                <th className="p-base font-sans font-semibold text-sm text-dark uppercase tracking-wide">Submitted</th>
+                <th className="p-base font-sans font-semibold text-sm text-dark uppercase tracking-wide">Status</th>
+                <th className="p-base font-sans font-semibold text-sm text-dark uppercase tracking-wide">Reviewed By</th>
+                <th className="p-base font-sans font-semibold text-sm text-dark uppercase tracking-wide text-right">Actions</th>
               </tr>
             </thead>
             <tbody>
               {queueItems.map((item) => (
-                <tr key={item.id} className="border-b last:border-0 hover:bg-secondary/50">
-                  <td className="p-4">
+                <tr key={item.id} className="border-b border-background-dark last:border-0 hover:bg-background transition-fast">
+                  <td className="p-base">
                     <div>
-                      <div className="font-medium">{item.entityType}</div>
-                      <div className="text-xs text-muted-foreground font-mono">
+                      <div className="text-sm font-sans font-semibold text-dark">{item.entityType}</div>
+                      <div className="text-xs font-mono text-muted">
                         {item.entityId.substring(0, 12)}...
                       </div>
                     </div>
                   </td>
-                  <td className="p-4">
-                    <div className="text-sm">
+                  <td className="p-base">
+                    <div className="text-sm font-sans">
                       {item.submittedBy ? (
-                        <div className="text-xs text-muted-foreground font-mono">
+                        <div className="text-xs font-mono text-medium">
                           {item.submittedBy.substring(0, 12)}...
                         </div>
                       ) : (
-                        <span className="text-muted-foreground">Anonymous</span>
+                        <span className="text-muted">Anonymous</span>
                       )}
                     </div>
                   </td>
-                  <td className="p-4 text-sm text-muted-foreground">
+                  <td className="p-base text-sm font-sans text-medium">
                     {new Date(item.createdAt).toLocaleString()}
                   </td>
-                  <td className="p-4">
-                    <Badge className={getStatusColor(item.status)}>
+                  <td className="p-base">
+                    <span className={`px-md py-xs rounded text-xs font-sans font-semibold ${getStatusColor(item.status)}`}>
                       {item.status.replace('_', ' ')}
-                    </Badge>
+                    </span>
                   </td>
-                  <td className="p-4 text-sm text-muted-foreground">
+                  <td className="p-base text-sm font-sans text-medium">
                     {item.reviewer ? (
                       <div>
                         {item.reviewer.name || item.reviewer.email}
                       </div>
                     ) : (
-                      <span className="text-xs">Not reviewed</span>
+                      <span className="text-xs text-muted">Not reviewed</span>
                     )}
                   </td>
-                  <td className="p-4">
-                    <div className="flex items-center justify-end gap-2">
+                  <td className="p-base">
+                    <div className="flex items-center justify-end gap-sm">
                       {item.status === 'PENDING' && (
                         <>
-                          <Button variant="ghost" size="sm" className="text-green-600 hover:text-green-700">
-                            <CheckCircle className="h-4 w-4 mr-1" />
+                          <button className="flex items-center gap-xs px-md py-sm bg-success-light text-success rounded hover:bg-success hover:text-white transition-fast text-xs font-sans font-semibold">
+                            <CheckCircle className="h-4 w-4" />
                             Approve
-                          </Button>
-                          <Button variant="ghost" size="sm" className="text-red-600 hover:text-red-700">
-                            <XCircle className="h-4 w-4 mr-1" />
+                          </button>
+                          <button className="flex items-center gap-xs px-md py-sm bg-error-light text-error rounded hover:bg-error hover:text-white transition-fast text-xs font-sans font-semibold">
+                            <XCircle className="h-4 w-4" />
                             Reject
-                          </Button>
+                          </button>
                         </>
                       )}
-                      <Button variant="ghost" size="sm" asChild>
-                        <Link href={`/admin/moderation/${item.id}`}>
-                          View Details
-                        </Link>
-                      </Button>
+                      <Link href={`/admin/moderation/${item.id}`} className="px-md py-sm bg-accent-light text-accent rounded hover:bg-accent hover:text-white transition-fast text-xs font-sans font-semibold">
+                        View Details
+                      </Link>
                     </div>
                   </td>
                 </tr>
@@ -137,12 +135,14 @@ export default async function AdminModerationPage() {
         </div>
 
         {queueItems.length === 0 && (
-          <div className="p-12 text-center text-muted-foreground">
-            <Clock className="h-12 w-12 mx-auto mb-4 opacity-50" />
-            <p>No items in moderation queue</p>
+          <div className="p-3xl text-center">
+            <div className="w-16 h-16 bg-background rounded-full flex items-center justify-center mx-auto mb-lg">
+              <Clock className="h-8 w-8 text-muted" />
+            </div>
+            <p className="text-base font-sans text-medium">No items in moderation queue</p>
           </div>
         )}
-      </Card>
+      </div>
     </div>
   )
 }

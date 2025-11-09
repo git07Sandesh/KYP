@@ -1,7 +1,17 @@
 import { PrismaClient } from "@prisma/client"
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/design-system"
+import { Badge } from "@/components/design-system"
+import {
+  TableContainer,
+  TableScroll,
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableEmpty,
+} from "@/components/design-system"
 import Link from "next/link"
 import { Plus, Edit, Eye } from "lucide-react"
 
@@ -27,118 +37,100 @@ export default async function AdminPromisesPage() {
     }
   })
 
-  const getFulfillmentColor = (status: string) => {
-    switch (status) {
-      case "KEPT":
-        return "bg-green-100 text-green-800"
-      case "IN_PROGRESS":
-        return "bg-blue-100 text-blue-800"
-      case "BROKEN":
-        return "bg-red-100 text-red-800"
-      case "PARTIALLY_FULFILLED":
-        return "bg-yellow-100 text-yellow-800"
-      case "NO_EVIDENCE":
-        return "bg-gray-100 text-gray-800"
-      default:
-        return "bg-gray-100 text-gray-800"
-    }
-  }
+
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-2xl">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Promises</h1>
-          <p className="text-muted-foreground mt-2">
+          <h1 className="text-4xl font-display font-bold text-dark">Promises</h1>
+          <p className="text-base font-sans text-medium mt-sm">
             Manage all candidate promises and track fulfillment
           </p>
         </div>
-        <Button asChild>
-          <Link href="/admin/promises/new">
-            <Plus className="mr-2 h-4 w-4" />
+        <Link href="/admin/promises/new">
+          <Button variant="accent" icon={<Plus className="h-4 w-4" />}>
             Add Promise
-          </Link>
-        </Button>
+          </Button>
+        </Link>
       </div>
 
       {/* Promises List */}
-      <Card>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="border-b">
-              <tr className="text-left">
-                <th className="p-4 font-semibold">Promise</th>
-                <th className="p-4 font-semibold">Candidate</th>
-                <th className="p-4 font-semibold">Date</th>
-                <th className="p-4 font-semibold">Status</th>
-                <th className="p-4 font-semibold">Sources</th>
-                <th className="p-4 font-semibold text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
+      <TableContainer>
+        <TableScroll>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Promise</TableHead>
+                <TableHead>Candidate</TableHead>
+                <TableHead>Date</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Sources</TableHead>
+                <TableHead align="right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {promises.map((promise) => (
-                <tr key={promise.id} className="border-b last:border-0 hover:bg-secondary/50">
-                  <td className="p-4">
+                <TableRow key={promise.id}>
+                  <TableCell>
                     <div className="max-w-md">
-                      <div className="font-medium line-clamp-2">{promise.text}</div>
-                      <div className="text-xs text-muted-foreground mt-1">
+                      <div className="text-sm font-sans font-medium text-dark line-clamp-2">{promise.text}</div>
+                      <div className="text-xs font-sans text-muted mt-xs">
                         {promise.category} • {promise.type}
                       </div>
                     </div>
-                  </td>
-                  <td className="p-4">
-                    <div className="text-sm">
+                  </TableCell>
+                  <TableCell>
+                    <div className="text-sm font-sans text-dark">
                       {promise.candidate.name}
-                      <div className="text-xs text-muted-foreground">
+                      <div className="text-xs font-sans text-muted">
                         {promise.candidate.party.name}
                       </div>
                     </div>
-                  </td>
-                  <td className="p-4 text-sm text-muted-foreground">
+                  </TableCell>
+                  <TableCell className="text-sm font-sans text-medium">
                     {promise.announcedDate ? new Date(promise.announcedDate).toLocaleDateString() : 'N/A'}
-                  </td>
-                  <td className="p-4">
-                    <Badge className={getFulfillmentColor(promise.status)}>
+                  </TableCell>
+                  <TableCell>
+                    <Badge
+                      variant={promise.status === 'KEPT' ? 'success' : promise.status === 'IN_PROGRESS' ? 'info' : promise.status === 'BROKEN' ? 'error' : promise.status === 'PARTIALLY_FULFILLED' ? 'warning' : 'default'}
+                      size="sm"
+                    >
                       {promise.status.replace('_', ' ')}
                     </Badge>
-                  </td>
-                  <td className="p-4">
-                    <div className="flex items-center gap-1">
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-xs">
                       {promise.sources.length > 0 ? (
-                        <Badge variant="outline" className="text-xs">
+                        <span className="px-sm py-xs bg-background border border-background-dark text-dark rounded text-xs font-sans font-medium">
                           {promise.sources.length} source{promise.sources.length > 1 ? 's' : ''}
-                        </Badge>
+                        </span>
                       ) : (
-                        <span className="text-xs text-muted-foreground">No sources</span>
+                        <span className="text-xs font-sans text-muted">No sources</span>
                       )}
                     </div>
-                  </td>
-                  <td className="p-4">
-                    <div className="flex items-center justify-end gap-2">
-                      <Button variant="ghost" size="sm" asChild>
-                        <Link href={`/candidates/${promise.candidate.id}?tab=promises`}>
-                          <Eye className="h-4 w-4" />
-                        </Link>
-                      </Button>
-                      <Button variant="ghost" size="sm" asChild>
-                        <Link href={`/admin/promises/${promise.id}/edit`}>
-                          <Edit className="h-4 w-4" />
-                        </Link>
-                      </Button>
+                  </TableCell>
+                  <TableCell align="right">
+                    <div className="flex items-center justify-end gap-sm">
+                      <Link href={`/candidates/${promise.candidate.id}?tab=promises`}>
+                        <Button variant="info" size="sm" icon={<Eye className="h-4 w-4" />} />
+                      </Link>
+                      <Link href={`/admin/promises/${promise.id}/edit`}>
+                        <Button variant="accent" size="sm" icon={<Edit className="h-4 w-4" />} />
+                      </Link>
                     </div>
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
-        </div>
-
+            </TableBody>
+          </Table>
+        </TableScroll>
         {promises.length === 0 && (
-          <div className="p-12 text-center text-muted-foreground">
+          <TableEmpty icon={<Plus className="h-8 w-8" />}>
             No promises found. Add your first promise to get started.
-          </div>
+          </TableEmpty>
         )}
-      </Card>
+      </TableContainer>
     </div>
   )
 }
