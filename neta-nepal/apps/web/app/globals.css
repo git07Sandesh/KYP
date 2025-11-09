@@ -1,8 +1,28 @@
-/* Google Fonts - Fallback for environments that can access them */
+/**
+ * globals.css - Main Entry Point
+ * 
+ * Imports all modular design system files in correct order
+ * Order matters: base styles → utilities → components
+ */
+
+ /* Google Fonts - Must be before any CSS rules */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Montserrat:wght@400;500;600;700&display=swap');
 
+
+/* ALL @import statements must come first */
 @import "tailwindcss";
 
+
+/* Design System Modules */
+@import "./styles/colors.css";
+@import "./styles/typography.css";
+@import "./styles/spacing.css";
+@import "./styles/shadows.css";
+@import "./styles/borders.css";
+@import "./styles/transitions.css";
+@import "./styles/components.css";
+
+/* Now all regular CSS rules can follow */
 :root {
   /* Design System Colors */
   --color-primary: #C1121F;
@@ -242,3 +262,52 @@ html {
   font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
+/* Accessibility Utilities */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.sr-only:focus,
+.sr-only:active {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* Focus visible for keyboard navigation */
+.focus-visible:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Skip to content link */
+a[href="#main-content"] {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+a[href="#main-content"]:focus {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  z-index: 9999;
+}

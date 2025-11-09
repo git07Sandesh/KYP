@@ -1,7 +1,16 @@
 import { PrismaClient } from "@prisma/client"
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
+import { Button, Badge } from "@/components/design-system"
+import {
+  TableContainer,
+  TableScroll,
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableEmpty,
+} from "@/components/design-system"
 import Link from "next/link"
 import { Plus, Edit, Eye } from "lucide-react"
 
@@ -27,119 +36,105 @@ export default async function AdminWorksPage() {
     }
   })
 
-  const getImpactColor = (impact: string) => {
-    switch (impact) {
-      case "HIGH":
-        return "bg-green-100 text-green-800"
-      case "MEDIUM":
-        return "bg-blue-100 text-blue-800"
-      case "LOW":
-        return "bg-gray-100 text-gray-800"
-      default:
-        return "bg-gray-100 text-gray-800"
-    }
-  }
+
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-2xl">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Works</h1>
-          <p className="text-muted-foreground mt-2">
+          <h1 className="text-4xl font-display font-bold text-dark">Works</h1>
+          <p className="text-base font-sans text-medium mt-sm">
             Manage all candidate works and accomplishments
           </p>
         </div>
-        <Button asChild>
-          <Link href="/admin/works/new">
-            <Plus className="mr-2 h-4 w-4" />
+        <Link href="/admin/works/new">
+          <Button variant="accent" icon={<Plus className="h-4 w-4" />}>
             Add Work
-          </Link>
-        </Button>
+          </Button>
+        </Link>
       </div>
 
       {/* Works List */}
-      <Card>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="border-b">
-              <tr className="text-left">
-                <th className="p-4 font-semibold">Work</th>
-                <th className="p-4 font-semibold">Candidate</th>
-                <th className="p-4 font-semibold">Period</th>
-                <th className="p-4 font-semibold">Impact</th>
-                <th className="p-4 font-semibold">Sources</th>
-                <th className="p-4 font-semibold text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
+      <TableContainer>
+        <TableScroll>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Work</TableHead>
+                <TableHead>Candidate</TableHead>
+                <TableHead>Period</TableHead>
+                <TableHead>Impact</TableHead>
+                <TableHead>Sources</TableHead>
+                <TableHead align="right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {works.map((work) => (
-                <tr key={work.id} className="border-b last:border-0 hover:bg-secondary/50">
-                  <td className="p-4">
+                <TableRow key={work.id}>
+                  <TableCell>
                     <div className="max-w-md">
-                      <div className="font-medium line-clamp-2">{work.title}</div>
+                      <div className="text-sm font-sans font-medium text-dark line-clamp-2">{work.title}</div>
                       {work.description && (
-                        <div className="text-sm text-muted-foreground line-clamp-1 mt-1">
+                        <div className="text-xs font-sans text-medium line-clamp-1 mt-xs">
                           {work.description}
                         </div>
                       )}
                     </div>
-                  </td>
-                  <td className="p-4">
-                    <div className="text-sm">
+                  </TableCell>
+                  <TableCell>
+                    <div className="text-sm font-sans text-dark">
                       {work.candidate.name}
-                      <div className="text-xs text-muted-foreground">
+                      <div className="text-xs font-sans text-muted">
                         {work.candidate.party.name}
                       </div>
                     </div>
-                  </td>
-                  <td className="p-4 text-sm text-muted-foreground">
+                  </TableCell>
+                  <TableCell className="text-sm font-sans text-medium">
                     <div>{new Date(work.startDate).toLocaleDateString()}</div>
                     {work.endDate && (
                       <div>to {new Date(work.endDate).toLocaleDateString()}</div>
                     )}
-                  </td>
-                  <td className="p-4">
-                    <Badge className={getImpactColor(work.impactLevel)}>
+                  </TableCell>
+                  <TableCell>
+                    <Badge
+                      variant={work.impactLevel === 'HIGH' ? 'success' : work.impactLevel === 'MEDIUM' ? 'info' : 'default'}
+                      size="sm"
+                    >
                       {work.impactLevel}
                     </Badge>
-                  </td>
-                  <td className="p-4">
-                    <div className="flex items-center gap-1">
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-xs">
                       {work.sources.length > 0 ? (
-                        <Badge variant="outline" className="text-xs">
+                        <span className="px-sm py-xs bg-background border border-background-dark text-dark rounded text-xs font-sans font-medium">
                           {work.sources.length} source{work.sources.length > 1 ? 's' : ''}
-                        </Badge>
+                        </span>
                       ) : (
-                        <span className="text-xs text-muted-foreground">No sources</span>
+                        <span className="text-xs font-sans text-muted">No sources</span>
                       )}
                     </div>
-                  </td>
-                  <td className="p-4">
-                    <div className="flex items-center justify-end gap-2">
-                      <Button variant="ghost" size="sm" asChild>
-                        <Link href={`/candidates/${work.candidate.id}?tab=works`}>
-                          <Eye className="h-4 w-4" />
-                        </Link>
-                      </Button>
-                      <Button variant="ghost" size="sm" asChild>
-                        <Link href={`/admin/works/${work.id}/edit`}>
-                          <Edit className="h-4 w-4" />
-                        </Link>
-                      </Button>
+                  </TableCell>
+                  <TableCell align="right">
+                    <div className="flex items-center justify-end gap-sm">
+                      <Link href={`/candidates/${work.candidate.id}?tab=works`}>
+                        <Button variant="info" size="sm" icon={<Eye className="h-4 w-4" />} />
+                      </Link>
+                      <Link href={`/admin/works/${work.id}/edit`}>
+                        <Button variant="accent" size="sm" icon={<Edit className="h-4 w-4" />} />
+                      </Link>
                     </div>
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
-        </div>
-
+            </TableBody>
+          </Table>
+        </TableScroll>
         {works.length === 0 && (
-          <div className="p-12 text-center text-muted-foreground">
+          <TableEmpty icon={<Plus className="h-8 w-8" />}>
             No works found. Add your first work to get started.
-          </div>
+          </TableEmpty>
         )}
-      </Card>
+      </TableContainer>
     </div>
   )
 }

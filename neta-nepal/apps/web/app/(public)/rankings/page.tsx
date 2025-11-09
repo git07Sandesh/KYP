@@ -82,17 +82,17 @@ export default function RankingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FDF0D5]">
+    <div className="min-h-screen bg-background">
       <div className="container py-8 pb-20 md:pb-12 px-4">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-3">
-            <Trophy className="h-10 w-10 text-[#C1121F]" />
-            <h1 className="text-4xl md:text-5xl font-display font-bold text-[#2C2C2C]">
+            <Trophy className="h-10 w-10 text-primary" />
+            <h1 className="text-4xl md:text-5xl font-display font-bold text-text-primary">
               Rankings
             </h1>
           </div>
-          <p className="text-lg text-[#6B6B6B] font-sans">
+          <p className="text-lg text-text-secondary font-sans">
             Top-performing candidates across different categories
           </p>
         </div>
@@ -100,15 +100,14 @@ export default function RankingsPage() {
         {/* Category Tabs */}
         <div className="flex flex-wrap gap-3 mb-8">
           {(["TOP_IMPACT", "CLEANEST_RECORDS", "HIGHEST_FULFILLMENT", "MOST_POPULAR"] as RankingCategory[]).map((category) => (
-            <Button
+              <Button
               key={category}
               onClick={() => setSelectedCategory(category)}
               className={`
-                px-5 py-3 rounded-xl font-semibold text-sm transition-all duration-200 
-                flex items-center gap-2 shadow-md hover:shadow-lg hover:scale-105
+                btn-base px-5 py-3 rounded-xl font-semibold text-sm flex items-center gap-2
                 ${selectedCategory === category 
-                  ? "bg-[#C1121F] text-white hover:bg-[#A00F1A]" 
-                  : "bg-white text-[#2C2C2C] border-2 border-gray-200 hover:border-[#C1121F] hover:text-[#C1121F]"
+                  ? "btn-primary" 
+                  : "btn-outline"
                 }
               `}
             >
@@ -122,26 +121,26 @@ export default function RankingsPage() {
         {loading ? (
           <div className="space-y-4">
             {[...Array(10)].map((_, i) => (
-              <Card key={i} className="p-6 shadow-md border border-gray-200">
+              <Card key={i} className="card">
                 <div className="flex items-center gap-6 animate-pulse">
-                  <div className="h-14 w-14 rounded-full bg-gray-200" />
-                  <div className="h-16 w-16 rounded-full bg-gray-200" />
+                  <div className="h-14 w-14 rounded-full skeleton" />
+                  <div className="h-16 w-16 rounded-full skeleton" />
                   <div className="flex-1 space-y-3">
-                    <div className="h-5 bg-gray-200 rounded w-1/3" />
-                    <div className="h-4 bg-gray-200 rounded w-1/2" />
+                    <div className="h-5 skeleton rounded w-1/3" />
+                    <div className="h-4 skeleton rounded w-1/2" />
                   </div>
-                  <div className="h-10 w-24 bg-gray-200 rounded-lg" />
+                  <div className="h-10 w-24 skeleton rounded-lg" />
                 </div>
               </Card>
             ))}
           </div>
         ) : rankings.length === 0 ? (
-          <Card className="p-16 text-center shadow-lg border-2 border-dashed border-gray-300">
-            <Award className="h-24 w-24 mx-auto mb-6 text-[#9CA3AF]" />
-            <h3 className="text-2xl font-display font-bold text-[#2C2C2C] mb-2">
+          <Card className="card-lg text-center border-2 border-dashed border-default">
+            <Award className="h-24 w-24 mx-auto mb-6 text-text-muted" />
+            <h3 className="text-2xl font-display font-bold text-text-primary mb-2">
               No Rankings Available
             </h3>
-            <p className="text-lg text-[#6B6B6B] font-sans">
+            <p className="text-lg text-text-secondary font-sans">
               No rankings available for this category yet
             </p>
           </Card>
@@ -151,8 +150,8 @@ export default function RankingsPage() {
               <Card 
                 key={ranking.candidate.id} 
                 className={`
-                  p-5 md:p-6 shadow-md hover:shadow-xl transition-all duration-300 border-2
-                  ${ranking.rank <= 3 ? 'border-yellow-400 bg-gradient-to-r from-yellow-50 to-white' : 'border-gray-200 hover:border-[#C1121F]'}
+                  card hover:shadow-xl transition-all border-2
+                  ${ranking.rank <= 3 ? 'border-yellow-400 bg-gradient-to-r from-yellow-50 to-white' : 'border-default hover:border-primary'}
                 `}
               >
                 <Link 
@@ -171,18 +170,18 @@ export default function RankingsPage() {
                   {/* Candidate Photo */}
                   <Avatar className="h-16 w-16 md:h-20 md:w-20 ring-4 ring-white shadow-lg flex-shrink-0">
                     <AvatarImage src={ranking.candidate.photoUrl} alt={ranking.candidate.name} />
-                    <AvatarFallback className="text-xl md:text-2xl font-display font-bold bg-[#003049] text-white">
+                    <AvatarFallback className="text-xl md:text-2xl font-display font-bold bg-accent text-white">
                       {ranking.candidate.name.charAt(0)}
                     </AvatarFallback>
                   </Avatar>
 
                   {/* Candidate Info */}
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-display font-bold text-xl md:text-2xl text-[#2C2C2C] mb-1 truncate">
+                    <h3 className="font-display font-bold text-xl md:text-2xl text-text-primary mb-1 truncate">
                       {ranking.candidate.name}
                     </h3>
-                    <div className="flex flex-wrap items-center gap-2 text-sm text-[#6B6B6B]">
-                      <Badge className="bg-[#003049] hover:bg-[#001A2C] text-white text-xs font-medium px-2 py-0.5">
+                    <div className="flex flex-wrap items-center gap-2 text-sm text-text-secondary">
+                      <Badge className="bg-accent hover:bg-accent-dark text-white text-xs font-medium px-2 py-0.5">
                         {ranking.candidate.party.name}
                       </Badge>
                       <span className="hidden md:inline">•</span>
@@ -192,27 +191,27 @@ export default function RankingsPage() {
 
                   {/* Score */}
                   <div className="text-right flex-shrink-0">
-                    <div className="text-3xl md:text-4xl font-display font-bold text-[#C1121F]">
+                    <div className="text-3xl md:text-4xl font-display font-bold text-primary">
                       {ranking.score.toFixed(1)}
                     </div>
-                    <div className="text-xs text-[#6B6B6B] uppercase tracking-wide font-semibold">
+                    <div className="text-xs text-text-secondary uppercase tracking-wide font-semibold">
                       Score
                     </div>
                   </div>
 
                   {/* Trend Indicator */}
-                  <div className="hidden lg:flex items-center text-[#6B6B6B] flex-shrink-0">
+                  <div className="hidden lg:flex items-center text-text-secondary flex-shrink-0">
                     {index === 0 ? (
                       <div className="bg-gray-100 p-2 rounded-full">
                         <Minus className="h-6 w-6" />
                       </div>
                     ) : Math.random() > 0.5 ? (
-                      <div className="bg-green-100 p-2 rounded-full">
-                        <TrendingUp className="h-6 w-6 text-[#059669]" />
+                      <div className="bg-success-light p-2 rounded-full">
+                        <TrendingUp className="h-6 w-6 text-success" />
                       </div>
                     ) : (
-                      <div className="bg-red-100 p-2 rounded-full">
-                        <TrendingDown className="h-6 w-6 text-[#DC2626]" />
+                      <div className="bg-error-light p-2 rounded-full">
+                        <TrendingDown className="h-6 w-6 text-error" />
                       </div>
                     )}
                   </div>
@@ -224,16 +223,16 @@ export default function RankingsPage() {
 
         {/* Info Card */}
         {rankings.length > 0 && (
-          <Card className="mt-8 p-6 bg-gradient-to-r from-[#DBEAFE] to-white border-2 border-[#3B82F6] shadow-md">
+          <Card className="mt-8 card bg-gradient-to-r from-info-light to-white border-2 border-info">
             <div className="flex items-start gap-4">
-              <div className="bg-[#3B82F6] p-3 rounded-full flex-shrink-0">
+              <div className="bg-info p-3 rounded-full flex-shrink-0">
                 <Trophy className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h3 className="font-display font-bold text-lg text-[#2C2C2C] mb-2">
+                <h3 className="font-display font-bold text-lg text-text-primary mb-2">
                   How Rankings Work
                 </h3>
-                <p className="text-[#4A4A4A] font-sans leading-relaxed">
+                <p className="text-text-secondary font-sans leading-relaxed">
                   Rankings are calculated based on multiple factors including impact scores, 
                   fulfillment rates, public engagement, and transparency. The data is updated 
                   regularly to reflect the latest information about candidates' performance 

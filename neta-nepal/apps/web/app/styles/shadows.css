@@ -1,0 +1,120 @@
+/**
+ * shadows.css - Elevation System
+ * 
+ * 4 levels of elevation for depth and hierarchy
+ * Subtle shadows that work in light and dark modes
+ */
+
+:root {
+  /* Shadow Definitions */
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+  --shadow-none: 0 0 #0000;
+  
+  /* Colored Shadows */
+  --shadow-primary: 0 4px 14px 0 rgb(193 18 31 / 0.15);
+  --shadow-primary-lg: 0 10px 30px -3px rgb(193 18 31 / 0.2);
+  --shadow-accent: 0 4px 14px 0 rgb(0 48 73 / 0.15);
+  --shadow-accent-lg: 0 10px 30px -3px rgb(0 48 73 / 0.2);
+  
+  /* Focus Shadows */
+  --shadow-focus-primary: 0 0 0 3px rgb(193 18 31 / 0.2);
+  --shadow-focus-accent: 0 0 0 3px rgb(0 48 73 / 0.2);
+  --shadow-focus-error: 0 0 0 3px rgb(220 38 38 / 0.2);
+}
+
+/* Dark Mode Adjustments */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+    --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.4);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.4);
+    --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.5);
+  }
+}
+
+.dark {
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.4);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.4);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.5);
+}
+
+/* Shadow Utility Classes */
+.shadow-none { box-shadow: var(--shadow-none); }
+.shadow-xs { box-shadow: var(--shadow-xs); }
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.shadow-md { box-shadow: var(--shadow-md); }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+.shadow-xl { box-shadow: var(--shadow-xl); }
+.shadow-2xl { box-shadow: var(--shadow-2xl); }
+.shadow-inner { box-shadow: var(--shadow-inner); }
+
+/* Colored Shadows */
+.shadow-primary { box-shadow: var(--shadow-primary); }
+.shadow-primary-lg { box-shadow: var(--shadow-primary-lg); }
+.shadow-accent { box-shadow: var(--shadow-accent); }
+.shadow-accent-lg { box-shadow: var(--shadow-accent-lg); }
+
+/* Focus Shadows - For interactive elements */
+.focus-ring-primary:focus {
+  outline: none;
+  box-shadow: var(--shadow-focus-primary);
+}
+
+.focus-ring-accent:focus {
+  outline: none;
+  box-shadow: var(--shadow-focus-accent);
+}
+
+.focus-ring-error:focus {
+  outline: none;
+  box-shadow: var(--shadow-focus-error);
+}
+
+/* Hover Elevation Effects */
+.hover-lift {
+  transition: transform 200ms ease-in-out, box-shadow 200ms ease-in-out;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.hover-lift-sm {
+  transition: transform 200ms ease-in-out, box-shadow 200ms ease-in-out;
+}
+
+.hover-lift-sm:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Shadow Combinations for Cards */
+.card-shadow {
+  box-shadow: var(--shadow-md);
+  transition: box-shadow 200ms ease-in-out;
+}
+
+.card-shadow:hover {
+  box-shadow: var(--shadow-xl);
+}
+
+.card-shadow-lg {
+  box-shadow: var(--shadow-lg);
+  transition: box-shadow 200ms ease-in-out;
+}
+
+.card-shadow-lg:hover {
+  box-shadow: var(--shadow-2xl);
+}

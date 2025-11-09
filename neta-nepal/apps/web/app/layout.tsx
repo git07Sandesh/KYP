@@ -5,6 +5,10 @@ import { Providers } from "@/components/providers";
 export const metadata: Metadata = {
   title: "Neta Nepal - Political Transparency Platform",
   description: "A non-partisan, fact-based political transparency platform for Nepal",
+  keywords: ['Nepal', 'politics', 'politicians', 'elections', 'promises', 'accountability', 'transparency'],
+  authors: [{ name: 'Neta Nepal Team' }],
+  viewport: 'width=device-width, initial-scale=1, maximum-scale=5',
+  themeColor: '#C1121F',
 };
 
 export default function RootLayout({
@@ -23,8 +27,18 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased font-sans">
+        {/* Skip to main content link for keyboard accessibility */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-50 focus:px-lg focus:py-md focus:bg-accent focus:text-white focus:rounded focus:m-base"
+        >
+          Skip to main content
+        </a>
+        
         <Providers>
-          {children}
+          <main id="main-content">
+            {children}
+          </main>
         </Providers>
       </body>
     </html>

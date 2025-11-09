@@ -80,23 +80,23 @@ export default function ComparePage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FDF0D5]">
+    <div className="min-h-screen bg-background">
       <div className="container py-8 pb-20 md:pb-12 px-4">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl md:text-5xl font-display font-bold text-[#2C2C2C] mb-3">
+          <h1 className="text-4xl md:text-5xl font-display font-bold text-text-primary mb-3">
             Compare Candidates
           </h1>
-          <p className="text-lg text-[#6B6B6B] font-sans">
+          <p className="text-lg text-text-secondary font-sans">
             Select up to 3 candidates to compare side-by-side and make informed decisions
           </p>
         </div>
 
         {/* Candidate Selection Card */}
-        <Card className="p-6 md:p-8 mb-8 shadow-lg border-2 border-gray-200">
+        <Card className="card card-lg mb-8">
           <div className="flex items-center gap-3 mb-4">
-            <Users className="h-6 w-6 text-[#C1121F]" />
-            <h2 className="text-xl font-display font-bold text-[#2C2C2C]">
+            <Users className="h-6 w-6 text-primary" />
+            <h2 className="text-xl font-display font-bold text-text-primary">
               Selected Candidates ({selectedCandidates.length}/3)
             </h2>
           </div>
@@ -105,22 +105,22 @@ export default function ComparePage() {
             {selectedCandidates.map((candidate) => (
               <div 
                 key={candidate.id} 
-                className="flex items-center gap-3 bg-gradient-to-r from-[#FDF0D5] to-white rounded-xl p-3 pr-4 shadow-md border border-gray-200 hover:shadow-lg transition-all duration-200"
+                className="flex items-center gap-3 bg-gradient-to-r from-background to-surface rounded-xl p-3 pr-4 shadow-md border border-default hover:shadow-lg transition-all"
               >
-                <Avatar className="h-10 w-10 ring-2 ring-[#C1121F]">
+                <Avatar className="h-10 w-10 ring-2 ring-primary">
                   <AvatarImage src={candidate.photoUrl} alt={candidate.name} />
-                  <AvatarFallback className="bg-[#C1121F] text-white font-bold">
+                  <AvatarFallback className="bg-primary text-white font-bold">
                     {candidate.name.charAt(0)}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex-1">
-                  <span className="font-semibold text-[#2C2C2C] block">{candidate.name}</span>
-                  <span className="text-xs text-[#6B6B6B]">{candidate.party.name}</span>
+                  <span className="font-semibold text-text-primary block">{candidate.name}</span>
+                  <span className="text-xs text-text-secondary">{candidate.party.name}</span>
                 </div>
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-8 w-8 hover:bg-[#FEE2E2] hover:text-[#DC2626] transition-colors duration-200"
+                  className="h-8 w-8 hover:bg-error-light hover:text-error transition-colors"
                   onClick={() => removeCandidate(candidate.id)}
                 >
                   <X className="h-5 w-5" />
@@ -135,26 +135,26 @@ export default function ComparePage() {
                   placeholder="Search to add candidate..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-[#C1121F] focus:ring-2 focus:ring-[#FEE2E2] transition-all duration-200 font-sans"
+                  className="input-base w-full font-sans"
                 />
                 {searchResults.length > 0 && (
-                  <div className="absolute top-full left-0 right-0 mt-2 bg-white border-2 border-gray-200 rounded-xl shadow-xl z-10 max-h-80 overflow-auto">
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-surface border-2 border-default rounded-xl shadow-xl z-10 max-h-80 overflow-auto">
                     {searchResults.map((candidate) => (
                       <button
                         key={candidate.id}
-                        className="w-full flex items-center gap-4 p-4 hover:bg-[#FDF0D5] text-left transition-colors duration-150 border-b border-gray-100 last:border-b-0"
+                        className="w-full flex items-center gap-4 p-4 hover:bg-background text-left transition-colors border-b border-border last:border-b-0"
                         onClick={() => addCandidate(candidate)}
                         disabled={selectedCandidates.some(c => c.id === candidate.id)}
                       >
                         <Avatar className="h-12 w-12">
                           <AvatarImage src={candidate.photoUrl} alt={candidate.name} />
-                          <AvatarFallback className="bg-[#003049] text-white font-bold">
+                          <AvatarFallback className="bg-accent text-white font-bold">
                             {candidate.name.charAt(0)}
                           </AvatarFallback>
                         </Avatar>
                         <div className="flex-1">
-                          <div className="font-bold text-[#2C2C2C]">{candidate.name}</div>
-                          <div className="text-sm text-[#6B6B6B]">
+                          <div className="font-bold text-text-primary">{candidate.name}</div>
+                          <div className="text-sm text-text-secondary">
                             {candidate.party.name} • {candidate.constituency.name}
                           </div>
                         </div>
@@ -168,11 +168,11 @@ export default function ComparePage() {
 
           {selectedCandidates.length === 0 && (
             <div className="text-center py-12">
-              <Plus className="mx-auto h-20 w-20 mb-4 text-[#9CA3AF]" />
-              <p className="text-lg text-[#6B6B6B] font-sans font-medium">
+              <Plus className="mx-auto h-20 w-20 mb-4 text-text-muted" />
+              <p className="text-lg text-text-secondary font-sans font-medium">
                 Search and select candidates to compare
               </p>
-              <p className="text-sm text-[#9CA3AF] mt-2">
+              <p className="text-sm text-text-muted mt-2">
                 Use the search box above to find candidates
               </p>
             </div>
@@ -181,10 +181,10 @@ export default function ComparePage() {
 
         {/* Comparison Table */}
         {selectedCandidates.length > 0 && (
-          <div className="bg-white rounded-xl shadow-lg border-2 border-gray-200 overflow-hidden">
+          <div className="bg-surface rounded-xl shadow-lg border-2 border-default overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gradient-to-r from-[#C1121F] to-[#A00F1A]">
+                <thead className="bg-gradient-to-r from-primary to-primary-dark">
                   <tr>
                     <th className="text-left py-6 px-6 font-display font-bold text-white text-lg">
                       Attribute
@@ -194,7 +194,7 @@ export default function ComparePage() {
                         <div className="space-y-3">
                           <Avatar className="h-20 w-20 mx-auto ring-4 ring-white shadow-xl">
                             <AvatarImage src={candidate.photoUrl} alt={candidate.name} />
-                            <AvatarFallback className="text-2xl font-bold bg-white text-[#C1121F]">
+                            <AvatarFallback className="text-2xl font-bold bg-white text-primary">
                               {candidate.name.charAt(0)}
                             </AvatarFallback>
                           </Avatar>
@@ -209,30 +209,30 @@ export default function ComparePage() {
                 <tbody>
                   <ComparisonRow
                     label="Party"
-                    icon={<Users className="h-5 w-5 text-[#003049]" />}
+                    icon={<Users className="h-5 w-5 text-accent" />}
                     values={selectedCandidates.map(c => c.party.name)}
                   />
                   <ComparisonRow
                     label="Constituency"
-                    icon={<FileText className="h-5 w-5 text-[#003049]" />}
+                    icon={<FileText className="h-5 w-5 text-accent" />}
                     values={selectedCandidates.map(c => c.constituency.name)}
                   />
                   <ComparisonRow
                     label="Age"
-                    icon={<Users className="h-5 w-5 text-[#003049]" />}
+                    icon={<Users className="h-5 w-5 text-accent" />}
                     values={selectedCandidates.map(c => c.age ? `${c.age} years` : "N/A")}
                   />
                   <ComparisonRow
                     label="Years in Politics"
-                    icon={<TrendingUp className="h-5 w-5 text-[#003049]" />}
+                    icon={<TrendingUp className="h-5 w-5 text-accent" />}
                     values={selectedCandidates.map(c => c.yearsInPolitics ? `${c.yearsInPolitics} years` : "N/A")}
                   />
                   
                   {/* Impact Score Row */}
-                  <tr className="border-b border-gray-200 hover:bg-[#FFFBF0] transition-colors duration-150">
-                    <td className="py-5 px-6 font-semibold text-[#2C2C2C] bg-[#DBEAFE]/30">
+                  <tr className="border-b border-border hover:bg-background transition-colors">
+                    <td className="py-5 px-6 font-semibold text-text-primary bg-info-light/30">
                       <div className="flex items-center gap-2">
-                        <TrendingUp className="h-5 w-5 text-[#3B82F6]" />
+                        <TrendingUp className="h-5 w-5 text-info" />
                         Impact Score
                       </div>
                     </td>
@@ -246,10 +246,10 @@ export default function ComparePage() {
                   </tr>
 
                   {/* Scandal Score Row */}
-                  <tr className="border-b border-gray-200 hover:bg-[#FFFBF0] transition-colors duration-150">
-                    <td className="py-5 px-6 font-semibold text-[#2C2C2C] bg-[#FEE2E2]/30">
+                  <tr className="border-b border-border hover:bg-background transition-colors">
+                    <td className="py-5 px-6 font-semibold text-text-primary bg-error-light/30">
                       <div className="flex items-center gap-2">
-                        <AlertTriangle className="h-5 w-5 text-[#DC2626]" />
+                        <AlertTriangle className="h-5 w-5 text-error" />
                         Scandal Score
                       </div>
                     </td>
@@ -263,10 +263,10 @@ export default function ComparePage() {
                   </tr>
 
                   {/* Fulfillment Rate Row */}
-                  <tr className="border-b border-gray-200 hover:bg-[#FFFBF0] transition-colors duration-150">
-                    <td className="py-5 px-6 font-semibold text-[#2C2C2C] bg-[#D1FAE5]/30">
+                  <tr className="border-b border-border hover:bg-background transition-colors">
+                    <td className="py-5 px-6 font-semibold text-text-primary bg-success-light/30">
                       <div className="flex items-center gap-2">
-                        <Target className="h-5 w-5 text-[#059669]" />
+                        <Target className="h-5 w-5 text-success" />
                         Fulfillment Rate
                       </div>
                     </td>
@@ -281,29 +281,29 @@ export default function ComparePage() {
 
                   <ComparisonRow
                     label="Promises Made"
-                    icon={<Target className="h-5 w-5 text-[#003049]" />}
+                    icon={<Target className="h-5 w-5 text-accent" />}
                     values={selectedCandidates.map(c => String(c._count?.promises || 0))}
                   />
                   <ComparisonRow
                     label="Works Completed"
-                    icon={<Briefcase className="h-5 w-5 text-[#003049]" />}
+                    icon={<Briefcase className="h-5 w-5 text-accent" />}
                     values={selectedCandidates.map(c => String(c._count?.works || 0))}
                   />
                   <ComparisonRow
                     label="Legal Cases"
-                    icon={<Scale className="h-5 w-5 text-[#003049]" />}
+                    icon={<Scale className="h-5 w-5 text-accent" />}
                     values={selectedCandidates.map(c => String(c._count?.cases || 0))}
                   />
                   
                   {/* Actions Row */}
-                  <tr className="bg-[#FDF0D5]">
-                    <td className="py-6 px-6 font-semibold text-[#2C2C2C] font-display text-lg">
+                  <tr className="bg-background">
+                    <td className="py-6 px-6 font-semibold text-text-primary font-display text-lg">
                       Actions
                     </td>
                     {selectedCandidates.map((candidate) => (
                       <td key={candidate.id} className="py-6 px-6 text-center">
                         <Button 
-                          className="bg-[#C1121F] hover:bg-[#A00F1A] text-white px-6 py-2 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105" 
+                          className="btn-base btn-primary" 
                           asChild
                         >
                           <a href={`/candidates/${candidate.id}`}>View Full Profile</a>
@@ -318,12 +318,12 @@ export default function ComparePage() {
         )}
 
         {selectedCandidates.length === 0 && (
-          <Card className="p-12 text-center shadow-lg border-2 border-dashed border-gray-300">
-            <Users className="h-24 w-24 mx-auto mb-6 text-[#9CA3AF]" />
-            <h3 className="text-2xl font-display font-bold text-[#2C2C2C] mb-2">
+          <Card className="card-lg text-center border-2 border-dashed border-default">
+            <Users className="h-24 w-24 mx-auto mb-6 text-text-muted" />
+            <h3 className="text-2xl font-display font-bold text-text-primary mb-2">
               No Candidates Selected
             </h3>
-            <p className="text-[#6B6B6B] font-sans text-lg">
+            <p className="text-text-secondary font-sans text-lg">
               Start comparing by searching and selecting candidates above
             </p>
           </Card>
@@ -343,15 +343,15 @@ function ComparisonRow({
   values: string[] 
 }) {
   return (
-    <tr className="border-b border-gray-200 hover:bg-[#FFFBF0] transition-colors duration-150">
-      <td className="py-5 px-6 font-semibold text-[#2C2C2C]">
+    <tr className="border-b border-border hover:bg-background transition-colors">
+      <td className="py-5 px-6 font-semibold text-text-primary">
         <div className="flex items-center gap-2">
           {icon}
           {label}
         </div>
       </td>
       {values.map((value, index) => (
-        <td key={index} className="py-5 px-6 text-center text-[#4A4A4A] font-sans">
+        <td key={index} className="py-5 px-6 text-center text-text-secondary font-sans">
           {value}
         </td>
       ))}

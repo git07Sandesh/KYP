@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import { CandidateCard } from "@/components/domain/CandidateCard"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { colors, typography, spacing, shadows } from "@/lib/design-system"
 
 export default function SearchPage() {
   const [query, setQuery] = useState("")
@@ -41,33 +40,30 @@ export default function SearchPage() {
   return (
     <div className="container max-w-4xl py-8 pb-20 md:pb-8">
       {/* Search Header */}
-      <div className="mb-8 space-y-4 bg-white p-8 rounded-2xl shadow-md">
-        <div className="flex items-center gap-4">
-          <div className="p-3 bg-linear-to-br from-primary to-primary-dark rounded-xl shadow-md">
+      <div className="mb-xl space-y-md bg-white p-xl rounded-2xl shadow-md">
+        <div className="flex items-center gap-lg">
+          <div className="p-md bg-primary rounded-xl shadow-md">
             <Search className="h-8 w-8 text-white" />
           </div>
           <div>
-            <h1 className="text-4xl font-bold" style={{ color: colors.primary }}>Search</h1>
-            <p className="text-sm mt-1" style={{ color: colors.textSecondary }}>Discover candidates, parties, and constituencies</p>
+            <h1 className="text-4xl font-display font-bold text-primary">Search</h1>
+            <p className="text-sm font-sans text-medium mt-xs">Discover candidates, parties, and constituencies</p>
           </div>
         </div>
 
         {/* Search Bar */}
         <div className="relative">
           <div className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10">
-            <Search className="h-5 w-5" style={{ color: query ? colors.primary : colors.textMuted }} />
+            <Search className={`h-5 w-5 ${query ? 'text-primary' : 'text-muted'}`} />
           </div>
           <Input
             type="search"
             placeholder="Search candidates, parties, constituencies..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="h-14 pl-12 pr-12 text-base border-2 rounded-xl transition-all"
-            style={{ 
-              borderColor: query ? colors.primary : colors.border,
-              backgroundColor: colors.background,
-              boxShadow: query ? `0 0 0 3px ${colors.primaryLight}20` : 'none'
-            }}
+            className={`h-14 pl-12 pr-12 text-base font-sans border-2 rounded-xl transition-fast bg-background ${
+              query ? 'border-primary ring-2 ring-primary-light ring-opacity-20' : 'border-default'
+            }`}
             autoFocus
           />
           {query && (
@@ -83,21 +79,18 @@ export default function SearchPage() {
         </div>
 
         {/* Category Tabs */}
-        <div className="flex gap-3 mt-2">
+        <div className="flex gap-md mt-sm">
           {[{id: "candidates", label: "Candidates"}, {id: "parties", label: "Parties"}, {id: "constituencies", label: "Constituencies"}].map((tab) => {
             const isActive = selectedTab === tab.id;
             return (
               <button
                 key={tab.id}
                 onClick={() => setSelectedTab(tab.id as any)}
-                className="px-6 py-3 font-semibold rounded-xl transition-all duration-300 transform"
-                style={{
-                  backgroundColor: isActive ? colors.primary : colors.background,
-                  color: isActive ? 'white' : colors.textSecondary,
-                  boxShadow: isActive ? shadows.md : 'none',
-                  transform: isActive ? 'scale(1.05)' : 'scale(1)',
-                  border: `2px solid ${isActive ? colors.primary : colors.border}`,
-                }}
+                className={`px-lg py-md font-sans font-semibold rounded-xl transition-fast border-2 ${
+                  isActive 
+                    ? 'bg-accent text-white border-accent shadow-md scale-105' 
+                    : 'bg-background text-medium border-default hover:border-accent'
+                }`}
               >
                 {tab.label}
               </button>
@@ -109,22 +102,22 @@ export default function SearchPage() {
       {/* Results */}
       <div className="space-y-6">
         {loading && (
-          <div className="text-center py-16">
-            <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-gray-200" style={{ borderTopColor: colors.primary }}></div>
-            <p className="mt-4 text-lg font-medium" style={{ color: colors.textSecondary }}>Searching...</p>
+          <div className="text-center py-2xl">
+            <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-background-dark border-t-primary"></div>
+            <p className="mt-md text-lg font-sans font-medium text-medium">Searching...</p>
           </div>
         )}
 
         {!loading && query && results.length === 0 && (
-          <Card className="p-16 text-center bg-white rounded-2xl shadow-lg">
-            <Search className="mx-auto h-20 w-20 mb-4" style={{ color: colors.border }} />
-            <p className="text-2xl font-semibold mb-2" style={{ color: colors.textPrimary }}>
+          <Card className="p-3xl text-center bg-white rounded-2xl shadow-lg">
+            <Search className="mx-auto h-20 w-20 mb-md text-muted" />
+            <p className="text-2xl font-display font-semibold text-dark mb-sm">
               No results found
             </p>
-            <p className="text-base mb-1" style={{ color: colors.textSecondary }}>
-              No matches for <strong style={{ color: colors.primary }}>"{query}"</strong>
+            <p className="text-base font-sans text-medium mb-xs">
+              No matches for <strong className="text-primary font-semibold">"{query}"</strong>
             </p>
-            <p className="text-sm mt-3" style={{ color: colors.textMuted }}>
+            <p className="text-sm font-sans text-muted mt-md">
               Try adjusting your search query or browse all candidates
             </p>
           </Card>
@@ -132,11 +125,9 @@ export default function SearchPage() {
 
         {!loading && results.length > 0 && (
           <>
-            <div className="px-2 py-3 rounded-xl font-semibold" style={{ 
-              color: colors.textSecondary,
-              backgroundColor: colors.background 
-            }}>
-              <span style={{ color: colors.primary, fontSize: '1.125rem' }}>{results.length}</span> result{results.length !== 1 && "s"} found
+            <div className="px-sm py-md rounded-xl bg-background">
+              <span className="text-lg font-sans font-semibold text-primary">{results.length}</span>
+              <span className="font-sans font-semibold text-medium"> result{results.length !== 1 && "s"} found</span>
             </div>
 
             {selectedTab === "candidates" && (
@@ -148,12 +139,12 @@ export default function SearchPage() {
             )}
 
             {selectedTab === "parties" && (
-              <div className="space-y-4">
+              <div className="space-y-md">
                 {results.map((party: any) => (
-                  <Card key={party.id} className="p-6 bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
-                    <div className="flex items-center gap-6">
+                  <Card key={party.id} className="p-lg bg-white rounded-2xl shadow-md hover:shadow-lg transition-fast hover:-translate-y-1">
+                    <div className="flex items-center gap-lg">
                       {party.symbolUrl && (
-                        <div className="p-3 rounded-xl" style={{ backgroundColor: colors.background }}>
+                        <div className="p-md rounded-xl bg-background">
                           <img
                             src={party.symbolUrl}
                             alt={party.name}
@@ -162,9 +153,9 @@ export default function SearchPage() {
                         </div>
                       )}
                       <div className="flex-1">
-                        <h3 className="font-bold text-xl mb-1" style={{ color: colors.textPrimary }}>{party.name}</h3>
+                        <h3 className="text-xl font-display font-bold text-dark mb-xs">{party.name}</h3>
                         {party.nameNepali && (
-                          <p className="text-base" style={{ color: colors.textSecondary }}>
+                          <p className="text-base font-sans text-medium">
                             {party.nameNepali}
                           </p>
                         )}
@@ -173,12 +164,7 @@ export default function SearchPage() {
                         variant="outline" 
                         size="lg" 
                         asChild
-                        className="px-6 rounded-xl font-semibold transition-all hover:scale-105"
-                        style={{ 
-                          borderColor: colors.primary, 
-                          color: colors.primary,
-                          borderWidth: '2px'
-                        }}
+                        className="px-lg py-md rounded-xl font-sans font-semibold border-2 border-accent text-accent hover:bg-accent hover:text-white transition-fast hover:scale-105"
                       >
                         <a href={`/candidates?party=${party.id}`}>
                           View Candidates
@@ -191,24 +177,18 @@ export default function SearchPage() {
             )}
 
             {selectedTab === "constituencies" && (
-              <div className="space-y-4">
+              <div className="space-y-md">
                 {results.map((constituency: any) => (
-                  <Card key={constituency.id} className="p-6 bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+                  <Card key={constituency.id} className="p-lg bg-white rounded-2xl shadow-md hover:shadow-lg transition-fast hover:-translate-y-1">
                     <div className="flex items-center justify-between">
                       <div className="flex-1">
-                        <h3 className="font-bold text-xl mb-2" style={{ color: colors.textPrimary }}>
+                        <h3 className="text-xl font-display font-bold text-dark mb-sm">
                           {constituency.name}
                         </h3>
-                        <p className="text-base mb-3" style={{ color: colors.textSecondary }}>
+                        <p className="text-base font-sans text-medium mb-md">
                           {constituency.district?.name}, {constituency.province?.name}
                         </p>
-                        <Badge 
-                          className="px-3 py-1 rounded-full font-medium"
-                          style={{ 
-                            backgroundColor: colors.accentLight, 
-                            color: colors.accent 
-                          }}
-                        >
+                        <Badge className="px-md py-xs rounded-full bg-info-light text-info font-sans font-medium">
                           {constituency.level}
                         </Badge>
                       </div>
@@ -216,12 +196,7 @@ export default function SearchPage() {
                         variant="outline" 
                         size="lg" 
                         asChild
-                        className="px-6 rounded-xl font-semibold transition-all hover:scale-105"
-                        style={{ 
-                          borderColor: colors.primary, 
-                          color: colors.primary,
-                          borderWidth: '2px'
-                        }}
+                        className="px-lg py-md rounded-xl font-sans font-semibold border-2 border-accent text-accent hover:bg-accent hover:text-white transition-fast hover:scale-105"
                       >
                         <a href={`/candidates?constituency=${constituency.id}`}>
                           View Candidates
@@ -236,12 +211,12 @@ export default function SearchPage() {
         )}
 
         {!query && (
-          <Card className="p-16 text-center bg-white rounded-2xl shadow-lg">
-            <Search className="mx-auto h-20 w-20 mb-4" style={{ color: colors.border }} />
-            <p className="text-2xl font-semibold mb-2" style={{ color: colors.textPrimary }}>
+          <Card className="p-3xl text-center bg-white rounded-2xl shadow-lg">
+            <Search className="mx-auto h-20 w-20 mb-md text-muted" />
+            <p className="text-2xl font-display font-semibold text-dark mb-sm">
               Start Your Search
             </p>
-            <p className="text-base" style={{ color: colors.textSecondary }}>
+            <p className="text-base font-sans text-medium">
               Type in the search box to find candidates, parties, or constituencies
             </p>
           </Card>

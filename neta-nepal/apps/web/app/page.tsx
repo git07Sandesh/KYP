@@ -4,56 +4,33 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 export default function Home() {
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--color-background)' }}>
-      {/* Hero Section */}
-      <section 
-        className="relative overflow-hidden"
-        style={{ 
-          background: `linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%)`,
-          padding: '5rem 0',
-        }}
-      >
-        <div className="container mx-auto px-4 text-center relative z-10">
-          <h1 
-            className="font-bold mb-6 text-white"
-            style={{ fontSize: '2.5rem', lineHeight: '1.2', maxWidth: '900px', margin: '0 auto 1.5rem' }}
-          >
+    <div className="min-h-screen bg-background">
+      {/* Hero Section - Using primary (red) for brand identity */}
+      <section className="relative overflow-hidden bg-primary py-3xl px-xl">
+        <div className="container mx-auto px-lg text-center relative z-10">
+          <h1 className="text-5xl font-display font-bold text-white mb-lg max-w-4xl mx-auto leading-tight">
             Know Your Political Candidate
           </h1>
-          <p 
-            className="mb-10 mx-auto text-white opacity-95"
-            style={{ fontSize: '1.25rem', maxWidth: '700px', lineHeight: '1.75' }}
-          >
+          <p className="text-lg font-sans text-white mb-2xl max-w-3xl mx-auto leading-relaxed opacity-95">
             A non-partisan, fact-based transparency platform for Nepal. Browse verified candidate profiles,
             track records, and make informed voting decisions.
           </p>
 
-          <div className="flex gap-4 justify-center flex-wrap">
+          <div className="flex gap-lg justify-center flex-wrap">
             <Link href="/candidates">
+              {/* Primary CTA uses accent (dark blue), NOT primary */}
               <Button 
                 size="lg" 
-                className="px-10 py-6 text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105"
-                style={{ 
-                  backgroundColor: 'var(--color-accent)',
-                  color: 'var(--color-white)',
-                  borderRadius: 'var(--radius-lg)',
-                }}
+                className="bg-accent text-white px-xl py-lg rounded-lg hover:bg-accent-light transition-fast font-sans font-semibold text-lg shadow-xl hover:shadow-2xl hover:scale-105"
               >
-                Browse Candidates
+                Browse Candidates →
               </Button>
             </Link>
             <Link href="/search">
               <Button 
                 size="lg" 
                 variant="outline" 
-                className="px-10 py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-                style={{
-                  backgroundColor: 'var(--color-white)',
-                  color: 'var(--color-accent)',
-                  borderWidth: '2px',
-                  borderColor: 'var(--color-white)',
-                  borderRadius: 'var(--radius-lg)',
-                }}
+                className="bg-white text-accent border-2 border-white px-xl py-lg rounded-lg hover:bg-background transition-fast font-sans font-semibold text-lg shadow-lg hover:shadow-xl hover:scale-105"
               >
                 Search
               </Button>
@@ -67,124 +44,111 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="container mx-auto px-4 py-20">
-        <h2 
-          className="font-bold text-center mb-4"
-          style={{ fontSize: '2rem', color: 'var(--color-text-dark)' }}
-        >
+      <section className="container mx-auto px-lg py-3xl">
+        <h2 className="text-3xl font-display font-bold text-center text-dark mb-md">
           Platform Features
         </h2>
-        <p className="text-center mb-16 text-lg" style={{ color: 'var(--color-text-light)', maxWidth: '600px', margin: '0 auto 3rem' }}>
+        <p className="text-center text-lg font-sans text-medium mb-2xl max-w-2xl mx-auto leading-relaxed">
           Everything you need to make informed decisions about political candidates
         </p>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-          <Card className="transition-all duration-300 hover:shadow-2xl hover:-translate-y-2" style={{ backgroundColor: 'var(--color-white)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-background-dark)' }}>
-            <CardHeader>
-              <div className="text-4xl mb-4">📊</div>
-              <CardTitle style={{ color: 'var(--color-text-dark)', fontSize: '1.25rem', fontWeight: '600' }}>Verified Track Records</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p style={{ color: 'var(--color-text-light)', lineHeight: '1.75' }}>
-                View comprehensive profiles with promises, works, cases, and sources.
-                All information is fact-checked and verified.
-              </p>
-            </CardContent>
-          </Card>
+        <div className="grid md:grid-cols-3 gap-xl max-w-7xl mx-auto">
+          {/* Feature Card Pattern: bg-white, rounded-lg, shadow-md, proper typography */}
+          <div className="bg-white rounded-lg shadow-md p-lg hover:shadow-lg transition-fast hover:-translate-y-1">
+            <div className="w-12 h-12 bg-primary-light rounded-lg flex items-center justify-center mb-md text-2xl">
+              📊
+            </div>
+            <h4 className="text-xl font-display font-semibold text-dark mb-sm">
+              Verified Track Records
+            </h4>
+            <p className="text-sm font-sans text-medium leading-relaxed">
+              View comprehensive profiles with promises, works, cases, and sources.
+              All information is fact-checked and verified.
+            </p>
+          </div>
 
-          <Card className="transition-all duration-300 hover:shadow-2xl hover:-translate-y-2" style={{ backgroundColor: 'var(--color-white)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-background-dark)' }}>
-            <CardHeader>
-              <div className="text-4xl mb-4">🔍</div>
-              <CardTitle style={{ color: 'var(--color-text-dark)', fontSize: '1.25rem', fontWeight: '600' }}>Advanced Search</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p style={{ color: 'var(--color-text-light)', lineHeight: '1.75' }}>
-                Search across candidates, promises, works, and cases.
-                Filter by party, constituency, and performance metrics.
-              </p>
-            </CardContent>
-          </Card>
+          <div className="bg-white rounded-lg shadow-md p-lg hover:shadow-lg transition-fast hover:-translate-y-1">
+            <div className="w-12 h-12 bg-primary-light rounded-lg flex items-center justify-center mb-md text-2xl">
+              🔍
+            </div>
+            <h4 className="text-xl font-display font-semibold text-dark mb-sm">
+              Advanced Search
+            </h4>
+            <p className="text-sm font-sans text-medium leading-relaxed">
+              Search across candidates, promises, works, and cases.
+              Filter by party, constituency, and performance metrics.
+            </p>
+          </div>
 
-          <Card className="transition-all duration-300 hover:shadow-2xl hover:-translate-y-2" style={{ backgroundColor: 'var(--color-white)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-background-dark)' }}>
-            <CardHeader>
-              <div className="text-4xl mb-4">⚖️</div>
-              <CardTitle style={{ color: 'var(--color-text-dark)', fontSize: '1.25rem', fontWeight: '600' }}>Compare Candidates</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p style={{ color: 'var(--color-text-light)', lineHeight: '1.75' }}>
-                Side-by-side comparison of up to 3 candidates. 
-                View their scores, achievements, and track records.
-              </p>
-            </CardContent>
-          </Card>
+          <div className="bg-white rounded-lg shadow-md p-lg hover:shadow-lg transition-fast hover:-translate-y-1">
+            <div className="w-12 h-12 bg-primary-light rounded-lg flex items-center justify-center mb-md text-2xl">
+              ⚖️
+            </div>
+            <h4 className="text-xl font-display font-semibold text-dark mb-sm">
+              Compare Candidates
+            </h4>
+            <p className="text-sm font-sans text-medium leading-relaxed">
+              Side-by-side comparison of up to 3 candidates. 
+              View their scores, achievements, and track records.
+            </p>
+          </div>
 
-          <Card className="transition-all duration-300 hover:shadow-2xl hover:-translate-y-2" style={{ backgroundColor: 'var(--color-white)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-background-dark)' }}>
-            <CardHeader>
-              <div className="text-4xl mb-4">🏆</div>
-              <CardTitle style={{ color: 'var(--color-text-dark)', fontSize: '1.25rem', fontWeight: '600' }}>Rankings</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p style={{ color: 'var(--color-text-light)', lineHeight: '1.75' }}>
-                View rankings by impact, fulfillment rate, clean records,
-                and experience across all government levels.
-              </p>
-            </CardContent>
-          </Card>
+          <div className="bg-white rounded-lg shadow-md p-lg hover:shadow-lg transition-fast hover:-translate-y-1">
+            <div className="w-12 h-12 bg-primary-light rounded-lg flex items-center justify-center mb-md text-2xl">
+              🏆
+            </div>
+            <h4 className="text-xl font-display font-semibold text-dark mb-sm">
+              Rankings
+            </h4>
+            <p className="text-sm font-sans text-medium leading-relaxed">
+              View rankings by impact, fulfillment rate, clean records,
+              and experience across all government levels.
+            </p>
+          </div>
 
-          <Card className="transition-all duration-300 hover:shadow-2xl hover:-translate-y-2" style={{ backgroundColor: 'var(--color-white)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-background-dark)' }}>
-            <CardHeader>
-              <div className="text-4xl mb-4">📚</div>
-              <CardTitle style={{ color: 'var(--color-text-dark)', fontSize: '1.25rem', fontWeight: '600' }}>Source Transparency</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p style={{ color: 'var(--color-text-light)', lineHeight: '1.75' }}>
-                Every claim is backed by sources with reliability tiers.
-                Access original documents and archived versions.
-              </p>
-            </CardContent>
-          </Card>
+          <div className="bg-white rounded-lg shadow-md p-lg hover:shadow-lg transition-fast hover:-translate-y-1">
+            <div className="w-12 h-12 bg-primary-light rounded-lg flex items-center justify-center mb-md text-2xl">
+              📚
+            </div>
+            <h4 className="text-xl font-display font-semibold text-dark mb-sm">
+              Source Transparency
+            </h4>
+            <p className="text-sm font-sans text-medium leading-relaxed">
+              Every claim is backed by sources with reliability tiers.
+              Access original documents and archived versions.
+            </p>
+          </div>
 
-          <Card className="transition-all duration-300 hover:shadow-2xl hover:-translate-y-2" style={{ backgroundColor: 'var(--color-white)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-background-dark)' }}>
-            <CardHeader>
-              <div className="text-4xl mb-4">🇳🇵</div>
-              <CardTitle style={{ color: 'var(--color-text-dark)', fontSize: '1.25rem', fontWeight: '600' }}>For Nepal</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p style={{ color: 'var(--color-text-light)', lineHeight: '1.75' }}>
-                Coverage of federal, provincial, and local level candidates
-                across all provinces of Nepal.
-              </p>
-            </CardContent>
-          </Card>
+          <div className="bg-white rounded-lg shadow-md p-lg hover:shadow-lg transition-fast hover:-translate-y-1">
+            <div className="w-12 h-12 bg-primary-light rounded-lg flex items-center justify-center mb-md text-2xl">
+              🇳🇵
+            </div>
+            <h4 className="text-xl font-display font-semibold text-dark mb-sm">
+              For Nepal
+            </h4>
+            <p className="text-sm font-sans text-medium leading-relaxed">
+              Coverage of federal, provincial, and local level candidates
+              across all provinces of Nepal.
+            </p>
+          </div>
         </div>
       </section>
 
-      {/* Quick Links */}
-      <section className="container mx-auto px-4 py-20">
-        <div 
-          className="text-white text-center transition-all duration-300 hover:shadow-2xl"
-          style={{ 
-            background: `linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark) 100%)`,
-            borderRadius: 'var(--radius-xl)',
-            padding: '4rem 2rem',
-            boxShadow: 'var(--shadow-xl)',
-          }}
-        >
-          <h2 className="font-bold mb-6" style={{ fontSize: '2.25rem' }}>Get Started Today</h2>
-          <p className="mb-10 mx-auto" style={{ fontSize: '1.125rem', maxWidth: '600px', opacity: 0.95, lineHeight: '1.75' }}>
+      {/* CTA Section - Using accent (dark blue) for CTA background */}
+      <section className="container mx-auto px-lg py-3xl">
+        <div className="bg-accent text-white text-center rounded-xl p-3xl shadow-xl hover:shadow-2xl transition-fast">
+          <h2 className="text-4xl font-display font-bold text-white mb-lg">
+            Get Started Today
+          </h2>
+          <p className="text-lg font-sans text-white mb-2xl max-w-2xl mx-auto leading-relaxed opacity-95">
             Explore comprehensive, verified information about political candidates across Nepal
           </p>
-          <div className="flex gap-4 justify-center flex-wrap">
+          <div className="flex gap-lg justify-center flex-wrap">
             <Link href="/candidates">
+              {/* Using primary (red) for emphasis on white background */}
               <Button 
                 size="lg" 
-                className="px-8 py-6 text-base font-semibold transition-all duration-300 hover:scale-105"
-                style={{
-                  backgroundColor: 'var(--color-primary)',
-                  color: 'var(--color-white)',
-                  borderRadius: 'var(--radius-lg)',
-                  boxShadow: 'var(--shadow-md)',
-                }}
+                className="bg-primary text-white px-xl py-lg rounded-lg hover:bg-primary-light transition-fast font-sans font-semibold shadow-md hover:scale-105"
               >
                 View All Candidates
               </Button>
@@ -193,14 +157,7 @@ export default function Home() {
               <Button 
                 size="lg" 
                 variant="outline" 
-                className="px-8 py-6 text-base font-semibold transition-all duration-300 hover:scale-105"
-                style={{
-                  backgroundColor: 'transparent',
-                  color: 'var(--color-white)',
-                  borderWidth: '2px',
-                  borderColor: 'var(--color-white)',
-                  borderRadius: 'var(--radius-lg)',
-                }}
+                className="bg-transparent text-white border-2 border-white px-xl py-lg rounded-lg hover:bg-white hover:text-accent transition-fast font-sans font-semibold hover:scale-105"
               >
                 View Rankings
               </Button>
@@ -209,14 +166,7 @@ export default function Home() {
               <Button 
                 size="lg" 
                 variant="outline" 
-                className="px-8 py-6 text-base font-semibold transition-all duration-300 hover:scale-105"
-                style={{
-                  backgroundColor: 'transparent',
-                  color: 'var(--color-white)',
-                  borderWidth: '2px',
-                  borderColor: 'var(--color-white)',
-                  borderRadius: 'var(--radius-lg)',
-                }}
+                className="bg-transparent text-white border-2 border-white px-xl py-lg rounded-lg hover:bg-white hover:text-accent transition-fast font-sans font-semibold hover:scale-105"
               >
                 Compare Candidates
               </Button>
@@ -226,30 +176,27 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer style={{ backgroundColor: 'var(--color-accent-dark)', color: 'var(--color-white)', padding: '3rem 0', marginTop: '4rem' }}>
-        <div className="container mx-auto px-4 text-center">
-          <p style={{ color: 'var(--color-text-muted)', fontSize: '1rem', marginBottom: '1.5rem' }}>
+      <footer className="bg-accent-dark text-white py-3xl mt-3xl">
+        <div className="container mx-auto px-lg text-center">
+          <p className="text-base font-sans text-white opacity-75 mb-lg">
             Built with ❤️ for democratic transparency in Nepal
           </p>
-          <div className="flex gap-8 justify-center">
+          <div className="flex gap-xl justify-center">
             <Link 
               href="/more" 
-              className="transition-colors duration-200"
-              style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}
+              className="text-sm font-sans text-white opacity-75 hover:opacity-100 hover:text-white transition-fast"
             >
               About
             </Link>
             <Link 
               href="/more" 
-              className="transition-colors duration-200"
-              style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}
+              className="text-sm font-sans text-white opacity-75 hover:opacity-100 hover:text-white transition-fast"
             >
               Editorial Policy
             </Link>
             <Link 
               href="/more" 
-              className="transition-colors duration-200"
-              style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}
+              className="text-sm font-sans text-white opacity-75 hover:opacity-100 hover:text-white transition-fast"
             >
               Contact
             </Link>

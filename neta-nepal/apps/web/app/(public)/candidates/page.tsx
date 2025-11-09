@@ -21,10 +21,11 @@ export default function CandidatesPage() {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-base py-3xl">
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
-            <p className="text-lg">Loading candidates...</p>
+            <div className="w-16 h-16 border-4 border-background-dark border-t-accent rounded-full animate-spin mx-auto mb-lg"></div>
+            <p className="text-xl font-display font-semibold text-dark">Loading candidates...</p>
           </div>
         </div>
       </div>
@@ -33,11 +34,14 @@ export default function CandidatesPage() {
 
   if (error) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-base py-3xl">
         <div className="flex items-center justify-center min-h-screen">
-          <div className="text-center">
-            <p className="text-lg text-red-600">Error loading candidates</p>
-            <p className="text-sm text-gray-500 mt-2">{error.message}</p>
+          <div className="text-center max-w-md">
+            <div className="w-16 h-16 bg-error-light rounded-full flex items-center justify-center mx-auto mb-lg">
+              <span className="text-3xl text-error">⚠</span>
+            </div>
+            <p className="text-2xl font-display font-bold text-error mb-sm">Error Loading Candidates</p>
+            <p className="text-base font-sans text-medium">{error.message}</p>
           </div>
         </div>
       </div>
@@ -49,39 +53,30 @@ export default function CandidatesPage() {
   const totalPages = data?.totalPages || 1
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--color-background)' }}>
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <header style={{ backgroundColor: 'var(--color-white)', borderBottom: '1px solid var(--color-background-dark)', boxShadow: 'var(--shadow-sm)' }}>
-        <div className="container mx-auto px-4 py-8">
-          <h1 className="font-bold" style={{ fontSize: '2rem', color: 'var(--color-text-dark)', marginBottom: '0.5rem' }}>Political Candidates</h1>
-          <p style={{ color: 'var(--color-text-light)', fontSize: '1.125rem' }}>
-            Browse verified information about <span style={{ fontWeight: '600', color: 'var(--color-primary)' }}>{total}</span> candidates
+      <header className="bg-white border-b border-background-dark shadow-sm">
+        <div className="container mx-auto px-base py-2xl">
+          <h1 className="text-4xl font-display font-bold text-dark mb-md">Political Candidates</h1>
+          <p className="text-lg font-sans text-medium">
+            Browse verified information about <span className="font-semibold text-primary">{total}</span> candidates
           </p>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <div className="container mx-auto px-base py-2xl">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-2xl">
           {/* Filters Sidebar */}
           <aside className="lg:col-span-1">
-            <Card style={{ backgroundColor: 'var(--color-white)', borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow-md)', border: '1px solid var(--color-background-dark)' }}>
-              <CardHeader>
-                <CardTitle style={{ color: 'var(--color-text-dark)', fontSize: '1.25rem', fontWeight: '600' }}>Filters</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-5">
+            <div className="bg-white rounded-xl shadow-md border border-background-dark">
+              <div className="p-lg border-b border-background-dark">
+                <h2 className="text-xl font-display font-semibold text-dark">Filters</h2>
+              </div>
+              <div className="p-lg space-y-lg">
                 <div>
-                  <label className="font-medium" style={{ fontSize: '0.875rem', color: 'var(--color-text-dark)', display: 'block', marginBottom: '0.5rem' }}>Sort By</label>
+                  <label className="block text-sm font-sans font-semibold text-dark mb-sm">Sort By</label>
                   <select
-                    className="w-full transition-all duration-200"
-                    style={{
-                      padding: '0.75rem',
-                      border: '2px solid var(--color-background-dark)',
-                      borderRadius: 'var(--radius-md)',
-                      backgroundColor: 'var(--color-white)',
-                      fontSize: '0.875rem',
-                      color: 'var(--color-text-dark)',
-                      cursor: 'pointer',
-                    }}
+                    className="w-full px-base py-md text-sm font-sans text-dark bg-white border-2 border-default rounded-lg cursor-pointer transition-fast hover:border-accent focus:border-accent focus:ring-2 focus:ring-accent-light focus:ring-opacity-20"
                     value={filters.sortBy}
                     onChange={(e) =>
                       setFilters({
@@ -99,18 +94,9 @@ export default function CandidatesPage() {
                 </div>
 
                 <div>
-                  <label className="font-medium" style={{ fontSize: '0.875rem', color: 'var(--color-text-dark)', display: 'block', marginBottom: '0.5rem' }}>Order</label>
+                  <label className="block text-sm font-sans font-semibold text-dark mb-sm">Order</label>
                   <select
-                    className="w-full transition-all duration-200"
-                    style={{
-                      padding: '0.75rem',
-                      border: '2px solid var(--color-background-dark)',
-                      borderRadius: 'var(--radius-md)',
-                      backgroundColor: 'var(--color-white)',
-                      fontSize: '0.875rem',
-                      color: 'var(--color-text-dark)',
-                      cursor: 'pointer',
-                    }}
+                    className="w-full px-base py-md text-sm font-sans text-dark bg-white border-2 border-default rounded-lg cursor-pointer transition-fast hover:border-accent focus:border-accent focus:ring-2 focus:ring-accent-light focus:ring-opacity-20"
                     value={filters.order}
                     onChange={(e) =>
                       setFilters({
@@ -127,18 +113,9 @@ export default function CandidatesPage() {
 
                 {partiesData && (partiesData as any).parties && (
                   <div>
-                    <label className="font-medium" style={{ fontSize: '0.875rem', color: 'var(--color-text-dark)', display: 'block', marginBottom: '0.5rem' }}>Party</label>
+                    <label className="block text-sm font-sans font-semibold text-dark mb-sm">Party</label>
                     <select
-                      className="w-full transition-all duration-200"
-                      style={{
-                        padding: '0.75rem',
-                        border: '2px solid var(--color-background-dark)',
-                        borderRadius: 'var(--radius-md)',
-                        backgroundColor: 'var(--color-white)',
-                        fontSize: '0.875rem',
-                        color: 'var(--color-text-dark)',
-                        cursor: 'pointer',
-                      }}
+                      className="w-full px-base py-md text-sm font-sans text-dark bg-white border-2 border-default rounded-lg cursor-pointer transition-fast hover:border-accent focus:border-accent focus:ring-2 focus:ring-accent-light focus:ring-opacity-20"
                       onChange={(e) =>
                         setFilters({
                           ...filters,
@@ -159,16 +136,8 @@ export default function CandidatesPage() {
                   </div>
                 )}
 
-                <Button
-                  variant="outline"
-                  className="w-full font-semibold transition-all duration-200 hover:scale-105"
-                  style={{
-                    borderWidth: '2px',
-                    borderColor: 'var(--color-accent)',
-                    color: 'var(--color-accent)',
-                    borderRadius: 'var(--radius-md)',
-                    padding: '0.75rem',
-                  }}
+                <button
+                  className="w-full px-base py-md text-sm font-sans font-semibold text-accent bg-white border-2 border-accent rounded-lg transition-fast hover:bg-accent hover:text-white hover:scale-105"
                   onClick={() =>
                     setFilters({
                       page: 1,
@@ -179,182 +148,124 @@ export default function CandidatesPage() {
                   }
                 >
                   Reset Filters
-                </Button>
-              </CardContent>
-            </Card>
+                </button>
+              </div>
+            </div>
           </aside>
 
           {/* Candidates Grid */}
           <main className="lg:col-span-3">
-            <div className="mb-4 flex justify-between items-center">
-              <p className="text-sm text-gray-600">
-                Showing {(filters.page - 1) * filters.limit + 1} to{' '}
-                {Math.min(filters.page * filters.limit, total)} of {total}{' '}
-                candidates
+            <div className="mb-lg flex justify-between items-center">
+              <p className="text-sm font-sans text-medium">
+                Showing <span className="font-semibold text-dark">{(filters.page - 1) * filters.limit + 1}</span> to{' '}
+                <span className="font-semibold text-dark">{Math.min(filters.page * filters.limit, total)}</span> of{' '}
+                <span className="font-semibold text-primary">{total}</span> candidates
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-xl">
               {candidates.map((candidate: any) => (
-                <Card
+                <div
                   key={candidate.id}
-                  className="transition-all duration-300 hover:shadow-2xl hover:-translate-y-1"
-                  style={{
-                    backgroundColor: 'var(--color-white)',
-                    borderRadius: 'var(--radius-lg)',
-                    boxShadow: 'var(--shadow-md)',
-                    border: '1px solid var(--color-background-dark)',
-                  }}
+                  className="bg-white rounded-xl shadow-md border border-background-dark transition-fast hover:shadow-2xl hover:-translate-y-1"
                 >
-                  <CardContent style={{ padding: '1.5rem' }}>
-                    <div className="flex gap-4">
-                      <Avatar className="h-20 w-20" style={{ border: '3px solid var(--color-background-dark)' }}>
-                        <AvatarImage
-                          src={candidate.photoUrl || undefined}
-                          alt={candidate.name}
-                        />
-                        <AvatarFallback style={{ backgroundColor: 'var(--color-primary)', color: 'var(--color-white)', fontSize: '1.5rem', fontWeight: '600' }}>
-                          {candidate.name.charAt(0)}
-                        </AvatarFallback>
-                      </Avatar>
+                  <div className="p-xl">
+                    <div className="flex gap-base">
+                      <div className="h-20 w-20 shrink-0 border-2 border-background-dark rounded-full overflow-hidden bg-primary flex items-center justify-center">
+                        {candidate.photoUrl ? (
+                          <img
+                            src={candidate.photoUrl}
+                            alt={candidate.name}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <span className="text-3xl font-display font-semibold text-white">
+                            {candidate.name.charAt(0)}
+                          </span>
+                        )}
+                      </div>
 
                       <div className="flex-1">
                         <Link href={`/candidates/${candidate.id}`}>
-                          <h3 
-                            className="font-semibold transition-colors duration-200"
-                            style={{ 
-                              fontSize: '1.125rem',
-                              color: 'var(--color-text-dark)',
-                              lineHeight: '1.4',
-                            }}
-                            onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-primary)'}
-                            onMouseLeave={(e) => e.currentTarget.style.color = 'var(--color-text-dark)'}
-                          >
+                          <h3 className="text-xl font-display font-semibold text-dark hover:text-accent transition-fast leading-tight">
                             {candidate.name}
                           </h3>
                         </Link>
 
-                        <p style={{ fontSize: '0.875rem', color: 'var(--color-text-light)', marginTop: '0.25rem', fontWeight: '500' }}>
+                        <p className="text-sm font-sans font-medium text-light mt-xs">
                           {candidate.party?.name}
                         </p>
 
-                        <p style={{ fontSize: '0.813rem', color: 'var(--color-text-muted)', marginTop: '0.25rem' }}>
+                        <p className="text-xs font-sans text-muted mt-xs">
                           {candidate.constituency?.name},{' '}
                           {candidate.constituency?.province?.name}
                         </p>
 
-                        <div className="flex gap-2 mt-3 flex-wrap">
+                        <div className="flex gap-sm mt-md flex-wrap">
                           {candidate.isVerified && (
-                            <Badge 
-                              variant="default" 
-                              style={{ 
-                                backgroundColor: 'var(--color-success)', 
-                                color: 'var(--color-white)',
-                                padding: '0.25rem 0.75rem',
-                                borderRadius: 'var(--radius-sm)',
-                                fontSize: '0.75rem',
-                                fontWeight: '600',
-                              }}
-                            >
+                            <span className="bg-success text-white px-md py-xs rounded text-xs font-sans font-semibold">
                               ✓ Verified
-                            </Badge>
+                            </span>
                           )}
                           {candidate.hasAllegations && (
-                            <Badge 
-                              variant="secondary"
-                              style={{ 
-                                backgroundColor: 'var(--color-warning-light)', 
-                                color: 'var(--color-warning)',
-                                padding: '0.25rem 0.75rem',
-                                borderRadius: 'var(--radius-sm)',
-                                fontSize: '0.75rem',
-                                fontWeight: '600',
-                              }}
-                            >
+                            <span className="bg-warning-light text-warning px-md py-xs rounded text-xs font-sans font-semibold">
                               ⚠ Allegations
-                            </Badge>
+                            </span>
                           )}
                           {candidate.hasCriminalCases && (
-                            <Badge 
-                              variant="destructive"
-                              style={{ 
-                                backgroundColor: 'var(--color-error-light)', 
-                                color: 'var(--color-error)',
-                                padding: '0.25rem 0.75rem',
-                                borderRadius: 'var(--radius-sm)',
-                                fontSize: '0.75rem',
-                                fontWeight: '600',
-                              }}
-                            >
+                            <span className="bg-error-light text-error px-md py-xs rounded text-xs font-sans font-semibold">
                               ⚖ Criminal Cases
-                            </Badge>
+                            </span>
                           )}
                         </div>
 
-                        <div 
-                          className="grid grid-cols-3 gap-3 mt-4 text-center"
-                          style={{
-                            backgroundColor: 'var(--color-background)',
-                            padding: '0.75rem',
-                            borderRadius: 'var(--radius-md)',
-                          }}
-                        >
+                        <div className="grid grid-cols-3 gap-md mt-base bg-background p-md rounded-lg text-center">
                           <div>
-                            <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem' }}>Impact</p>
-                            <p style={{ fontSize: '1rem', fontWeight: '700', color: 'var(--color-success)' }}>
+                            <p className="text-xs font-sans text-muted mb-xs">Impact</p>
+                            <p className="text-base font-sans font-bold text-success">
                               {candidate.impactScore?.toFixed(1) || 'N/A'}
                             </p>
                           </div>
                           <div>
-                            <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem' }}>Fulfillment</p>
-                            <p style={{ fontSize: '1rem', fontWeight: '700', color: 'var(--color-accent)' }}>
+                            <p className="text-xs font-sans text-muted mb-xs">Fulfillment</p>
+                            <p className="text-base font-sans font-bold text-info">
                               {candidate.fulfillmentRate?.toFixed(0) || 'N/A'}%
                             </p>
                           </div>
                           <div>
-                            <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem' }}>Scandal</p>
-                            <p style={{ fontSize: '1rem', fontWeight: '700', color: 'var(--color-error)' }}>
+                            <p className="text-xs font-sans text-muted mb-xs">Scandal</p>
+                            <p className="text-base font-sans font-bold text-error">
                               {candidate.scandalScore?.toFixed(1) || 'N/A'}
                             </p>
                           </div>
                         </div>
 
                         <Link href={`/candidates/${candidate.id}`}>
-                          <Button 
-                            className="w-full mt-4 font-semibold transition-all duration-200 hover:scale-105" 
-                            size="sm"
-                            style={{
-                              backgroundColor: 'var(--color-primary)',
-                              color: 'var(--color-white)',
-                              borderRadius: 'var(--radius-md)',
-                              padding: '0.625rem',
-                              fontSize: '0.875rem',
-                            }}
-                          >
+                          <button className="w-full mt-base px-base py-md text-sm font-sans font-semibold text-white bg-accent rounded-lg transition-fast hover:bg-accent-light hover:scale-105 shadow-sm">
                             View Full Profile →
-                          </Button>
+                          </button>
                         </Link>
                       </div>
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               ))}
             </div>
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="flex justify-center gap-2 mt-8">
-                <Button
-                  variant="outline"
+              <div className="flex justify-center gap-sm mt-3xl">
+                <button
                   disabled={filters.page === 1}
                   onClick={() =>
                     setFilters({ ...filters, page: filters.page - 1 })
                   }
+                  className="px-lg py-md text-sm font-sans font-semibold text-accent bg-white border-2 border-accent rounded-lg transition-fast hover:bg-accent hover:text-white disabled:bg-background-light disabled:text-muted disabled:border-background-dark disabled:cursor-not-allowed"
                 >
                   Previous
-                </Button>
+                </button>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-sm">
                   {Array.from({ length: totalPages }, (_, i) => i + 1)
                     .filter(
                       (page) =>
@@ -365,29 +276,32 @@ export default function CandidatesPage() {
                     .map((page, index, array) => (
                       <>
                         {index > 0 && array[index - 1] !== page - 1 && (
-                          <span key={`ellipsis-${page}`}>...</span>
+                          <span key={`ellipsis-${page}`} className="text-medium font-sans">...</span>
                         )}
-                        <Button
+                        <button
                           key={page}
-                          variant={filters.page === page ? 'default' : 'outline'}
-                          size="sm"
                           onClick={() => setFilters({ ...filters, page })}
+                          className={`px-base py-sm text-sm font-sans font-semibold rounded-lg transition-fast ${
+                            filters.page === page
+                              ? 'bg-accent text-white border-2 border-accent'
+                              : 'bg-white text-accent border-2 border-accent hover:bg-accent hover:text-white'
+                          }`}
                         >
                           {page}
-                        </Button>
+                        </button>
                       </>
                     ))}
                 </div>
 
-                <Button
-                  variant="outline"
+                <button
                   disabled={filters.page === totalPages}
                   onClick={() =>
                     setFilters({ ...filters, page: filters.page + 1 })
                   }
+                  className="px-lg py-md text-sm font-sans font-semibold text-accent bg-white border-2 border-accent rounded-lg transition-fast hover:bg-accent hover:text-white disabled:bg-background-light disabled:text-muted disabled:border-background-dark disabled:cursor-not-allowed"
                 >
                   Next
-                </Button>
+                </button>
               </div>
             )}
           </main>
