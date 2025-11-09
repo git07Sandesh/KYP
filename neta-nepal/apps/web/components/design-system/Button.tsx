@@ -4,9 +4,10 @@
  * A reusable button component following zero-tolerance design system rules.
  * 
  * Variants:
- * - primary: bg-primary (red) - For brand emphasis on neutral backgrounds
- * - accent: bg-accent (blue) - For main CTAs and primary actions
- * - secondary: border-accent - For secondary actions
+ * - primary: bg-primary (red) - For brand emphasis and main CTAs
+ * - accent: bg-accent (blue) - For secondary CTAs and important actions
+ * - secondary: bg-white with border - For secondary actions
+ * - outline: transparent with border - For outlined buttons
  * - info: bg-info - For informational actions
  * - success: bg-success - For positive/success actions
  * - warning: bg-warning - For caution actions
@@ -30,7 +31,7 @@ import React from 'react'
 import { cn } from '@/lib/utils'
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'accent' | 'secondary' | 'info' | 'success' | 'warning' | 'error' | 'ghost'
+  variant?: 'primary' | 'accent' | 'secondary' | 'outline' | 'info' | 'success' | 'warning' | 'error' | 'ghost'
   size?: 'sm' | 'md' | 'lg'
   icon?: React.ReactNode
   iconPosition?: 'left' | 'right'
@@ -62,6 +63,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       primary: 'bg-primary text-white hover:bg-primary-dark focus:ring-primary shadow-sm hover:shadow-md',
       accent: 'bg-accent text-white hover:bg-accent-light focus:ring-accent shadow-sm hover:shadow-md',
       secondary: 'bg-white text-accent border-2 border-accent hover:bg-accent hover:text-white focus:ring-accent',
+      outline: 'bg-transparent text-accent border-2 border-accent hover:bg-accent hover:text-white focus:ring-accent',
       info: 'bg-info text-white hover:bg-info-dark focus:ring-info shadow-sm hover:shadow-md',
       success: 'bg-success text-white hover:bg-success-dark focus:ring-success shadow-sm hover:shadow-md',
       warning: 'bg-warning text-white hover:bg-warning-dark focus:ring-warning shadow-sm hover:shadow-md',

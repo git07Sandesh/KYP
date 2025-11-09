@@ -24,6 +24,7 @@ model User {
   auditLogs          AuditLog[]
   moderationReviews  ModerationQueue[] @relation("ReviewedBy")
   correctionRequests CorrectionRequest[]
+  userActivities     UserActivity[]
   
   @@index([email])
   @@index([role])
@@ -80,6 +81,7 @@ model Constituency {
   province        Province     @relation(fields: [provinceId], references: [id])
   district        District?    @relation(fields: [districtId], references: [id])
   candidates      Candidate[]
+  electionResults ElectionResult[]
   
   @@unique([provinceId, districtId, constituencyNumber, level])
   @@index([provinceId])
@@ -94,29 +96,101 @@ enum GovernmentLevel {
 }
 
 model Party {
-  id              Int      @id @default(autoincrement())
-  name            String   @unique
-  nameNepali      String?
-  symbolUrl       String?
-  foundedYear     Int?
-  website         String?
-  isActive        Boolean  @default(true)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id                    Int       @id @default(autoincrement())
+  name                  String    @unique                    // English (translated)
+  nameNepali            String?                             // पार्टीको नाम
+  shortName             String?                             // Common abbreviation (NC, UML, etc.)
+  shortNameNepali       String?
   
-  candidates      Candidate[]
+  // Registration Details
+  registrationNumber    String?   @unique                   // दर्ता नं.
+  applicationDateBs     String?                             // निवेदन दर्ता मिति
+  applicationDateAd     DateTime?
+  registrationDateBs    String?                             // दल दर्ता मिति
+  registrationDateAd    DateTime?
+  renewalDateBs         String?
+  renewalDateAd         DateTime?
   
+  // Contact & Location
+  headquarters          String?   @db.Text                  // दलको मुख्य कार्यालय ठेगाना
+  province              String?                             // Extract from address
+  district              String?                             // Extract from address
+  contactPhone          String?                             // Could be multiple
+  contactEmail          String?
+  
+  // Leadership
+  chairpersonName       String?                             // अध्यक्ष
+  chairpersonNameNepali String?
+  generalSecretaryName  String?                             // महासचिव
+  generalSecretaryNameNepali String?
+  
+  // Symbol
+  symbolName            String?                             // चिन्हको नाम (English)
+  symbolNameNepali      String?                             // चिन्हको नाम (Nepali)
+  symbolUrl             String?                             // Path to symbol image
+  symbolDescription     String?                             // "Tree", "Sun", "Hammer", etc.
+  
+  // Metadata
+  foundedYear           Int?
+  website               String?
+  ideology              String?                             // "Socialist", "Democratic", etc.
+  isActive              Boolean   @default(true)
+  isMajorParty          Boolean   @default(false)           // For filtering
+  
+  // Data Quality
+  dataSource            String?                             // "ECN-2080", "Manual", etc.
+  verificationStatus    VerificationStatus @default(PENDING)
+  verifiedAt            DateTime?
+  verifiedBy            String?
+  
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  candidates            Candidate[]
+  electionResults       ElectionResult[]
+
   @@index([name])
+  @@index([nameNepali])
   @@index([isActive])
+  @@index([isMajorParty])
+  @@index([registrationNumber])
+  @@index([verificationStatus])
+}
+
+enum VerificationStatus {
+  PENDING
+  VERIFIED
+  NEEDS_REVIEW
+  INCORRECT
 }
 
 model Candidate {
   id                  String           @id @default(cuid())
   name                String
   nameNepali          String?
+  
+  // Personal Info
   age                 Int?
+  dateOfBirth         DateTime?
   gender              Gender?
+  placeOfBirth        String?
+  education           String?          @db.Text
+  occupation          String?
+  
+  // Visual & Contact
   photoUrl            String?
+  contactEmail        String?
+  contactPhone        String?
+  residenceAddress    String?          @db.Text
+  
+  // Social Media
+  twitterHandle       String?
+  facebookUrl         String?
+  instagramHandle     String?
+  linkedinUrl         String?
+  websiteUrl          String?
+  
+  // Political Info
   partyId             Int
   constituencyId      Int
   bio                 String?          @db.Text
@@ -126,6 +200,8 @@ model Candidate {
   impactScore         Float?           @default(0)
   scandalScore        Float?           @default(0)
   fulfillmentRate     Float?           @default(0)
+  attendance          Float?           @default(0)
+  trustScore          Float?           @default(0)
   popularityScore     Int?             @default(0) // Page views
   
   // Status indicators
@@ -147,6 +223,11 @@ model Candidate {
   works               Work[]
   cases               Case[]
   rumors              Rumor[]
+  financialDisclosures FinancialDisclosure[]
+  electionResults     ElectionResult[]
+  mediaMentions       MediaMention[]
+  relations           CandidateRelation[] @relation("CandidateRelations")
+  relatedTo           CandidateRelation[] @relation("RelatedCandidates")
   comparisons         Comparison[]     @relation("ComparedCandidates")
   auditLogs           AuditLog[]
   
@@ -157,6 +238,7 @@ model Candidate {
   @@index([impactScore])
   @@index([scandalScore])
   @@index([fulfillmentRate])
+  @@index([twitterHandle])
 }
 
 enum Gender {
@@ -173,22 +255,24 @@ enum CandidateStatus {
 }
 
 model CandidatePost {
-  id              Int      @id @default(autoincrement())
+  id              Int          @id @default(autoincrement())
   candidateId     String
-  position        String   // e.g., "Minister of Finance", "Mayor of Kathmandu"
+  position        String       // e.g., "Minister of Finance", "Mayor of Kathmandu"
   positionNepali  String?
+  positionType    PositionType? // Link to the standardized position types
   level           GovernmentLevel
   startDate       DateTime
   endDate         DateTime?
-  isCurrent       Boolean  @default(false)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  isCurrent       Boolean      @default(false)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
   
-  candidate       Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  candidate       Candidate    @relation(fields: [candidateId], references: [id], onDelete: Cascade)
   
   @@index([candidateId])
   @@index([isCurrent])
   @@index([level])
+  @@index([positionType])
 }
 
 // ===========================
@@ -364,7 +448,12 @@ model Source {
   url             String           @db.Text
   archivedUrl     String?          @db.Text
   publishedDate   DateTime?
+  accessedAt      DateTime?        // When we last verified the link
   reliabilityTier SourceTier
+  isArchived      Boolean          @default(false)
+  archiveStatus   ArchiveStatus    @default(NOT_ARCHIVED)
+  language        String?          // "en", "ne"
+  mediaType       MediaType        @default(ARTICLE)
   
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
@@ -372,8 +461,10 @@ model Source {
   promiseSources  PromiseSource[]
   workSources     WorkSource[]
   caseSources     CaseSource[]
+  mediaMentions   MediaMention[]
   
   @@index([reliabilityTier])
+  @@index([mediaType])
 }
 
 enum SourceTier {
@@ -381,6 +472,22 @@ enum SourceTier {
   TIER_2_REPUTABLE      // National media (Kantipur, BBC Nepali, etc.)
   TIER_3_LOCAL          // Local/regional outlets
   TIER_4_SOCIAL         // Social media, public statements
+}
+
+enum ArchiveStatus {
+  NOT_ARCHIVED
+  ARCHIVED
+  ARCHIVE_FAILED
+  ARCHIVE_PENDING
+}
+
+enum MediaType {
+  ARTICLE
+  VIDEO
+  AUDIO
+  DOCUMENT
+  IMAGE
+  SOCIAL_POST
 }
 
 // Junction tables for many-to-many relationships
@@ -458,6 +565,192 @@ enum RankingCategory {
   MOST_EXPERIENCED
   MOST_POPULAR
   MOST_IMPROVED
+}
+
+// ===========================
+// NEW MODELS: TRANSPARENCY & ACCOUNTABILITY
+// ===========================
+
+model FinancialDisclosure {
+  id              String    @id @default(cuid())
+  candidateId     String
+  year            Int
+  assets          Decimal?  @db.Decimal(15, 2)
+  liabilities     Decimal?  @db.Decimal(15, 2)
+  income          Decimal?  @db.Decimal(15, 2)
+  declarationUrl  String?   @db.Text
+  isVerified      Boolean   @default(false)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  candidate       Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  
+  @@unique([candidateId, year])
+  @@index([candidateId])
+  @@index([year])
+}
+
+model ElectionResult {
+  id              String       @id @default(cuid())
+  candidateId     String
+  electionYear    Int
+  electionType    ElectionType
+  positionType    PositionType // NEW: The actual position contested for
+  constituencyId  Int
+  partyId         Int
+  votesReceived   Int?
+  totalVotes      Int?
+  rank            Int?
+  isWinner        Boolean      @default(false)
+  
+  createdAt       DateTime     @default(now())
+  
+  candidate       Candidate    @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  constituency    Constituency @relation(fields: [constituencyId], references: [id])
+  party           Party        @relation(fields: [partyId], references: [id])
+  
+  @@unique([candidateId, electionYear, constituencyId, positionType])
+  @@index([candidateId])
+  @@index([electionYear])
+  @@index([isWinner])
+  @@index([positionType])
+}
+
+enum ElectionType {
+  FEDERAL_FPTP          // Direct election for House of Representatives
+  FEDERAL_PR            // Proportional Representation for HoR
+  PROVINCIAL_FPTP       // Direct election for Provincial Assembly
+  PROVINCIAL_PR         // Proportional Representation for PA
+  LOCAL_DIRECT          // Direct election for local positions
+}
+
+enum PositionType {
+  // Federal Level
+  MEMBER_OF_PARLIAMENT      // सांसद (House of Representatives - FPTP)
+  MP_PROPORTIONAL          // प्रतिनिधि सभा सदस्य (PR)
+  
+  // Provincial Level  
+  PROVINCIAL_ASSEMBLY_MEMBER    // प्रदेश सभा सदस्य (FPTP)
+  PA_PROPORTIONAL              // प्रदेश सभा सदस्य (PR)
+  
+  // Local Level - Metropolitan City (महानगरपालिका)
+  METROPOLITAN_MAYOR           // महानगर प्रमुख
+  METROPOLITAN_DEPUTY_MAYOR    // महानगर उपप्रमुख
+  METROPOLITAN_WARD_CHAIR      // वडा अध्यक्ष
+  METROPOLITAN_WARD_MEMBER     // वडा सदस्य
+  
+  // Local Level - Sub-Metropolitan City (उपमहानगरपालिका)
+  SUB_METROPOLITAN_MAYOR       // उपमहानगर प्रमुख
+  SUB_METROPOLITAN_DEPUTY_MAYOR // उपमहानगर उपप्रमुख
+  SUB_METROPOLITAN_WARD_CHAIR  // वडा अध्यक्ष
+  SUB_METROPOLITAN_WARD_MEMBER // वडा सदस्य
+  
+  // Local Level - Municipality (नगरपालिका)
+  MUNICIPAL_MAYOR              // नगर प्रमुख
+  MUNICIPAL_DEPUTY_MAYOR       // नगर उपप्रमुख
+  MUNICIPAL_WARD_CHAIR         // वडा अध्यक्ष
+  MUNICIPAL_WARD_MEMBER        // वडा सदस्य
+  
+  // Local Level - Rural Municipality (गाउँपालिका)
+  RURAL_MUNICIPAL_CHAIR        // गाउँपालिका अध्यक्ष
+  RURAL_MUNICIPAL_VICE_CHAIR   // गाउँपालिका उपाध्यक्ष
+  RURAL_WARD_CHAIR            // वडा अध्यक्ष
+  RURAL_WARD_MEMBER           // वडा सदस्य
+}
+
+model MediaMention {
+  id              String          @id @default(cuid())
+  candidateId     String
+  title           String
+  sourceId        String
+  publishedDate   DateTime
+  sentiment       Sentiment       @default(NEUTRAL)
+  category        MentionCategory
+  excerptText     String?         @db.Text
+  
+  createdAt       DateTime        @default(now())
+  
+  candidate       Candidate       @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  source          Source          @relation(fields: [sourceId], references: [id])
+  
+  @@index([candidateId])
+  @@index([publishedDate])
+  @@index([sentiment])
+}
+
+enum Sentiment {
+  POSITIVE
+  NEUTRAL
+  NEGATIVE
+}
+
+enum MentionCategory {
+  ACHIEVEMENT
+  CONTROVERSY
+  POLICY
+  PERSONAL
+  OTHER
+}
+
+model CandidateRelation {
+  id                 String       @id @default(cuid())
+  candidateId        String
+  relatedName        String
+  relationship       RelationType
+  details            String?      @db.Text
+  isPublicFigure     Boolean      @default(false)
+  relatedCandidateId String?
+  
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+  
+  candidate          Candidate    @relation("CandidateRelations", fields: [candidateId], references: [id], onDelete: Cascade)
+  relatedCandidate   Candidate?   @relation("RelatedCandidates", fields: [relatedCandidateId], references: [id])
+  
+  @@index([candidateId])
+  @@index([relatedCandidateId])
+}
+
+enum RelationType {
+  SPOUSE
+  PARENT
+  CHILD
+  SIBLING
+  BUSINESS_PARTNER
+  POLITICAL_ALLY
+  OTHER
+}
+
+model UserActivity {
+  id              String       @id @default(cuid())
+  userId          String?      // Null for anonymous
+  sessionId       String?
+  activityType    ActivityType
+  targetType      String?      // "Candidate", "Promise", etc.
+  targetId        String?
+  metadata        Json?
+  
+  createdAt       DateTime     @default(now())
+  
+  user            User?        @relation(fields: [userId], references: [id])
+  
+  @@index([userId])
+  @@index([activityType])
+  @@index([createdAt])
+  @@index([targetType, targetId])
+}
+
+enum ActivityType {
+  VIEW_PROFILE
+  VIEW_PROMISE
+  VIEW_WORK
+  COMPARE_CANDIDATES
+  SEARCH
+  SHARE
+  REPORT_ERROR
+  UPVOTE
+  DOWNVOTE
 }
 
 // ===========================

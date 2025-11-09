@@ -109,140 +109,264 @@ export default function CandidateProfilePage({ params }: CandidateProfilePagePro
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8 md:py-12">
-        {/* Hero Section */}
-        <Card className="card mb-8 hover:shadow-xl transition-all overflow-hidden">
+      <div className="container mx-auto px-4 py-8 md:py-12 max-w-7xl">
+        {/* Candidate Header Card */}
+        <Card className="mb-6 border-2 border-accent shadow-md overflow-hidden">
           <CardContent className="p-0">
-            {/* Top Section with Avatar and Main Info */}
-            <div className="bg-gradient-to-r from-background to-surface p-6 md:p-10">
-              <div className="flex flex-col md:flex-row gap-6 md:gap-10 items-center md:items-start">
-                {/* Large Avatar */}
-                <div className="relative">
-                  <Avatar className="h-28 w-28 md:h-32 md:w-32 ring-4 ring-white shadow-xl">
-                    <AvatarImage src={candidate.photoUrl || undefined} alt={candidate.name} />
-                    <AvatarFallback className="text-4xl font-display font-bold bg-primary text-white">
-                      {candidate.name.charAt(0)}
-                    </AvatarFallback>
-                  </Avatar>
-                  {candidate.isVerified && (
-                    <div className="absolute -bottom-2 -right-2 bg-success rounded-full p-2 shadow-lg">
-                      <CheckCircle className="h-5 w-5 text-white" />
-                    </div>
-                  )}
-                </div>
-
-                {/* Name and Info */}
-                <div className="flex-1 text-center md:text-left">
-                  <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-text-primary mb-3">
-                    {candidate.name}
-                  </h1>
-                  
-                  {/* Party and Constituency */}
-                  <div className="flex flex-wrap gap-3 justify-center md:justify-start mb-4">
-                    <Badge className="bg-accent hover:bg-accent-dark text-white px-4 py-1.5 text-sm font-semibold rounded-full">
-                      {candidate.party?.name}
-                    </Badge>
-                    <Badge variant="outline" className="border-2 border-accent text-accent px-4 py-1.5 text-sm font-semibold rounded-full">
-                      {candidate.constituency?.name}, {candidate.constituency?.province?.name}
-                    </Badge>
-                  </div>
-
-                  {/* Status Badges */}
-                  <div className="flex flex-wrap gap-2 justify-center md:justify-start mb-4">
-                    {candidate.isVerified && (
-                      <Badge className="badge-success text-white px-3 py-1 text-xs font-medium rounded-full">
-                        <CheckCircle className="h-3 w-3 mr-1 inline" />
-                        Verified
-                      </Badge>
-                    )}
-                    {candidate.hasAllegations && (
-                      <Badge className="badge-warning text-white px-3 py-1 text-xs font-medium rounded-full">
-                        <AlertTriangle className="h-3 w-3 mr-1 inline" />
-                        Allegations
-                      </Badge>
-                    )}
-                    {candidate.hasCriminalCases && (
-                      <Badge className="badge-error text-white px-3 py-1 text-xs font-medium rounded-full">
-                        <AlertCircle className="h-3 w-3 mr-1 inline" />
-                        Criminal Cases
-                      </Badge>
-                    )}
-                  </div>
-
-                  {/* Additional Info Grid */}
-                  {(candidate.age || candidate.yearsInPolitics) && (
-                    <div className="grid grid-cols-2 gap-4 mt-6 max-w-md mx-auto md:mx-0">
-                      {candidate.age && (
-                        <div className="bg-surface rounded-lg p-3 shadow-sm">
-                          <p className="text-xs text-text-secondary font-medium mb-1">Age</p>
-                          <p className="text-lg font-bold text-text-primary">{candidate.age} years</p>
-                        </div>
-                      )}
-                      {candidate.yearsInPolitics && (
-                        <div className="bg-surface rounded-lg p-3 shadow-sm">
-                          <p className="text-xs text-text-secondary font-medium mb-1">Experience</p>
-                          <p className="text-lg font-bold text-text-primary">{candidate.yearsInPolitics} years</p>
-                        </div>
-                      )}
+            <div className="flex flex-col md:flex-row items-stretch">
+              {/* Large Profile Photo Section */}
+              <div className="w-full md:w-64 lg:w-80 bg-accent flex items-center justify-center shrink-0">
+                <div className="w-full aspect-[3/4] relative">
+                  {candidate.photoUrl ? (
+                    <img
+                      src={candidate.photoUrl}
+                      alt={candidate.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-accent">
+                      <span className="text-8xl font-display font-bold text-white">
+                        {candidate.name.charAt(0)}
+                      </span>
                     </div>
                   )}
                 </div>
               </div>
-            </div>
 
-            {/* Key Metrics Section */}
-            <div className="bg-surface px-6 md:px-10 py-6 md:py-8 border-t border-border">
-              <h3 className="text-lg font-display font-semibold text-text-primary mb-4 flex items-center gap-2">
-                <Award className="h-5 w-5 text-primary" />
-                Key Performance Metrics
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {/* Impact Score Card */}
-                <div className="bg-gradient-to-br from-info-light to-surface rounded-xl p-5 border-2 border-info hover:shadow-lg transition-all hover:-translate-y-1">
-                  <div className="flex items-center justify-between mb-2">
-                    <TrendingUp className="h-6 w-6 text-info" />
-                    <ScoreBadge value={candidate.impactScore || 0} type="impact" size="sm" />
-                  </div>
-                  <p className="text-xs text-text-secondary font-medium uppercase tracking-wide">Impact Score</p>
-                  <p className="text-3xl font-display font-bold text-info mt-1">{candidate.impactScore || 0}</p>
-                  <p className="text-xs text-text-muted mt-1">Overall effectiveness</p>
+              {/* Candidate Info Section */}
+              <div className="flex-1 p-8 md:p-10 flex flex-col justify-center relative bg-background">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-dark mb-3">
+                  {candidate.name}
+                </h1>
+                <p className="text-lg md:text-xl text-medium font-sans mb-6">उम्मेदवारको नाम</p>
+                
+                <div className="flex flex-wrap gap-3 items-center mb-4">
+                  <Badge className="bg-accent text-white px-5 py-2 text-base font-semibold rounded-md">
+                    {candidate.party?.name}
+                  </Badge>
+                  <span className="text-base md:text-lg text-medium font-sans">
+                    {candidate.constituency?.name}, {candidate.constituency?.province?.name}
+                  </span>
                 </div>
 
-                {/* Fulfillment Rate Card */}
-                <div className="bg-gradient-to-br from-success-light to-surface rounded-xl p-5 border-2 border-success hover:shadow-lg transition-all hover:-translate-y-1">
-                  <div className="flex items-center justify-between mb-2">
-                    <Target className="h-6 w-6 text-success" />
-                    <ScoreBadge value={candidate.fulfillmentRate || 0} type="fulfillment" size="sm" />
+                {/* Verified Badge - Absolute positioned */}
+                {candidate.isVerified && (
+                  <div className="absolute top-6 right-6">
+                    <div className="w-20 h-20 md:w-24 md:h-24 rounded-full border-4 border-accent flex flex-col items-center justify-center bg-white shadow-lg">
+                      <CheckCircle className="h-8 w-8 md:h-10 md:w-10 text-accent mb-1" />
+                      <span className="text-xs font-bold text-accent uppercase">Verified</span>
+                    </div>
                   </div>
-                  <p className="text-xs text-text-secondary font-medium uppercase tracking-wide">Fulfillment Rate</p>
-                  <p className="text-3xl font-display font-bold text-success mt-1">{candidate.fulfillmentRate || 0}%</p>
-                  <p className="text-xs text-text-muted mt-1">Promises kept</p>
-                </div>
-
-                {/* Scandal Score Card */}
-                <div className="bg-gradient-to-br from-error-light to-surface rounded-xl p-5 border-2 border-error hover:shadow-lg transition-all hover:-translate-y-1">
-                  <div className="flex items-center justify-between mb-2">
-                    <AlertTriangle className="h-6 w-6 text-error" />
-                    <ScoreBadge value={candidate.scandalScore || 0} type="scandal" size="sm" />
-                  </div>
-                  <p className="text-xs text-text-secondary font-medium uppercase tracking-wide">Scandal Score</p>
-                  <p className="text-3xl font-display font-bold text-error mt-1">{candidate.scandalScore || 0}</p>
-                  <p className="text-xs text-text-muted mt-1">Controversy level</p>
-                </div>
+                )}
               </div>
             </div>
-
-            {/* Biography Section */}
-            {candidate.bio && (
-              <div className="bg-background px-6 md:px-10 py-6 md:py-8 border-t border-border">
-                <h3 className="text-2xl font-display font-bold text-text-primary mb-4">Biography</h3>
-                <p className="text-base text-text-secondary leading-relaxed font-sans whitespace-pre-line">
-                  {candidate.bio}
-                </p>
-              </div>
-            )}
           </CardContent>
         </Card>
+
+        {/* Performance Report Card */}
+        <Card className="mb-6 shadow-md border-2 border-gray-200">
+          <CardContent className="p-0">
+            {/* Header */}
+            <div className="bg-white text-center py-8 px-6 border-b-2 border-gray-200">
+              <h2 className="text-3xl md:text-4xl font-display font-bold text-accent uppercase tracking-wider mb-2">
+                Performance Report Card
+              </h2>
+              <p className="text-sm text-medium font-sans">Official Performance Metrics</p>
+            </div>
+
+            {/* Performance Table */}
+            <div className="overflow-x-auto bg-white">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="bg-gray-50 border-b-2 border-accent">
+                    <th className="text-left py-4 px-6 font-display font-semibold text-accent uppercase text-sm tracking-wide">
+                      Metric
+                    </th>
+                    <th className="text-center py-4 px-4 font-display font-semibold text-accent uppercase text-sm tracking-wide">
+                      Score / Rate
+                    </th>
+                    <th className="text-center py-4 px-4 font-display font-semibold text-accent uppercase text-sm tracking-wide">
+                      Grade
+                    </th>
+                    <th className="text-left py-4 px-6 font-display font-semibold text-accent uppercase text-sm tracking-wide hidden lg:table-cell">
+                      Remarks
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {/* Impact Score */}
+                  <tr className="hover:bg-gray-50 transition-colors">
+                    <td className="py-4 px-6 font-display font-semibold text-accent text-base">
+                      Impact Score
+                    </td>
+                    <td className="py-4 px-4 text-center font-sans text-dark font-medium text-base">
+                      {candidate.impactScore?.toFixed(1) || '0.0'} / 5.0
+                    </td>
+                    <td className="py-4 px-4 text-center">
+                      <span className={`inline-flex items-center justify-center w-12 h-12 rounded-full font-display font-bold text-base ${
+                        (candidate.impactScore || 0) >= 4.5 ? 'bg-success text-white' :
+                        (candidate.impactScore || 0) >= 3.5 ? 'bg-info text-white' :
+                        (candidate.impactScore || 0) >= 2.5 ? 'bg-warning text-white' :
+                        'bg-error text-white'
+                      }`}>
+                        {(candidate.impactScore || 0) >= 4.5 ? 'A+' :
+                         (candidate.impactScore || 0) >= 4.0 ? 'A' :
+                         (candidate.impactScore || 0) >= 3.5 ? 'B+' :
+                         (candidate.impactScore || 0) >= 3.0 ? 'B' :
+                         (candidate.impactScore || 0) >= 2.5 ? 'C' :
+                         (candidate.impactScore || 0) >= 2.0 ? 'D' : 'F'}
+                      </span>
+                    </td>
+                    <td className="py-4 px-6 text-medium font-sans text-sm hidden lg:table-cell">
+                      {(candidate.impactScore || 0) >= 4.0 ? 'High overall effectiveness in legislative duties.' :
+                       (candidate.impactScore || 0) >= 3.0 ? 'Moderate effectiveness in legislative work.' :
+                       (candidate.impactScore || 0) >= 2.0 ? 'Below average legislative impact.' :
+                       'Low impact; requires significant improvement.'}
+                    </td>
+                  </tr>
+
+                  {/* Fulfillment Rate */}
+                  <tr className="hover:bg-gray-50 transition-colors">
+                    <td className="py-4 px-6 font-display font-semibold text-accent text-base">
+                      Fulfillment Rate
+                    </td>
+                    <td className="py-4 px-4 text-center font-sans text-dark font-medium text-base">
+                      {candidate.fulfillmentRate?.toFixed(0) || '0'}%
+                    </td>
+                    <td className="py-4 px-4 text-center">
+                      <span className={`inline-flex items-center justify-center w-12 h-12 rounded-full font-display font-bold text-base ${
+                        (candidate.fulfillmentRate || 0) >= 80 ? 'bg-success text-white' :
+                        (candidate.fulfillmentRate || 0) >= 60 ? 'bg-info text-white' :
+                        (candidate.fulfillmentRate || 0) >= 40 ? 'bg-warning text-white' :
+                        'bg-error text-white'
+                      }`}>
+                        {(candidate.fulfillmentRate || 0) >= 80 ? 'A' :
+                         (candidate.fulfillmentRate || 0) >= 70 ? 'B+' :
+                         (candidate.fulfillmentRate || 0) >= 60 ? 'B' :
+                         (candidate.fulfillmentRate || 0) >= 50 ? 'C+' :
+                         (candidate.fulfillmentRate || 0) >= 40 ? 'C' :
+                         (candidate.fulfillmentRate || 0) >= 30 ? 'D' : 'F'}
+                      </span>
+                    </td>
+                    <td className="py-4 px-6 text-medium font-sans text-sm hidden lg:table-cell">
+                      {(candidate.fulfillmentRate || 0) >= 70 ? 'Strong track record of promises kept from manifesto.' :
+                       (candidate.fulfillmentRate || 0) >= 50 ? 'Moderate rate of promises kept from manifesto.' :
+                       (candidate.fulfillmentRate || 0) >= 30 ? 'Below expectations in promise fulfillment.' :
+                       'Poor record of keeping campaign promises.'}
+                    </td>
+                  </tr>
+
+                  {/* Attendance (if available) */}
+                  {candidate.attendance && (
+                    <tr className="hover:bg-gray-50 transition-colors">
+                      <td className="py-4 px-6 font-display font-semibold text-accent text-base">
+                        Attendance
+                      </td>
+                      <td className="py-4 px-4 text-center font-sans text-dark font-medium text-base">
+                        {candidate.attendance}%
+                      </td>
+                      <td className="py-4 px-4 text-center">
+                        <span className={`inline-flex items-center justify-center w-12 h-12 rounded-full font-display font-bold text-base ${
+                          candidate.attendance >= 90 ? 'bg-success text-white' :
+                          candidate.attendance >= 75 ? 'bg-info text-white' :
+                          candidate.attendance >= 60 ? 'bg-warning text-white' :
+                          'bg-error text-white'
+                        }`}>
+                          {candidate.attendance >= 90 ? 'A+' :
+                           candidate.attendance >= 85 ? 'A' :
+                           candidate.attendance >= 75 ? 'B+' :
+                           candidate.attendance >= 65 ? 'B' :
+                           candidate.attendance >= 60 ? 'C' : 'D'}
+                        </span>
+                      </td>
+                      <td className="py-4 px-6 text-medium font-sans text-sm hidden lg:table-cell">
+                        {candidate.attendance >= 85 ? 'Excellent presence in parliamentary sessions.' :
+                         candidate.attendance >= 70 ? 'Good attendance record.' :
+                         'Below average attendance; needs improvement.'}
+                      </td>
+                    </tr>
+                  )}
+
+                  {/* Scandal Score (inverted - lower is better) */}
+                  <tr className="hover:bg-gray-50 transition-colors">
+                    <td className="py-4 px-6 font-display font-semibold text-accent text-base">
+                      Scandal Score
+                    </td>
+                    <td className="py-4 px-4 text-center font-sans text-dark font-medium text-base">
+                      {candidate.scandalScore?.toFixed(1) || '0.0'} / 5.0
+                    </td>
+                    <td className="py-4 px-4 text-center">
+                      <span className={`inline-flex items-center justify-center w-12 h-12 rounded-full font-display font-bold text-base ${
+                        (candidate.scandalScore || 0) <= 1.0 ? 'bg-success text-white' :
+                        (candidate.scandalScore || 0) <= 2.0 ? 'bg-info text-white' :
+                        (candidate.scandalScore || 0) <= 3.0 ? 'bg-warning text-white' :
+                        'bg-error text-white'
+                      }`}>
+                        {(candidate.scandalScore || 0) <= 0.5 ? 'A+' :
+                         (candidate.scandalScore || 0) <= 1.0 ? 'A' :
+                         (candidate.scandalScore || 0) <= 1.5 ? 'B+' :
+                         (candidate.scandalScore || 0) <= 2.0 ? 'B' :
+                         (candidate.scandalScore || 0) <= 2.5 ? 'C' :
+                         (candidate.scandalScore || 0) <= 3.5 ? 'D' : 'F'}
+                      </span>
+                    </td>
+                    <td className="py-4 px-6 text-medium font-sans text-sm hidden lg:table-cell">
+                      {(candidate.scandalScore || 0) <= 1.0 ? 'Clean record with minimal controversy.' :
+                       (candidate.scandalScore || 0) <= 2.0 ? 'Some minor controversies noted.' :
+                       (candidate.scandalScore || 0) <= 3.0 ? 'Some controversy; requires improvement.' :
+                       'Significant controversies; requires immediate attention.'}
+                    </td>
+                  </tr>
+
+                  {/* Public Trust Index (if available) */}
+                  {candidate.trustScore && (
+                    <tr className="hover:bg-gray-50 transition-colors">
+                      <td className="py-4 px-6 font-display font-semibold text-accent text-base">
+                        Public Trust Index
+                      </td>
+                      <td className="py-4 px-4 text-center font-sans text-dark font-medium text-base">
+                        {candidate.trustScore?.toFixed(1) || '0.0'} / 10
+                      </td>
+                      <td className="py-4 px-4 text-center">
+                        <span className={`inline-flex items-center justify-center w-12 h-12 rounded-full font-display font-bold text-base ${
+                          (candidate.trustScore || 0) >= 8.0 ? 'bg-success text-white' :
+                          (candidate.trustScore || 0) >= 6.5 ? 'bg-info text-white' :
+                          (candidate.trustScore || 0) >= 5.0 ? 'bg-warning text-white' :
+                          'bg-error text-white'
+                        }`}>
+                          {(candidate.trustScore || 0) >= 8.5 ? 'A+' :
+                           (candidate.trustScore || 0) >= 8.0 ? 'A' :
+                           (candidate.trustScore || 0) >= 7.0 ? 'B+' :
+                           (candidate.trustScore || 0) >= 6.0 ? 'B' :
+                           (candidate.trustScore || 0) >= 5.0 ? 'C' :
+                           (candidate.trustScore || 0) >= 4.0 ? 'D' : 'F'}
+                        </span>
+                      </td>
+                      <td className="py-4 px-6 text-medium font-sans text-sm hidden lg:table-cell">
+                        {(candidate.trustScore || 0) >= 7.5 ? 'Strong level of trust among constituents.' :
+                         (candidate.trustScore || 0) >= 6.0 ? 'Moderate public trust level.' :
+                         (candidate.trustScore || 0) >= 4.5 ? 'Below average public trust.' :
+                         'Low public trust; requires significant improvement.'}
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Biography Section */}
+        {candidate.bio && (
+          <Card className="mb-6 shadow-md border-2 border-gray-200">
+            <CardContent className="p-6 md:p-8">
+              <h3 className="text-2xl font-display font-bold text-accent mb-4">Biography</h3>
+              <p className="text-base text-medium leading-relaxed font-sans whitespace-pre-line">
+                {candidate.bio}
+              </p>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Tabs Section */}
         <Tabs defaultValue="overview" className="space-y-6">

@@ -1,205 +1,234 @@
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/design-system/Button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/design-system/Card'
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-background">
-      {/* Hero Section - Using primary (red) for brand identity */}
-      <section className="relative overflow-hidden bg-primary py-3xl px-xl">
-        <div className="container mx-auto px-lg text-center relative z-10">
-          <h1 className="text-5xl font-display font-bold text-white mb-lg max-w-4xl mx-auto leading-tight">
-            Know Your Political Candidate
-          </h1>
-          <p className="text-lg font-sans text-white mb-2xl max-w-3xl mx-auto leading-relaxed opacity-95">
-            A non-partisan, fact-based transparency platform for Nepal. Browse verified candidate profiles,
-            track records, and make informed voting decisions.
-          </p>
+    <div className="min-h-screen bg-white">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden bg-background py-3xl px-xl">
+        <div className="container mx-auto px-lg max-w-6xl">
+          <div className="max-w-3xl">
+            <h1 className="text-6xl font-display font-bold text-accent mb-lg leading-tight">
+              A Brighter Future for Nepal
+            </h1>
+            <p className="text-xl font-sans text-medium mb-2xl leading-relaxed">
+              Join the movement for political transparency. Browse verified candidate profiles, track records, and make informed voting decisions.
+            </p>
 
-          <div className="flex gap-lg justify-center flex-wrap">
-            <Link href="/candidates">
-              {/* Primary CTA uses accent (dark blue), NOT primary */}
-              <Button 
-                size="lg" 
-                className="bg-accent text-white px-xl py-lg rounded-lg hover:bg-accent-light transition-fast font-sans font-semibold text-lg shadow-xl hover:shadow-2xl hover:scale-105"
-              >
-                Browse Candidates →
-              </Button>
-            </Link>
-            <Link href="/search">
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="bg-white text-accent border-2 border-white px-xl py-lg rounded-lg hover:bg-background transition-fast font-sans font-semibold text-lg shadow-lg hover:shadow-xl hover:scale-105"
-              >
-                Search
-              </Button>
-            </Link>
+            <div className="flex gap-base flex-wrap">
+              <Link href="/candidates">
+                <Button 
+                  variant="primary"
+                  size="lg"
+                >
+                  Browse Candidates
+                </Button>
+              </Link>
+              <Link href="/search">
+                <Button 
+                  variant="secondary"
+                  size="lg"
+                >
+                  Search Platform
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
         
-        {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -mr-32 -mt-32"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-white opacity-5 rounded-full -ml-48 -mb-48"></div>
+        {/* Decorative gradient */}
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary-50 to-transparent opacity-30 pointer-events-none"></div>
       </section>
 
-      {/* Features Section */}
-      <section className="container mx-auto px-lg py-3xl">
-        <h2 className="text-3xl font-display font-bold text-center text-dark mb-md">
-          Platform Features
-        </h2>
-        <p className="text-center text-lg font-sans text-medium mb-2xl max-w-2xl mx-auto leading-relaxed">
-          Everything you need to make informed decisions about political candidates
-        </p>
-
-        <div className="grid md:grid-cols-3 gap-xl max-w-7xl mx-auto">
-          {/* Feature Card Pattern: bg-white, rounded-lg, shadow-md, proper typography */}
-          <div className="bg-white rounded-lg shadow-md p-lg hover:shadow-lg transition-fast hover:-translate-y-1">
-            <div className="w-12 h-12 bg-primary-light rounded-lg flex items-center justify-center mb-md text-2xl">
-              📊
-            </div>
-            <h4 className="text-xl font-display font-semibold text-dark mb-sm">
-              Verified Track Records
-            </h4>
-            <p className="text-sm font-sans text-medium leading-relaxed">
-              View comprehensive profiles with promises, works, cases, and sources.
-              All information is fact-checked and verified.
+      {/* Key Issues Section */}
+      <section className="bg-white py-3xl">
+        <div className="container mx-auto px-lg max-w-6xl">
+          <div className="text-center mb-2xl">
+            <h2 className="text-4xl font-display font-bold text-accent mb-base">
+              Key Issues
+            </h2>
+            <p className="text-lg font-sans text-medium">
+              Our vision for a better tomorrow.
             </p>
           </div>
 
-          <div className="bg-white rounded-lg shadow-md p-lg hover:shadow-lg transition-fast hover:-translate-y-1">
-            <div className="w-12 h-12 bg-primary-light rounded-lg flex items-center justify-center mb-md text-2xl">
-              🔍
-            </div>
-            <h4 className="text-xl font-display font-semibold text-dark mb-sm">
-              Advanced Search
-            </h4>
-            <p className="text-sm font-sans text-medium leading-relaxed">
-              Search across candidates, promises, works, and cases.
-              Filter by party, constituency, and performance metrics.
-            </p>
-          </div>
+          <div className="grid md:grid-cols-3 gap-lg">
+            <Card variant="default">
+              <CardContent className="p-xl">
+                <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center mb-base text-2xl">
+                  �
+                </div>
+                <h3 className="text-xl font-display font-semibold text-accent mb-sm">
+                  A Stronger Economy
+                </h3>
+                <p className="text-base font-sans text-medium leading-relaxed">
+                  Implementing policies that support small businesses and create jobs for a prosperous future.
+                </p>
+              </CardContent>
+            </Card>
 
-          <div className="bg-white rounded-lg shadow-md p-lg hover:shadow-lg transition-fast hover:-translate-y-1">
-            <div className="w-12 h-12 bg-primary-light rounded-lg flex items-center justify-center mb-md text-2xl">
-              ⚖️
-            </div>
-            <h4 className="text-xl font-display font-semibold text-dark mb-sm">
-              Compare Candidates
-            </h4>
-            <p className="text-sm font-sans text-medium leading-relaxed">
-              Side-by-side comparison of up to 3 candidates. 
-              View their scores, achievements, and track records.
-            </p>
-          </div>
+            <Card variant="default">
+              <CardContent className="p-xl">
+                <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center mb-base text-2xl">
+                  ❤️
+                </div>
+                <h3 className="text-xl font-display font-semibold text-accent mb-sm">
+                  Affordable Healthcare
+                </h3>
+                <p className="text-base font-sans text-medium leading-relaxed">
+                  Working to lower costs and expand access to quality healthcare for every citizen.
+                </p>
+              </CardContent>
+            </Card>
 
-          <div className="bg-white rounded-lg shadow-md p-lg hover:shadow-lg transition-fast hover:-translate-y-1">
-            <div className="w-12 h-12 bg-primary-light rounded-lg flex items-center justify-center mb-md text-2xl">
-              🏆
-            </div>
-            <h4 className="text-xl font-display font-semibold text-dark mb-sm">
-              Rankings
-            </h4>
-            <p className="text-sm font-sans text-medium leading-relaxed">
-              View rankings by impact, fulfillment rate, clean records,
-              and experience across all government levels.
-            </p>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-md p-lg hover:shadow-lg transition-fast hover:-translate-y-1">
-            <div className="w-12 h-12 bg-primary-light rounded-lg flex items-center justify-center mb-md text-2xl">
-              📚
-            </div>
-            <h4 className="text-xl font-display font-semibold text-dark mb-sm">
-              Source Transparency
-            </h4>
-            <p className="text-sm font-sans text-medium leading-relaxed">
-              Every claim is backed by sources with reliability tiers.
-              Access original documents and archived versions.
-            </p>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-md p-lg hover:shadow-lg transition-fast hover:-translate-y-1">
-            <div className="w-12 h-12 bg-primary-light rounded-lg flex items-center justify-center mb-md text-2xl">
-              🇳🇵
-            </div>
-            <h4 className="text-xl font-display font-semibold text-dark mb-sm">
-              For Nepal
-            </h4>
-            <p className="text-sm font-sans text-medium leading-relaxed">
-              Coverage of federal, provincial, and local level candidates
-              across all provinces of Nepal.
-            </p>
+            <Card variant="default">
+              <CardContent className="p-xl">
+                <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center mb-base text-2xl">
+                  🎓
+                </div>
+                <h3 className="text-xl font-display font-semibold text-accent mb-sm">
+                  Quality Education
+                </h3>
+                <p className="text-base font-sans text-medium leading-relaxed">
+                  Investing in our schools and teachers to provide the next generation with the tools to succeed.
+                </p>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
 
-      {/* CTA Section - Using accent (dark blue) for CTA background */}
-      <section className="container mx-auto px-lg py-3xl">
-        <div className="bg-accent text-white text-center rounded-xl p-3xl shadow-xl hover:shadow-2xl transition-fast">
-          <h2 className="text-4xl font-display font-bold text-white mb-lg">
-            Get Started Today
-          </h2>
-          <p className="text-lg font-sans text-white mb-2xl max-w-2xl mx-auto leading-relaxed opacity-95">
-            Explore comprehensive, verified information about political candidates across Nepal
-          </p>
-          <div className="flex gap-lg justify-center flex-wrap">
-            <Link href="/candidates">
-              {/* Using primary (red) for emphasis on white background */}
-              <Button 
-                size="lg" 
-                className="bg-primary text-white px-xl py-lg rounded-lg hover:bg-primary-light transition-fast font-sans font-semibold shadow-md hover:scale-105"
-              >
-                View All Candidates
-              </Button>
-            </Link>
-            <Link href="/rankings">
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="bg-transparent text-white border-2 border-white px-xl py-lg rounded-lg hover:bg-white hover:text-accent transition-fast font-sans font-semibold hover:scale-105"
-              >
-                View Rankings
-              </Button>
-            </Link>
-            <Link href="/compare">
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="bg-transparent text-white border-2 border-white px-xl py-lg rounded-lg hover:bg-white hover:text-accent transition-fast font-sans font-semibold hover:scale-105"
-              >
-                Compare Candidates
-              </Button>
-            </Link>
+      {/* Get Involved Section */}
+      <section className="bg-background py-3xl">
+        <div className="container mx-auto px-lg max-w-6xl">
+          <div className="text-center mb-2xl">
+            <h2 className="text-4xl font-display font-bold text-accent mb-base">
+              Get Involved
+            </h2>
+            <p className="text-lg font-sans text-medium">
+              Be a part of the change. Here's how you can contribute.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-lg">
+            <Card variant="default">
+              <CardContent className="p-xl text-center">
+                <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-base shadow-md">
+                  <div className="text-3xl text-primary">🤝</div>
+                </div>
+                <h3 className="text-xl font-display font-semibold text-accent mb-base">
+                  Volunteer
+                </h3>
+                <p className="text-base font-sans text-medium mb-xl leading-relaxed">
+                  Join our team and make a real difference in your community.
+                </p>
+                <Link href="/more">
+                  <Button variant="accent" fullWidth>
+                    Sign Up
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+
+            <Card variant="default">
+              <CardContent className="p-xl text-center">
+                <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-base shadow-md">
+                  <div className="text-3xl text-primary">❤️</div>
+                </div>
+                <h3 className="text-xl font-display font-semibold text-accent mb-base">
+                  Donate
+                </h3>
+                <p className="text-base font-sans text-medium mb-xl leading-relaxed">
+                  Your contribution powers our campaign and helps us reach more voters.
+                </p>
+                <Link href="/more">
+                  <Button variant="primary" fullWidth>
+                    Contribute
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+
+            <Card variant="default">
+              <CardContent className="p-xl text-center">
+                <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-base shadow-md">
+                  <div className="text-3xl text-accent">✉️</div>
+                </div>
+                <h3 className="text-xl font-display font-semibold text-accent mb-base">
+                  Subscribe
+                </h3>
+                <p className="text-base font-sans text-medium mb-xl leading-relaxed">
+                  Stay informed with the latest news and updates from the campaign trail.
+                </p>
+                <Link href="/more">
+                  <Button variant="accent" fullWidth>
+                    Stay Updated
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-accent-dark text-white py-3xl mt-3xl">
-        <div className="container mx-auto px-lg text-center">
-          <p className="text-base font-sans text-white opacity-75 mb-lg">
-            Built with ❤️ for democratic transparency in Nepal
-          </p>
-          <div className="flex gap-xl justify-center">
-            <Link 
-              href="/more" 
-              className="text-sm font-sans text-white opacity-75 hover:opacity-100 hover:text-white transition-fast"
-            >
-              About
-            </Link>
-            <Link 
-              href="/more" 
-              className="text-sm font-sans text-white opacity-75 hover:opacity-100 hover:text-white transition-fast"
-            >
-              Editorial Policy
-            </Link>
-            <Link 
-              href="/more" 
-              className="text-sm font-sans text-white opacity-75 hover:opacity-100 hover:text-white transition-fast"
-            >
-              Contact
-            </Link>
+      <footer className="bg-accent text-white py-3xl">
+        <div className="container mx-auto px-lg max-w-6xl">
+          <div className="grid md:grid-cols-3 gap-xl mb-xl">
+            <div>
+              <h4 className="text-lg font-display font-semibold text-white mb-base">
+                Contact Us
+              </h4>
+              <div className="text-sm font-sans text-white space-y-sm opacity-90">
+                <p>Campaign Office</p>
+                <p>123 Democracy Way, Kathmandu</p>
+                <p>contact@netanepal.com</p>
+              </div>
+            </div>
+            
+            <div>
+              <h4 className="text-lg font-display font-semibold text-white mb-base">
+                Quick Links
+              </h4>
+              <div className="flex flex-col gap-sm text-sm font-sans">
+                <Link href="/more" className="text-white opacity-90 hover:opacity-100 transition-fast">
+                  About
+                </Link>
+                <Link href="/candidates" className="text-white opacity-90 hover:opacity-100 transition-fast">
+                  Issues
+                </Link>
+                <Link href="/more" className="text-white opacity-90 hover:opacity-100 transition-fast">
+                  Events
+                </Link>
+                <Link href="/more" className="text-white opacity-90 hover:opacity-100 transition-fast">
+                  News
+                </Link>
+              </div>
+            </div>
+            
+            <div>
+              <h4 className="text-lg font-display font-semibold text-white mb-base">
+                Follow Us
+              </h4>
+              <div className="flex flex-col gap-sm text-sm font-sans">
+                <a href="#" className="text-white opacity-90 hover:opacity-100 transition-fast">
+                  Twitter
+                </a>
+                <a href="#" className="text-white opacity-90 hover:opacity-100 transition-fast">
+                  Facebook
+                </a>
+                <a href="#" className="text-white opacity-90 hover:opacity-100 transition-fast">
+                  Instagram
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <div className="pt-xl border-t border-accent-light text-center">
+            <p className="text-sm font-sans text-white opacity-75">
+              © 2024 Neta Nepal. All rights reserved. Built with ❤️ for democratic transparency.
+            </p>
           </div>
         </div>
       </footer>
